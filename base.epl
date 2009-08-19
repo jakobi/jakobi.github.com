@@ -33,8 +33,12 @@
 [- Execute('*') -]
 
 <hr>
+<p class=anno>
+<a href="/">Home</a> | 
+<a href="/script-archive/">Script-Archive</a><p>
 [- @time=localtime(time); $t=sprintf "%04d-%02d-%02d",$time[5]+1900,$time[4]+1,$time[3]; -]
 <p class=anno>jakobi(at)acm.org, 2009-07 - [+$t+]</p>
+</p>
 
 </BODY>
 </HTML>
