@@ -1,5 +1,6 @@
 [# #]
 [- 
+   $s=$ENV{__EMB_SECTION}; $s = $s ? "Peter's Homepage" : ""; 
    $t=$ENV{__EMB_TITLE}; $t = $t ? "- $t" : ""; 
    $ENV{__EMB_TITLE}++;
 -]
