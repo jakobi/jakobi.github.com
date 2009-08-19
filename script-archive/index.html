@@ -30,46 +30,61 @@ used in earlier incarnations on various UNIX versions.</p>
 
 
 
-<H2>On the placement of perl auxilliary files and configurations</H2>
-
-<p>For  testing  one  of the scripts with dependencies, it  should  be
-sufficient  to place any required components in the same directory  as
-the  script  itself and add that script to $PATH. This also works  for
-configuration files.</p>
-
-<p class=anno>I'm a bit of a believer of selfcontained scripts, so I'm
-slightly dissatisfied with the Install-Kitchensink-Approach to finally
-run  a  tool  that  uses the kitchensink  but  degenerated  into  mere
-argument  handling.  Still,  you sometimes have a bit  of  non-trivial
-reusable code that doesn't seem right for reuse-at-external-tool-level
-(e.g. Grep.pm, or lock.pl and Flock.pm).</p>
-
-<p  class=anno>In the old days, that meant a 'do "$0.FILE";' to  allow
-placing  the library file into the same dir as the tool (my early 90's
-perl4/perl5 db_cgi.pl grab bag comes to mind). A no-hassles approach I
-still like for configuration files.</p>
-
-<p  class=anno>Nowadays I'm keeping the module collection in a  subdir
-below the tools, but I've some code in any module-using perl script to
-retain  a  bit  of  flexibility  in  the  placement  of  the  modules:
-&lt;same-directory&gt;,  ~/bin,  ~/bin/perl, ~/bin/perl/Compact,  with
-the  module  now  being invoked by it's relative  name:  'use  Flock;'
-instead of the proper 'use Compact_pm::Flock' which requires a placing
-Flock.pm in a Compact_pm dir in some directory in @INC).</p>
 
 
 
-<H2>Licence</H2>
+<H2>Notes</H2>
+
+
+
+<H3>Philosophy, Ancient Artes and a Modern Tool Chest</H3>
+
+<p><a href="motivation.html">Some background on Unix and motivation of
+offering this archive.</A></p>
+
+
+
+<H3>Suggested Tools &amp; Etymology: The Word Tags Is Derived From TagLS</H3>
+
+
+<p><a href="suggestion.html">A  selection of the more accessible  and
+usable tools from the archive, including TagLS.</A></p>
+
+
+
+<H3>Status and Updates</H3>
+
+<p>Status  of the commands checked into this archive: I do  <b>not</b>
+use  this archive for development, but rather have a cronjob exporting
+the   currently  used  versions  to  the  archive  once  in  a  while.
+<b>Bugs</b>:  Given the small size of the commands I do not use a test
+harness  setup,  thus  the  pushed version  may  also  contain  recent
+breakage  until  the next export. <B>So if you encounter bug, drop  me  a
+mail with or without a patch, I'm interested in fixing them or I might
+already fixed the problem locally.</B></p>
+
+
+<H3>Installation Notes</H3>
+
+<p><a href="installation.html">Read  this  for  information  on  e.g.
+placement of Perl modules and configuration files.</A></p>
+
+
+<H3>Licence</H3>
 
 <p>The     scripts    are    made    available    under     the     <a href="http://github.com/jakobi/script-archive/raw/master/gpl.txt">GPL
 v3</a> unless noted otherwise within the script.</p>
 
 
 
+<H2>Complete List</H2>
 
-<H2>Overview</H2>
+<p><a href="http://github.com/jakobi/script-archive/">The git archive with all files is availble here</a></p>
 
-<p><a href="http://github.com/jakobi/script-archive/">The full git archive with all files is availble here</a></p>
+
+<p><font  size=large>WARNING - MOST OF THE COMMANDS MENTIONED IN ABOVE
+PAGES HAVE NOT YET BEEN IMPORTED INTO GIT - DROP ME A LINE TO ADD SOME
+COMMAND EARLY :)</font></p>
 
 The  linked  pages in this filelist contain additional information  on
 specific  tool  groups within the archive. You can download a  group's
@@ -87,7 +102,7 @@ also use native git to access the repository :).<p>
       <TD style='padding-top:.6em' class=num>50K</TD>
       <TD style='padding-top:.6em' class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.perl.grep/Compact_pm/">GIT</A></TD>
       <TD style='padding-top:.6em' class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.perl.grep/Compact_pm/Grep.pm">cli.perl.grep/Compact_pm/Grep.pm</A></TD>
-      <TD style='padding-top:.6em' class=desc></TD>
+      <TD style='padding-top:.6em' class=desc>perl grep with highlighting, stemming, synonyms, boolean expression; also usable as module </TD>
    </tr>
 
     <tr>

@@ -1,0 +1,75 @@
+[*
+   $ENV{__EMB_EXTRATITLE}="Suggested Tools - A Selection";
+   $ENV{__EMB_COUNT}++; 
+   if (1==$ENV{__EMB_COUNT}) {
+      Execute('base.epl');
+   } else {
+
+*]
+
+
+<H2>A Selection</H2>
+
+<p>The immediately usable scripts probably are</p>
+<ul>
+  <li><B>cat0/cat0par</B>  is  also  quite  useful  to  allow  using  gnugrep  with
+       arbitrary record-based files
+  <li><B>emv</B> (for interactive  mass-renaming files using your favorite editor)
+  <li><B>Grep.pm</B> (probably also vim.pipe and Grep.xchange,  to allow for interactive mass-changing files using an editor)
+  <li><B>tagls</B> (turning arbitrary file names and lists of file names into searchable collections of tagged file names)
+  <li><B>waitcond/waitcond.timeout</B> (to wait for idle/files/process like 'make finished')
+  <li><B>zap</B> (processkiller/nicer/lister)
+</ul>
+
+<p>To access firefox bookmarks (both html as well as sqlite versions),
+opened  tabs,  etc, from the shell have a look at  the  <B>firefox</B>
+wrapper set of scripts</p>
+
+<p>If  you  liked  <B>grepmail</B>, the archive contains  a  butchered
+version that doesn't give up when confronted with MIMEs.</p>
+
+<p>Still  a  bit experimental,  <b>sfre/systemflightrecorderedit</b>'s
+goal  is sequencing changes and augmenting group memory in  concurrent
+file  change  scenarios,  like multiple administrators using  root  or
+administrator  vs cron. For each edit (or more generally run  command)
+it  logs a description to a journal, f-locks the plain file  arguments
+of  the  command and uses changetrack to backup changes.  It  requires
+changetrack (changetrack.sf.net) and lock.pl.</p>
+
+<p>Some shell functions of interest are</p>
+<ul>
+   <li> <B>_echo</B> (a version of ksh's print, honoring --, thus safe for echoing arbitrary files)
+   <li> <B>f2a</B> (reads lines from files into an array, the safe multiple-file pendant of "$(command)")
+   <li> <B>uniqpath</B> (strip duplicates or . from :-path-style strings)
+   <li> a modified <B>nico_cd dir stack</B> working in both bash and ksh
+</ul>
+
+
+
+<H3>Etymology: The Word Tags Is Derived From TagLS</H3>
+
+"speaking names" or<BR>
+<a href="http://en.wikipedia.org/wiki/Tag">en.wikipedia.org/wiki/Tag</A> or<BR>
+comp/lang/perl/authors/wall,larry/perl.script.process.zap:regex-based-kill<p>
+
+<p>Why  try to store meta information / tags in extra data bases?  Why
+modify  file  formats  and  store  meta  information  with  the  file,
+requiring  an  extra open or an extra data base? The most  often  used
+tags can far simpler be used to make up the file name. Use the primary
+hierarchic  relationship for the directory tree, then add a command to
+find matching files using arbitrary tag combinations.</p>
+
+<p>If  you  are  using tags as part of filenames  (or  just  'speaking
+filenames'),  then you may also be interested in tagls, which  handles
+searching  in  filelists  with  word boundaries  for  'tags',  synonym
+expansion,   boolean  expressions  over  lists  of  tags  or   regular
+expressions;  both  against  the  file name or  maybe  also  a  file's
+content.   The   output  can  be  unsorted  /  sorted  /   sorted   by
+relevance.</p>
+
+<p><B>tagls</B>   and  <B>taglsc</B>  are  an  experiment   of   using
+file-system based tags with scripts and the command line</p>
+
+
+
+[* } *][# MUST BE AT EOF! #]
