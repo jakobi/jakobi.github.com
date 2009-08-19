@@ -48,10 +48,16 @@ also use native git to access the repository :).<p>
       <TD [+$pad+] class=file><A HREF="[+
          do{if ($n=~m!/00[^/]*html?$!) {
            $n=~s!\.p(html?)$!\.$1!;
+           $b=1;
            $n;
          } else {
+           $b=0;
            "$raw/$n";
          }} +]">[+ $n +]</A></TD>
+      [$ if ($b) $]
+      <TD [+$pad+] class=desc><B>[+ $f->{desc} +]</B></TD>
+      [$ else $]
       <TD [+$pad+] class=desc>[+ $f->{desc} +]</TD>
+      [$ endif $]
    </TR>
 </TABLE>
