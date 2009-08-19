@@ -45,7 +45,12 @@ also use native git to access the repository :).<p>
       <TD [+$pad+]>[+            $f->{flags} +]</TD>
       <TD [+$pad+] class=num>[+  $f->{sizek} +]</TD>
       <TD [+$pad+] class=repo><A HREF="[+ "$u/$d" +]">GIT</A></TD>
-      <TD [+$pad+] class=file><A HREF="[+ "$raw/$n" +]">[+ $n +]</A></TD>
+      <TD [+$pad+] class=file><A HREF="[+
+         do{if ($n=~m!/00[^/]*html?$!) {
+           $n=~s!\.p(html?)$!\.$1!;
+         } else {
+           "$raw/$n" 
+         }} +]">[+ $n +]</A></TD>
       <TD [+$pad+] class=desc>[+ $f->{desc} +]</TD>
    </TR>
 </TABLE>
