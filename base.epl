@@ -1,9 +1,12 @@
 [# #]
 [- 
-   $s=$ENV{__EMB_SECTION}; $s = $s ? "Peter's Homepage" : ""; 
+   $s=$ENV{__EMB_SECTION}; 
+   if (not $s) {
+      $s="Peter's Script-Archive" if $ENV{PATH_TRANSLATED}=~/script-archive/;
+      $s="Peter's Homepage" if not $s;
+   }
    $t=$ENV{__EMB_TITLE}; $t = $t ? "- $t" : ""; 
    $ENV{__EMB_TITLE}++;
-warn $ENV{PATH_TRANSLATED};
 -]
 
 <HTML>
