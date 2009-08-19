@@ -1,0 +1,20 @@
+[# #]
+[*
+   $ENV{__EMB_TITLE}="Homepage";
+
+   $ENV{__EMB_COUNT}++; 
+   if (1==$ENV{__EMB_COUNT}) {
+      Execute('base.epl');
+   } else {
+
+*]
+
+<H1>Homepage</H1>
+
+<H2>Sections</H2>
+
+<ul>
+   <li><A href="script-archive/">Peter's Script-Archive</A>
+</ul>
+
+[* } *][# MUST BE AT EOF! #]
