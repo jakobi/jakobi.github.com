@@ -17,7 +17,8 @@
 <BODY>
 
 [# menu line, top #]
-<a class=anno href="/">Overview</a><br>
+<a class=anno href="/">Home</a> | 
+<a class=anno href="/script-archive/">Script-Archive</a><br>
 
 <H1>Peter's Script Archive [+ $t +]</H1>
 
