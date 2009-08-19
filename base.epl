@@ -5,8 +5,7 @@
       $s="Peter's Script-Archive" if $ENV{PATH_TRANSLATED}=~/script-archive/;
       $s="Peter's Homepage" if not $s;
    }
-   $t=$ENV{__EMB_TITLE}; $t = $t ? "- $t" : ""; 
-   $ENV{__EMB_TITLE}++;
+   $t=$ENV{__EMB_EXTRATITLE}; $t = $t ? " - $t" : ""; 
 -]
 
 <HTML>
