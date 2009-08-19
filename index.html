@@ -1,3 +1,163 @@
 <HTML>
-<A HREF="http://leo.org">test link0</a>
+<HEAD>
+<link rel="icon"          href="favicon.png"/>
+<link rel="shortcut icon" href="favicon.png"/>
+<TITLE>Peter's Script Archive - Overview</TITLE>
+<style type="text/css"><!--
+   .anno { font-size:.8em }
+--></style>
+<style type="text/css"><!--
+.anno { font-size:.8em }
+--></style>
+</HEAD>
+<BODY>
+
+<a class=anno  href="/">Overview</a><br>
+
+<H1>Peter's Script Archive - Overview</H1>
+
+<hr>
+
+<p>A  small  archive of configuration scraps, notes and  scripts.  The
+commands  are tested with Linux and quite likely were used in  earlier
+versions on various Unix versions.</p>
+
+
+
+<H2>On the placement of perl auxilliary files and configurations</H2>
+
+<p>For  testing  one  of the scripts with dependencies, it  should  be
+sufficient  to place any required components in the same directory  as
+the  script  itself and add that script to $PATH. This also works  for
+configuration files.</p>
+
+<p class=anno>I'm a bit of a believer of selfcontained scripts, so I'm
+slightly dissatisfied with the Install-Kitchensink-Approach to finally
+run  a  tool  that  uses the kitchensink  but  degenerated  into  mere
+argument  handling.  Still,  you sometimes have a bit  of  non-trivial
+reusable code that doesn't seem right for reuse-at-external-tool-level
+(e.g. Grep.pm, or lock.pl and Flock.pm).</p>
+
+<p  class=anno>In the old days, that meant a 'do "$0.FILE";' to  allow
+placing  the library file into the same dir as the tool (my early 90's
+perl4/perl5 db_cgi.pl grab bag comes to mind). A no-hassles approach I
+still like for configuration files.</p>
+
+<p  class=anno>Nowadays I'm keeping the module collection in a  subdir
+below the tools, but I've some code in any module-using perl script to
+retain  a  bit  of  flexibility  in  the  placement  of  the  modules:
+&lt;same-directory&gt;,  ~/bin,  ~/bin/perl, ~/bin/perl/Compact,  with
+the  module  now  being invoked by it's relative  name:  'use  Flock;'
+instead of the proper 'use Compact_pm::Flock' which requires a placing
+Flock.pm in a Compact_pm dir in some directory in @INC).</p>
+
+
+
+<H2>Licence</H2>
+
+<p>The     scripts    are    made    available    under     the     <a href="http://github.com/jakobi/script-archive/raw/master/gpl.txt">GPL
+v3</a> unless noted otherwise within the script.</p>
+
+
+
+
+<H2>Overview</H2>
+
+<p><a href="http://github.com/jakobi/script-archive/">The full git archive with all files is availble here</a></p>
+
+The  linked  pages in this filelist contain additional information  on
+specific  tool  groups within the archive. You can download a  group's
+files by following the tool group's GIT link below. Look around in the
+GIT  directory  of  the  group  and use  the  <B>download</B>  or  the
+<B>raw</B> link for the files you're interested in. Of course, you can
+also use native git to access the repository :).<p>
+
+
+<table>
+   <TR><TH>Date</TH><TH></TH><TH>Size</TH><TH>GIT-DIR</TH><TH>Filename</TH><TH>Description</TH></TR>
+ <tr>
+      <TD style='padding-top:.6em'>2009-08-19</TD>
+      <TD style='padding-top:.6em'>*</TD>
+      <TD style='padding-top:.6em' class=num>50K</TD>
+      <TD style='padding-top:.6em' class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.perl.grep/Compact_pm/">GIT</A></TD>
+      <TD style='padding-top:.6em' class=file><a href="cli.perl.grep/Compact_pm/Grep.pm">cli.perl.grep/Compact_pm/Grep.pm</A></TD>
+      <TD style='padding-top:.6em' class=desc></TD>
+   </tr>
+
+    <tr>
+      <TD >2009-08-19</TD>
+      <TD >*</TD>
+      <TD  class=num>2K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.perl.grep/Compact_pm/">GIT</A></TD>
+      <TD  class=file><a href="cli.perl.grep/Compact_pm/Grep.pm.moduletest">cli.perl.grep/Compact_pm/Grep.pm.moduletest</A></TD>
+      <TD  class=desc></TD>
+   </tr>
+
+    <tr>
+      <TD >2009-08-19</TD>
+      <TD >*</TD>
+      <TD  class=num>19K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.perl.grep/">GIT</A></TD>
+      <TD  class=file><a href="cli.perl.grep/Grep.xchange">cli.perl.grep/Grep.xchange</A></TD>
+      <TD  class=desc></TD>
+   </tr>
+
+    <tr>
+      <TD style='padding-top:.6em'>2009-08-19</TD>
+      <TD style='padding-top:.6em'>*</TD>
+      <TD style='padding-top:.6em' class=num>4K</TD>
+      <TD style='padding-top:.6em' class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.perl.lock/Compact_pm/">GIT</A></TD>
+      <TD style='padding-top:.6em' class=file><a href="cli.perl.lock/Compact_pm/Flock.pm">cli.perl.lock/Compact_pm/Flock.pm</A></TD>
+      <TD style='padding-top:.6em' class=desc></TD>
+   </tr>
+
+    <tr>
+      <TD >2009-08-19</TD>
+      <TD >*</TD>
+      <TD  class=num>1K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.perl.lock/Compact_pm/">GIT</A></TD>
+      <TD  class=file><a href="cli.perl.lock/Compact_pm/Flock.pm.moduletest">cli.perl.lock/Compact_pm/Flock.pm.moduletest</A></TD>
+      <TD  class=desc></TD>
+   </tr>
+
+    <tr>
+      <TD >2009-08-19</TD>
+      <TD >*</TD>
+      <TD  class=num>8K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.perl.lock/">GIT</A></TD>
+      <TD  class=file><a href="cli.perl.lock/lock.pl">cli.perl.lock/lock.pl</A></TD>
+      <TD  class=desc></TD>
+   </tr>
+
+    <tr>
+      <TD style='padding-top:.6em'>2009-08-13</TD>
+      <TD style='padding-top:.6em'>*</TD>
+      <TD style='padding-top:.6em' class=num>45K</TD>
+      <TD style='padding-top:.6em' class=repo><a href="http://github.com/jakobi/script-archive/tree/master/">GIT</A></TD>
+      <TD style='padding-top:.6em' class=file><a href="emv">emv</A></TD>
+      <TD style='padding-top:.6em' class=desc></TD>
+   </tr>
+
+    <tr>
+      <TD >2009-08-07</TD>
+      <TD >*</TD>
+      <TD  class=num>34K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/">GIT</A></TD>
+      <TD  class=file><a href="gpl.txt">gpl.txt</A></TD>
+      <TD  class=desc></TD>
+   </tr>
+
+    <tr>
+      <TD >2009-08-19</TD>
+      <TD >*</TD>
+      <TD  class=num>45K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/">GIT</A></TD>
+      <TD  class=file><a href="sfre">sfre</A></TD>
+      <TD  class=desc></TD>
+   </tr>
+</table>
+<hr>
+<p class=anno>jakobi(at)acm.org, 2009-07 - 2009-08-19</p>
+
+</BODY>
 </HTML>

@@ -1,0 +1,34 @@
+[# #]
+[- 
+   $t=$ENV{__EMB_TITLE}; $t = $t ? "- $t" : ""; 
+   $ENV{__EMB_TITLE}++;
+-]
+
+<HTML>
+<HEAD>
+<link rel="icon"          href="favicon.png"/>
+<link rel="shortcut icon" href="favicon.png"/>
+<TITLE>Peter's Script Archive [+ $t +]</TITLE>
+<style type="text/css"><!--
+   .anno { font-size:.8em }
+--></style>
+[- Execute('gitfilelist.head.epl') -]
+</HEAD>
+<BODY>
+
+[# menu line, top #]
+<a class=anno href="/">Overview</a><br>
+
+<H1>Peter's Script Archive [+ $t +]</H1>
+
+<hr>
+
+[# invoke content #]
+[- Execute('*') -]
+
+<hr>
+[- @time=localtime(time); $t=sprintf "%04d-%02d-%02d",$time[5]+1900,$time[4]+1,$time[3]; -]
+<p class=anno>jakobi(at)acm.org, 2009-07 - [+$t+]</p>
+
+</BODY>
+</HTML>

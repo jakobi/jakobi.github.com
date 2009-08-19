@@ -1,0 +1,89 @@
+[- qw! "$0" ${1:+"$@"}; exit; reinvoke with embpexec! -]
+
+[*
+   # PATH_TRANSLATED - calling name
+   $ENV{__EMB_TITLE}="Overview";
+   $ENV{__EMB_FL_URL}="http://github.com/jakobi/script-archive/tree/master";
+   $ENV{__EMB_FL_DIR}="../REPO.script-archive";
+
+   # invoke master - the the [ * } * ] at EOF
+   # (OO base.epl being magic doesn't seem to apply offline)
+   # --> we need to set EMBPERL_PATH with all dirs upto root
+   #     (or at least the files dir and the 'root')
+   # in a single old mail, the author stated the truth:
+   # embpexec won't ever work with the embperl object...
+   # --> basically offline use is frowned upon.
+   #
+   # maybe the trick below would work -- but that had also 
+   # unsolved bugs back in 2002
+
+   # This once worked for the old HTML::EmbperlObject and might work for the new 
+   # use HTML::Embperl::Object;
+   # my $path = '/htdocs';
+   # my $h = {           path => $path, 
+   #           object_addpath => $path, 
+   #              object_base => 'base.epl', 
+   #                inputfile => "${path}/.index.epl",
+   #               outputfile => "${path}/index.html",
+   # }; HTML::EmbperlObject::Execute( $h );
+   # FIXED WITH A ???
+   #              app_name => 'nosuchname',
+
+
+   $ENV{__EMB_COUNT}++; 
+   if (1==$ENV{__EMB_COUNT}) {
+      Execute('base.epl');
+   } else {
+
+*]
+
+<p>A  small  archive of configuration scraps, notes and  scripts.  The
+commands  are tested with Linux and quite likely were used in  earlier
+versions on various Unix versions.</p>
+
+
+
+<H2>On the placement of perl auxilliary files and configurations</H2>
+
+<p>For  testing  one  of the scripts with dependencies, it  should  be
+sufficient  to place any required components in the same directory  as
+the  script  itself and add that script to $PATH. This also works  for
+configuration files.</p>
+
+<p class=anno>I'm a bit of a believer of selfcontained scripts, so I'm
+slightly dissatisfied with the Install-Kitchensink-Approach to finally
+run  a  tool  that  uses the kitchensink  but  degenerated  into  mere
+argument  handling.  Still,  you sometimes have a bit  of  non-trivial
+reusable code that doesn't seem right for reuse-at-external-tool-level
+(e.g. Grep.pm, or lock.pl and Flock.pm).</p>
+
+<p  class=anno>In the old days, that meant a 'do "$0.FILE";' to  allow
+placing  the library file into the same dir as the tool (my early 90's
+perl4/perl5 db_cgi.pl grab bag comes to mind). A no-hassles approach I
+still like for configuration files.</p>
+
+<p  class=anno>Nowadays I'm keeping the module collection in a  subdir
+below the tools, but I've some code in any module-using perl script to
+retain  a  bit  of  flexibility  in  the  placement  of  the  modules:
+&lt;same-directory&gt;,  ~/bin,  ~/bin/perl, ~/bin/perl/Compact,  with
+the  module  now  being invoked by it's relative  name:  'use  Flock;'
+instead of the proper 'use Compact_pm::Flock' which requires a placing
+Flock.pm in a Compact_pm dir in some directory in @INC).</p>
+
+
+
+<H2>Licence</H2>
+
+<p>The     scripts    are    made    available    under     the     <a
+href="http://github.com/jakobi/script-archive/raw/master/gpl.txt">GPL
+v3</a> unless noted otherwise within the script.</p>
+
+
+
+
+<H2>Overview</H2>
+
+<p><a href="http://github.com/jakobi/script-archive/">The full git archive with all files is availble here</a></p>
+
+[- Execute('gitfilelist.epl'); -]
+[* } *][# MUST BE AT EOF! #]
