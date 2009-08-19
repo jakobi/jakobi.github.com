@@ -1,28 +1,11 @@
-<HTML>
-<HEAD>
-<link rel="icon"          href="/favicon.png"/>
-<link rel="shortcut icon" href="/favicon.png"/>
-<TITLE>Peter's Script-Archive - Suggested Tools - A Selection</TITLE>
-<style type="text/css"><!--
-   .anno { font-size:.8em }
---></style>
-<style type="text/css"><!--
-   .num { padding-left:1em; text-align:right; nopadding-right:1em}
-   .repo{ text-align:center}
-   .file{ nopadding-left:1em; font-family:monospace}
-.desc{ padding-left:2em}
---></style>
-</HEAD>
-<BODY>
+[*
+   $ENV{__EMB_EXTRATITLE}="Suggested Tools - A Selection";
+   $ENV{__EMB_COUNT}++; 
+   if (1==$ENV{__EMB_COUNT}) {
+      Execute('base.epl');
+   } else {
+*]
 
-<p class=anno>
-<a href="/">Home</a> | 
-<a href="/script-archive/">Script-Archive</a>
-</p>
-
-<H1>Peter's Script-Archive - Suggested Tools - A Selection</H1>
-
-<hr>
 
 <H2>A Selection</H2>
 
@@ -93,12 +76,4 @@ and  filesystems:  his papers offer indeed interesting usage ideas  on
 tags, some of which are adaptable to tagls.</p>
 
 
-<hr>
-<p class=anno>
-<a href="/">Home</a> | 
-<a href="/script-archive/">Script-Archive</a><p>
-<p class=anno>jakobi(at)acm.org, 2009-07 - 2009-08-19</p>
-</p>
-
-</BODY>
-</HTML>
+[* } *][# MUST BE AT EOF! #]
