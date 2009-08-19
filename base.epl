@@ -10,8 +10,8 @@
 
 <HTML>
 <HEAD>
-<link rel="icon"          href="favicon.png"/>
-<link rel="shortcut icon" href="favicon.png"/>
+<link rel="icon"          href="/favicon.png"/>
+<link rel="shortcut icon" href="/favicon.png"/>
 <TITLE>[+ "$s$t" +]</TITLE>
 <style type="text/css"><!--
    .anno { font-size:.8em }

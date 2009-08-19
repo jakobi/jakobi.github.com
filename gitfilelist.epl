@@ -2,10 +2,12 @@
 [! 
    # arguments:
    # $ENV{__EMB_FL_URL}="http://github.com/jakobi/script-archive/tree/master";
+   # $ENV{__EMB_FL_RAW}="http://github.com/jakobi/script-archive/raw/master";
    # $ENV{__EMB_FL_DIR}="../REPO.script-archive";
 
    $nopaddir=$ENV{__EMB_FL_NOPADDIR}; $nopaddir='Compact_pm' if not $nopaddir;
    $u=$ENV{__EMB_FL_URL};
+   $raw=$ENV{__EMB_FL_RAW};
    $tmp=`cd \$__EMB_FL_DIR && find | sort | dir2array.pl`;
    eval $tmp; die "$@" if $@;
 !]
@@ -42,8 +44,8 @@ also use native git to access the repository :).<p>
       <TD [+$pad+]>[+            $f->{date8} +]</TD>
       <TD [+$pad+]>[+            $f->{flags} +]</TD>
       <TD [+$pad+] class=num>[+  $f->{sizek} +]</TD>
-      <TD [+$pad+] class=repo><A HREF="[+ $u."/".$d +]">GIT</A></TD>
-      <TD [+$pad+] class=file><A HREF="[+ $n +]">[+ $n +]</A></TD>
+      <TD [+$pad+] class=repo><A HREF="[+ "$u/$d" +]">GIT</A></TD>
+      <TD [+$pad+] class=file><A HREF="[+ "$r/$n" +]">[+ $n +]</A></TD>
       <TD [+$pad+] class=desc>[+ $f->{desc} +]</TD>
    </TR>
 </TABLE>
