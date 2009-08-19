@@ -9,7 +9,7 @@
 <HEAD>
 <link rel="icon"          href="favicon.png"/>
 <link rel="shortcut icon" href="favicon.png"/>
-<TITLE>Peter's Script Archive [+ $t +]</TITLE>
+<TITLE>[+ "$s$t" +]</TITLE>
 <style type="text/css"><!--
    .anno { font-size:.8em }
 --></style>
@@ -22,7 +22,7 @@
 <a href="/script-archive/">Script-Archive</a>
 </p>
 
-<H1>Peter's Script Archive [+ $t +]</H1>
+<H1>[+ "$s$t" +]</H1>
 
 <hr>
 
