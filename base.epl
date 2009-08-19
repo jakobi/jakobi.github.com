@@ -3,7 +3,7 @@
    $s=$ENV{__EMB_SECTION}; $s = $s ? "Peter's Homepage" : ""; 
    $t=$ENV{__EMB_TITLE}; $t = $t ? "- $t" : ""; 
    $ENV{__EMB_TITLE}++;
-warn caller;
+warn $ENV{PATH_TRANSLATED};
 -]
 
 <HTML>
