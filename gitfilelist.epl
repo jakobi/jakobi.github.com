@@ -52,7 +52,7 @@ also use native git to access the repository :).<p>
            "$raw/$n";
          }} +]">[+ $n +]</A></TD>
       [$ if ($b) $]
-      <TD [+$pad+] class=desc><A HREF="[+ $n +]"><B>[+ $f->{desc} +]</B></A></TD>
+      <TD [+$pad+] class=desc><A HREF="[+ $n +]"><B>--&gt; [+ $f->{desc} +] &lt;--</B></A></TD>
       [$ else $]
       <TD [+$pad+] class=desc>[+ $f->{desc} +]</TD>
       [$ endif $]
