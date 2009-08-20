@@ -1,0 +1,126 @@
+[- qw! "$0" ${1:+"$@"}; exit; reinvoke with embpexec! -]
+
+[*
+   # PATH_TRANSLATED - calling name
+   $ENV{__EMB_EXTRATITLE}="Overview";
+   $ENV{__EMB_FL_URL}="http://github.com/jakobi/script-archive/tree/master";
+   $ENV{__EMB_FL_RAW}=$ENV{__EMB_FL_URL}; $ENV{__EMB_FL_RAW}=~s/tree/raw/;
+   $ENV{__EMB_FL_DIR}="../REPO.script-archive";
+
+   # invoke master - the the [ * } * ] at EOF
+   # (OO base.epl being magic doesn't seem to apply offline)
+   # --> we need to set EMBPERL_PATH with all dirs upto root
+   #     (or at least the files dir and the 'root')
+   # in a single old mail, the author stated the truth:
+   # embpexec won't ever work with the embperl object...
+   # --> basically offline use is frowned upon.
+   #
+   # maybe the trick below would work -- but that had also 
+   # unsolved bugs back in 2002
+
+   # This once worked for the old HTML::EmbperlObject and might work for the new 
+   # use HTML::Embperl::Object;
+   # my $path = '/htdocs';
+   # my $h = {           path => $path, 
+   #           object_addpath => $path, 
+   #              object_base => 'base.epl', 
+   #                inputfile => "${path}/.index.epl",
+   #               outputfile => "${path}/index.html",
+   # }; HTML::EmbperlObject::Execute( $h );
+   # FIXED WITH A ???
+   #              app_name => 'nosuchname',
+
+
+   $ENV{__EMB_COUNT}++; 
+   if (1==$ENV{__EMB_COUNT}) {
+      Execute('base.epl');
+   } else {
+
+*]
+
+<p>A  small  archive of 20 years of Unix and Linux Lore: programs  and
+scripts with a slight flavoring of configuration scraps and notes. The
+commands in the archive work with Linux (unless noted differently) and
+quite  likely  were also used in earlier incarnations on various  Unix
+versions.</p>
+
+<p  class=anno>Some  grizzled  veterans  date  back  to   pre-historic
+(non-)Unix   systems  and  perl3,  various  dialects  of  REXX,   M68K
+assembler,              K&amp;R-C              (too              often
+"unintentional-assembler-cum-obfuscation-contest";  compare that  with
+perl, which at least <i>only allows</i> for "intentional obfuscation",
+and  has some additional expressive power to offer as compensation for
+those  stretches  of  kermit-injected  line  noise)  or   <i>worse</i>
+(portable   awk  in  a  mixed  nawk/awk/oawk  multi-node-multi-version
+environment - oh joy!). A select few even had a language-change or two
+thrown  in.  But  most of these better remain resting in  the  archive
+dirtree  along with a fond memory of their associated environment  and
+hardware;  besides, is there really anyone being still afflicted  with
+these  programs'  raison d'etre like e.g. coping with PCL or  floppies
+:)?</p>
+
+
+
+<hr>
+<H2>About this Archive</H2>
+
+
+
+<H3>Philosophy, Ancient Artes and a Modern Tool Chest</H3>
+
+<p><A HREF="motivation.html">Some background on Unix and motivation of
+offering this archive.</A></p>
+
+
+
+<H3>Suggested Tools &amp; Etymology: TagLS</H3>
+
+
+<p><A  HREF="suggestion.html">A  selection of the more accessible  and
+usable  tools from the archive</a>
+</p>
+
+<p>See also: <A HREF="cli.perl.tagls/00_TAGS_AND_COMMANDLINE.html">Etymology:
+TagLS - a command to add tag support to the command line.</a></p>
+
+
+
+<H3>Status and Updates</H3>
+
+<p>Status  of the commands checked into this archive: I do  <b>not</b>
+use  this  archive for development, but rather use a script to  export
+the   currently  used  versions  to  the  archive  once  in  a  while.
+<b>Bugs</b>:  Given  the  small size of the commands I do  not  use  a
+consistent  test  harness  setup,  thus the pushed  version  may  also
+contain  recent breakage until the next export. <B>So if you encounter
+a  bug  or  a "wishlist-time", drop me a mail</B> with  or  without  a
+patch;  I'm  interested  in fixing them or I might already  fixed  the
+problem locally.</p>
+
+
+<H3>Installation Notes</H3>
+
+<p><A  HREF="installation.html">Read  this  for  information  on  e.g.
+placement of Perl modules and configuration files.</A></p>
+
+
+<H3>Licence</H3>
+
+<p>The     scripts    are    made    available    under     the     <a
+href="http://github.com/jakobi/script-archive/raw/master/gpl.txt">GPL
+v3</a> unless noted otherwise within the script.</p>
+
+
+
+<H2>Complete Filelist with Section Introductions</H2>
+
+<p><B>WARNING  - SOME OF THE COMMANDS ALREADY MENTIONED IN ABOVE PAGES
+HAVE  NOT  YET BEEN IMPORTED INTO GIT - DROP ME A LINE TO IMPORT  SOME
+OF THEM EARLIER THAN PLANNED :)</B></p>
+
+<p>See also the <a href="http://github.com/jakobi/script-archive/">git
+view home page for the full archive</a>.</p>
+
+
+[- Execute('gitfilelist.epl'); -]
+[* } *][# MUST BE AT EOF! #]

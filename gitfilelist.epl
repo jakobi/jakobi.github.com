@@ -1,10 +1,5 @@
 [# #]
 [! 
-   # arguments:
-   # $ENV{__EMB_FL_URL}="http://github.com/jakobi/script-archive/tree/master";
-   # $ENV{__EMB_FL_RAW}="http://github.com/jakobi/script-archive/raw/master";
-   # $ENV{__EMB_FL_DIR}="../REPO.script-archive";
-
    $nopaddir=$ENV{__EMB_FL_NOPADDIR}; $nopaddir='Compact_pm' if not $nopaddir;
    $u=$ENV{__EMB_FL_URL};
    $raw=$ENV{__EMB_FL_RAW};
@@ -29,8 +24,9 @@ also use native git to access the repository :).<p>
       # the magic stops only on WS-only rows... sigh-squared
       $escmode=1; 
    -]
-   [-  $maxrow=scalar @$VAR1; $f=$VAR1->[$row]; 
-       $d=$pn=$n=$f->{name}; $pn=~s!index.html?$!!; $d=~s!(^|/)[^/]+$!!; $d.="/" if $d ne "";
+   [-  
+       $maxrow=scalar @$VAR1; $f=$VAR1->[$row]; 
+       $d=$n=$f->{name}; $d=~s!(^|/)[^/]+$!!; $d.="/" if $d ne "";
        $pad=""; 
        if ($oldd ne $d) {
           # vertical padding on change of dirs unless difference is matched by blacklist nopaddir
@@ -49,7 +45,8 @@ also use native git to access the repository :).<p>
          do{if ($n=~m!/00[^/]*html?$!) {
            $n=~s!\.p(html?)$!\.$1!;
            $b=1;
-           $n;
+           $n;       # we're in the html tree anyway, so just $n is fine 
+                     # (u is the git tree path, raw the block item path)
          } else {
            $b=0;
            "$raw/$n";
