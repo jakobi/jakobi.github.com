@@ -26,7 +26,7 @@ also use native git to access the repository :).<p>
    -]
    [-  
        $maxrow=scalar @$VAR1; $f=$VAR1->[$row]; 
-       $d=$n=$f->{name}; $d=~s!(^|/)[^/]+$!!; $d.="/" if $d ne "";
+       $d=$n=$f->{name}; $d=~s!(^|/)[^/]+/?$!!; $d.="/" if $d ne "";
        $pad=""; 
        if ($oldd ne $d) {
           # vertical padding on change of dirs unless difference is matched by blacklist nopaddir
