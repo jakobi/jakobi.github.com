@@ -37,7 +37,7 @@ also use native git to access the repository :).<p>
              if not $haystack=~m!^/?($nopaddir)/?$!; 
        }
        $oldd=$d;
-       $f->{desc}=" " if not $f->{desc};
+       $f->{desc}="&nbsp;" if not $f->{desc};
    -]
    <TR>
       <TD [+$pad+]>[+            $f->{date8} +]</TD>
