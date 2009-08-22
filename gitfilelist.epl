@@ -33,7 +33,7 @@ also use native git to access the repository :).<p>
           ($haystack,$needle)=($oldd,$d); ($haystack,$needle)=($d,$oldd) if length($d)>length($oldd);
           $haystack=~s!\Q$needle\E!!;
           # $pad="style='padding-top:.6em'" 
-          $pad="style='border-top-style: solid; border-top-style: 1px;'" 
+          $pad="style='border-top-style: dotted; border-top-style: 1px;'" 
              if not $haystack=~m!^/?($nopaddir)/?$!; 
        }
        $oldd=$d;
