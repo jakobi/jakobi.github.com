@@ -36,6 +36,9 @@ also use native git to access the repository :).<p>
        }
        $oldd=$d;
    -]
+   [$ if ($pad) $]
+   <hr>
+   [$ endif $]
    <TR>
       <TD [+$pad+]>[+            $f->{date8} +]</TD>
       <TD [+$pad+]>[+            $f->{flags} +]</TD>
