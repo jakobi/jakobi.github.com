@@ -58,7 +58,7 @@ also use native git to access the repository :).<p>
       [$ else $]
          [$ if ($f->{desc}!~/\S/) $]
             [- $escmode=0 -]
-      <TD [+$pad+] class=desc>[+ "$nbsp;" +]</TD>
+      <TD [+$pad+] class=desc>[+ "&nbsp;" +]</TD>
             [- $escmode=1 -]
          [$ else $]
       <TD [+$pad+] class=desc>[+ $f->{desc} +]</TD>
