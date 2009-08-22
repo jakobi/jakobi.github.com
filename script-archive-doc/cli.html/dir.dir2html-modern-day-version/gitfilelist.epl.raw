@@ -1,6 +1,6 @@
 [# #]
 [! 
-   $nopaddir=$ENV{__EMB_FL_NOPADDIR}; $nopaddir='Compact_pm|dir\..*' if not $nopaddir;
+   $nopaddir=$ENV{__EMB_FL_NOPADDIR}; $nopaddir='Compact_pm' if not $nopaddir;
    $u=$ENV{__EMB_FL_URL};
    $raw=$ENV{__EMB_FL_RAW};
    $tmp=`cd \$__EMB_FL_DIR && find | sort | dir2array.pl`;
@@ -32,9 +32,7 @@ also use native git to access the repository :).<p>
           # vertical padding on change of dirs unless difference is matched by blacklist nopaddir
           ($haystack,$needle)=($oldd,$d); ($haystack,$needle)=($d,$oldd) if length($d)>length($oldd);
           $haystack=~s!\Q$needle\E!!;
-          # $pad="style='padding-top:.6em'" 
-          $pad="style='border-top-style: dotted; border-top-style: 1px;'" 
-             if not $haystack=~m!^/?($nopaddir)/?$!; 
+          $pad="style='padding-top:.6em'" if not $haystack=~m!^/?($nopaddir)/?$!; 
        }
        $oldd=$d;
    -]
