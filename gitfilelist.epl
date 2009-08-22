@@ -56,7 +56,7 @@ also use native git to access the repository :).<p>
       [$ if ($b) $]
       <TD [+$pad+] class=desc><A HREF="[+ $n +]"><B>--&gt; [+ $f->{desc} +] &lt;--</B></A></TD>
       [$ else $]
-         [$ if ($f->{desc}!=~/\S/) $]
+         [$ if ($f->{desc}!~/\S/) $]
             [- $escmode=0 -]
       <TD [+$pad+] class=desc>[+ "$nbsp;" +]</TD>
             [- $escmode=1 -]
