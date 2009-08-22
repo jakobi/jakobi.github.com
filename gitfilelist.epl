@@ -36,10 +36,10 @@ also use native git to access the repository :).<p>
        }
        $oldd=$d;
    -]
+   <TR>
    [$ if ($pad) $]
    <hr>
    [$ endif $]
-   <TR>
       <TD [+$pad+]>[+            $f->{date8} +]</TD>
       <TD [+$pad+]>[+            $f->{flags} +]</TD>
       <TD [+$pad+] class=num>[+  $f->{sizek} +]</TD>
