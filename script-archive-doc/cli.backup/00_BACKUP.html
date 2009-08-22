@@ -2,7 +2,7 @@
 <HEAD>
 <link rel="icon"          href="/favicon.png"/>
 <link rel="shortcut icon" href="/favicon.png"/>
-<TITLE>Peter's Homepage</TITLE>
+<TITLE>Peter's Homepage - Backup</TITLE>
 <style type="text/css"><!--
    .anno { font-size:.8em }
 --></style>
@@ -25,15 +25,25 @@ Script-Archive:
 ...
 </p>
 
-<H1>Peter's Homepage</H1>
+<H1>Peter's Homepage - Backup</H1>
 
 <hr>
 
-<H2>Sections</H2>
+<p>Some backup support commands.</p>
 
-<ul>
-   <li><a href="/script-archive-doc/">Peter's Script-Archive</A> (or <a href="/script-archive/">here</a>)
-</ul>
+<p>Some   scripts  for  backups  from  single-instance   tarballs   to
+incrementals  to rsync-style hardlinked snapshots with support scripts
+like  xfer_backup.diff  to  diff,  echo or ls a  file  in  the  backup
+relative to $PWD or the specified file. The scripts need a rewrite and
+some  effort  to generalize before release; then again,  they've  been
+working  reliable  for years now and I'm loath to change them  without
+some  additional  'benefit'  or interesting major feature  (like  e.g.
+root-less backup - but that way's more effort than interest...).</p>
+
+<p>Recently  I've  read  about  ccollect, which might  be  a  suitable
+substitute  for my own filelist-based rsync snapshot script (which  is
+the  major  non-glue portion), as it also seems to be list-based -  at
+the very least it supports exclusion.</p>
 
 <hr>
 <p class=anno>

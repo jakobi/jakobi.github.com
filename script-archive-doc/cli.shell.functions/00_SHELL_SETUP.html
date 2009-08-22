@@ -2,7 +2,7 @@
 <HEAD>
 <link rel="icon"          href="/favicon.png"/>
 <link rel="shortcut icon" href="/favicon.png"/>
-<TITLE>Peter's Homepage</TITLE>
+<TITLE>Peter's Homepage - Shell Functions and Setup</TITLE>
 <style type="text/css"><!--
    .anno { font-size:.8em }
 --></style>
@@ -25,15 +25,28 @@ Script-Archive:
 ...
 </p>
 
-<H1>Peter's Homepage</H1>
+<H1>Peter's Homepage - Shell Functions and Setup</H1>
 
 <hr>
 
-<H2>Sections</H2>
+<p>Shell support functions and setup.</p>
+
+<H3>Some of the more interesting functions</H3>
 
 <ul>
-   <li><a href="/script-archive-doc/">Peter's Script-Archive</A> (or <a href="/script-archive/">here</a>)
+   <li>cd: portable version of <b>nico_cd</b> for bash and ksh - a proper directory
+       stack with the ability to grep and edit the stack (cd.nico_cd_for_bash_and_ksh.func)
+   <li>cd: an extension of Halchenko's <B>dyndirstack</b> - a dynamic dirstack building upon the bash builtins 
+       with completion support (cd.dyndirstack_bash.func)
+   <li>cd: see also <b>mt_dir</b> elsewhere in this archive (key-word based cd aliases)
+   <li><b>_echo, _warn</b> (bash actually manages to have no echo/print honoring -- as end-of-options-option;
+       the only reasonably safe function happens to be printf; 00_lib.func)
+   <li><b>f2a</b> is a shell function reading a file into an array, allowing
+       e.g. safe argument passing: find . -print | f2a -a ARGS; less "$ARGS[@]" (00_lib.func)
+   <li><b>uniqpath</b> deals with :-separated strings and removes duplicates and 
+       optionally '.' and '' (both of which are a security risk e.g. in $PATH; 00_lib.func)
 </ul>
+
 
 <hr>
 <p class=anno>
