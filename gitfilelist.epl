@@ -18,7 +18,7 @@ also use native git to access the repository :).<p>
 
 <TABLE>
    [- $escmode=0; -]
-   [+ 0==$row ? "<TR><TH>Date</TH><TH></TH><TH>Size</TH><TH>GIT-DIR</TH><TH>Filename</TH><TH width=60%>Description / Section Introduction</TH></TR>\n" : "" +]
+   [+ 0==$row ? "<TR><TH>Date</TH><TH></TH><TH>Size</TH><TH>GIT-DIR</TH><TH>Filename</TH><TH width=50%>Description / Section Introduction</TH></TR>\n" : "" +]
    [- # above does go into row accounting
       # however below we still need the maxrow limit, as
       # the magic stops only on WS-only rows... sigh-squared
