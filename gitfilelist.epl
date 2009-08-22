@@ -37,7 +37,6 @@ also use native git to access the repository :).<p>
              if not $haystack=~m!^/?($nopaddir)/?$!; 
        }
        $oldd=$d;
-       $f->{desc}="&nbsp;" if not $f->{desc};
    -]
    <TR>
       <TD [+$pad+]>[+            $f->{date8} +]</TD>
@@ -57,7 +56,13 @@ also use native git to access the repository :).<p>
       [$ if ($b) $]
       <TD [+$pad+] class=desc><A HREF="[+ $n +]"><B>--&gt; [+ $f->{desc} +] &lt;--</B></A></TD>
       [$ else $]
+         [$ if ($f->{desc}!=~/\S/) $]
+            [- $escmode=0 -]
+      <TD [+$pad+] class=desc>[+ "$nbsp;" +]</TD>
+            [- $escmode=1 -]
+         [$ else $]
       <TD [+$pad+] class=desc>[+ $f->{desc} +]</TD>
+         [$ endif $]
       [$ endif $]
    </TR>
 </TABLE>
