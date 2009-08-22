@@ -32,14 +32,13 @@ also use native git to access the repository :).<p>
           # vertical padding on change of dirs unless difference is matched by blacklist nopaddir
           ($haystack,$needle)=($oldd,$d); ($haystack,$needle)=($d,$oldd) if length($d)>length($oldd);
           $haystack=~s!\Q$needle\E!!;
-          $pad="style='padding-top:.6em'" if not $haystack=~m!^/?($nopaddir)/?$!; 
+          # $pad="style='padding-top:.6em'" 
+          $pad="stype='border-top-style:solid;border-top-width:2px'" 
+             if not $haystack=~m!^/?($nopaddir)/?$!; 
        }
        $oldd=$d;
    -]
    <TR>
-   [$ if ($pad) $]
-   <hr>
-   [$ endif $]
       <TD [+$pad+]>[+            $f->{date8} +]</TD>
       <TD [+$pad+]>[+            $f->{flags} +]</TD>
       <TD [+$pad+] class=num>[+  $f->{sizek} +]</TD>
