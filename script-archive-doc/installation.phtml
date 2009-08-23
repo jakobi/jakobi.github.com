@@ -13,9 +13,7 @@
 <p>Note  that  while some stuff might cope with just POSIX, I  usually
 silently  assume  a proper Unix environment including perl,  bash  and
 optionally  ksh  (ATT ksh aka ksh93, not PD-KSH), with a  sane  LOCALE
-setting  (read  up  on  LC_COLLATE  when  you're  using  some  of  the
-posixish-correctly-broken  UTF-8  locales, which make a mess of  shell
-globs).  Most of the shell scripts are bash, but should work with  ksh
+setting.  Most of the shell scripts are bash, but should work with ksh
 as  well  as long as they don't depend on arrays or  more  interesting
 forms of command substitution. </p>
 
@@ -39,6 +37,11 @@ the initial 11i version.</p>
 tcsh/csh/PD-KSH-related  stuff or things like making nico_cd cope with
 dash.  If  you're using the BSDs, the pd-ksh vs. ksh93 issue is a  bit
 more critical there than on other Unix systems.</p>
+
+<p  class=anno>On the Locale issue: read up on LC_COLLATE when  you're
+using  some of the posixish-correctly-broken UTF-8 locales, which make
+a  mess  of shell globs like [A-Z]* to suddenly match also files  like
+cannotbematchwithuppercase.</p>
 
 
 
