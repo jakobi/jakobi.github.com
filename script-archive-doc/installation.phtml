@@ -8,18 +8,20 @@
 *]
 
 
-<H2>Assumptions on the runtime environemnt / Bugs / Portability</H2>
+<H2>Assumptions on the runtime environment / Bugs / Portability</H2>
 
 <p>Note  that  while some stuff might cope with just POSIX, I  usually
-silently assume a proper Unix environment of perl, bash and optionally
-ksh  (ATT  ksh aka ksh93, not PD-KSH). Most of the shell  scripts  are
-bash  script,  but should work with ksh as well as long as they  don't
-depend    on   arrays   or   more   interesting   forms   of   command
-substitution. </p>
+silently  assume  a proper Unix environment including perl,  bash  and
+optionally  ksh  (ATT ksh aka ksh93, not PD-KSH), with a  sane  LOCALE
+setting  (read  up  on  LC_COLLATE  when  you're  using  some  of  the
+posixish-correctly-broken  UTF-8  locales, which make a mess of  shell
+globs).  Most of the shell scripts are bash, but should work with  ksh
+as  well  as long as they don't depend on arrays or  more  interesting
+forms of command substitution. </p>
 
-<p>Some  (perl)  scripts  might still make  the  assumption  that
-/bin/sh  supports set -o pipefail, which e.g. for recent debian/ubuntu
-may no longer hold, as those system might use dash instead.</p>
+<p>Some  (perl)  scripts might still make the assumption that  /bin/sh
+supports  set -o pipefail, which e.g. for recent debian/ubuntu may  no
+longer hold, as those system might use dash instead.</p>
 
 <p><i>Do  drop  me a line</i> if you run in such a /bin/sh or bash  vs
 ksh93  problem,  esp. if it concerns one of the  non-trivial  scripts.
