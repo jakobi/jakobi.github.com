@@ -9,36 +9,6 @@
 
 <H2>Tool Selection</H2>
 
-<p>Note  that  while some stuff might cope with just POSIX, I  usually
-silently assume a proper Unix environment of perl, bash and optionally
-ksh  (ATT  ksh aka ksh93, not PD-KSH). Most of the shell  scripts  are
-bash  script,  but should work with ksh as well as long as they  don't
-depend    on   arrays   or   more   interesting   forms   of   command
-substitution. </p>
-
-<p>Some  (perl)  scripts  might still make  the  assumption  that
-/bin/sh  supports set -o pipefail, which e.g. for recent debian/ubuntu
-may no longer hold, as those system might use dash instead.</p>
-
-<p><i>Do  drop  me a line</i> if you run in such a /bin/sh or bash  vs
-ksh93  problem,  esp. if it concerns one of the  non-trivial  scripts.
-Also  in case you wish to run the scripts on the BSDs, Solaris, or AIX
-(or HPUX) and run into problems.
-
-<p  class=anno>Most scrips should be usable with little effort, but  I
-tend  to  only test and use scripts on the scripts'  immediate  target
-platform,  which  for  my  personal  desktop  and  LAN  setup  is  90%
-Ubuntu/Centos.  Note  that I will need a bit of extra help  from  your
-side  in  case of HP-UX, as I stopped keeping my setup current  around
-the initial 11i version.</p>
-
-<p   class=anno>However   please   <i>don't</i>  mail   in   case   of
-tcsh/csh/PD-KSH-related  stuff or things like making nico_cd cope with
-dash.  If  you're using the BSDs, the pd-ksh vs. ksh93 issue is a  bit
-more critical there than on other Unix systems.</p>
-
-<hr>
-
 <p>The immediately usable scripts probably are</p>
 <ul>
   <li><B>cat0/cat0par</B>  is  also  quite  useful  to  allow  using  gnugrep  with
