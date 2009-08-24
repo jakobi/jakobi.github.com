@@ -78,7 +78,13 @@ slightly dissatisfied with the Install-Kitchensink-Approach to finally
 run  a  tool  that  uses the kitchensink  but  degenerated  into  mere
 argument  handling.  Still,  you sometimes have a bit  of  non-trivial
 reusable code that doesn't seem right for reuse-at-external-tool-level
-(e.g. Grep.pm, or lock.pl and Flock.pm).</p>
+(e.g.  Grep.pm, or lock.pl and Flock.pm). Generalizing the creation of
+a perl function for booleans expressions might become a candidate, but
+abstracting the differing uses and argument handling styles (string vs
+regex  vs  synonym-expanding vs index-for-filename into  array)  would
+make  it  very hard to avoid veritable kitchensink-style  bloat  while
+also  littering a previously readable one-page function with a mess of
+callbacks and closures.</p>
 
 <p  class=anno>In the old days, that meant a 'do "$0.FILE";' to  allow
 placing  the library file into the same dir as the tool (my early 90's
