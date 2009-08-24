@@ -11,36 +11,50 @@
 
 <p>The immediately usable scripts probably are</p>
 <ul>
-  <li><B>cat0/cat0par</B>  is  also  quite  useful  to  allow  using  gnugrep  with
-       arbitrary record-based files
-  <li><B>emv</B> (for interactive  mass-renaming files using your favorite editor)
-  <li><B>Grep.pm</B> (probably also vim.pipe and Grep.xchange,  to allow for interactive mass-changing files using an editor)
-  <li><B>tagls</B> (turning arbitrary file names and lists of file names into searchable collections of tagged file names)
-  <li><B>waitcond/waitcond.timeout</B> (to wait for idle/files/process like 'make finished')
-  <li><B>zap</B> (processkiller/nicer/lister)
+  <li><B>cat0/cat0par</B>: conversion from/to \0-based lines; also 
+       allows  use of grep/sort/... with arbitrary record-based files
+  <li><B>emv</B>: for interactive  mass-renaming files using your favorite editor.
+       Not just for renaming.
+  <li><B>Grep.pm</B>: extended grep using boolean expression on top of regex or perl,
+       with highlighting, synonyms, etc; use with vim.pipe and Grep.xchange for
+       emv-style semi-interactive mass-editing of files.
+  <li><B>tagls</B>: use tags on the commandline to describe sets of files: 
+       turn arbitrary file names and lists of filenames into 
+       searchable collections of tagged file names.
+  <li><B>waitcond</B>: wait for events like 'make has finished' by 
+       building arbitrary boolean expressions over a language of tests like
+       existance-of-file, recent-file-modification, grep-in-file-or-command-output, 
+       diskidle/netidle/cpuidle, successful-ping, successful-shell-commands, or 
+       just plain ps-visible processes.
+  <LI><B>waitcond.timeout</B>: run a shell command and kill it after a timeout, which
+       might be the return of a second shell command.
+  <li><B>zap</B>: perl-camel-book process-killer that by now learned about
+       process trees, and the non-mortal arts of process listing and nicing.
 </ul>
 
-<p>To access firefox bookmarks (both html as well as sqlite versions),
-opened  tabs,  etc, from the shell have a look at  the  <B>firefox</B>
-wrapper set of scripts</p>
-
-<p>If  you  liked  <B>grepmail</B>, the archive contains  a  butchered
-version that doesn't give up when confronted with MIMEs.</p>
-
-<p>Still  a  bit experimental,  <b>sfre/systemflightrecorderedit</b>'s
-goal  is sequencing changes and augmenting group memory in  concurrent
-file  change  scenarios,  like multiple administrators using  root  or
-administrator  vs cron. For each edit (or more generally run  command)
-it  logs a description to a journal, f-locks the plain file  arguments
-of  the  command and uses changetrack to backup changes.  It  requires
-changetrack (changetrack.sf.net) and lock.pl.</p>
+<p>A bit more special-interest are</p>
+<ul>
+   <li><b>firefox wrapper</b>: To access firefox bookmarks 
+       (both html as well as sqlite versions),
+       opened  tabs,  etc, from the shell, have a look at  the firefox
+       wrapper set of scripts
+   <li><b>mygrepmail</b>: If  you  liked  <B>grepmail</B>, the archive
+       contains  a  butchered version that doesn't give up when confronted with MIMEs.
+   <li><b>sfre</b>: Still  a  bit experimental,  <b>systemflightrecordereditor</b>'s
+       goal  is sequencing changes and augmenting group memory in  concurrent
+       file  change  scenarios,  like multiple administrators using  root  or
+       administrator  vs cron. For each edit (or more generally run  command)
+       it  logs a description to a journal, f-locks the plain file  arguments
+       of  the  command and uses changetrack to backup changes.  It  requires
+       changetrack (changetrack.sf.net) and lock.pl.
+</ul>
 
 <p>Some shell functions of interest are</p>
 <ul>
    <li> <B>_echo</B> (a version of ksh's print, honoring --, thus safe for echoing arbitrary files)
    <li> <B>f2a</B> (reads lines from files into an array, the safe multiple-file pendant of "$(command)")
    <li> <B>uniqpath</B> (strip duplicates or . from :-path-style strings)
-   <li> a modified <B>nico_cd dir stack</B> working in both bash and ksh
+   <li> a modified <B>nico_cd dir stack</B> working in both bash and ksh93
 </ul>
 
 [* } *][# MUST BE AT EOF! #]
