@@ -35,36 +35,44 @@ Script-Archive:
 
 <p>The immediately usable scripts probably are</p>
 <ul>
-  <li><B>cat0/cat0par</B>: conversion from/to \0-based lines; also 
+  <li><a href="cli.list.grep/00_LISTPROCESSING.html"><B>cat0/cat0par</B></a>:
+       conversion from/to \0-based lines; also 
        allows  use of grep/sort/... with arbitrary record-based files
-  <li><B>emv</B>: for interactive  mass-renaming files using your favorite editor.
+  <li><a href="cli.list.rename/00_MASS-RENAME.html"><B>emv</B></a>:
+       for interactive  mass-renaming files using your favorite editor.
        Not just for renaming.
-  <li><B>Grep.pm</B>: extended grep using boolean expression on top of regex or perl,
+  <li><a href="cli.list.grep/00_LISTPROCESSING.html"><B>Grep.pm</B></a>: extended grep using boolean expression on top of regex or perl,
        with highlighting, synonyms, etc; use with vim.pipe and Grep.xchange for
        emv-style semi-interactive mass-editing of files.
-  <li><B>tagls</B>: use tags on the commandline to describe sets of files: 
+  <li><a href="cli.list.tagls/00_TAGS_AND_COMMANDLINE.html"><B>tagls</B></a>: 
+       use tags on the commandline to describe sets of files: 
        turn arbitrary file names and lists of filenames into 
        searchable collections of tagged file names.
-  <li><B>waitcond</B>: wait for events like 'make has finished' by 
+  <li><a href="cli.processes/00_PROCESS+EVENT-HANDLING.html">Managing processes</a>: 
+  <ul><LI><B>waitcond</B></a>: wait for events like 'make has finished' by 
        building arbitrary boolean expressions over a language of tests like
        existance-of-file, recent-file-modification, grep-in-file-or-command-output, 
        diskidle/netidle/cpuidle, successful-ping, successful-shell-commands, or 
        just plain ps-visible processes.
-  <LI><B>waitcond.timeout</B>: run a shell command and kill it after a timeout, which
+       <LI><B>waitcond.timeout</B>: run a shell command and kill it after a timeout, which
        might be the return of a second shell command.
-  <li><B>zap</B>: perl-camel-book process-killer that by now learned about
+       <li><B>zap</B>: perl-camel-book process-killer that by now learned about
        process trees, and the non-mortal arts of process listing and nicing.
+  </ul>
 </ul>
 
 <p>A bit more special-interest are</p>
 <ul>
-   <li><b>firefox wrapper</b>: To access firefox bookmarks 
+   <li><a href="cli.firefox/00_FIREFOX.html"><b>firefox wrapper</b></a>:
+       To access firefox bookmarks 
        (both html as well as sqlite versions),
        opened  tabs,  etc, from the shell, have a look at  the firefox
        wrapper set of scripts
-   <li><b>mygrepmail</b>: If  you  liked  <B>grepmail</B>, the archive
+   <li><a href="http://github.com/jakobi/script-archive/tree/master/cli.mail/"><b>mygrepmail</b></a>:
+       If  you  liked  <B>grepmail</B>, the archive
        contains  a  butchered version that doesn't give up when confronted with MIMEs.
-   <li><b>sfre</b>: Still  a  bit experimental,  <b>systemflightrecordereditor</b>'s
+   <li><a href="admin.text/00_ADMIN_TEXT.html"><b>sfre</b></a>: 
+       Still  a  bit experimental,  <b>systemflightrecordereditor</b>'s
        goal  is sequencing changes and augmenting group memory in  concurrent
        file  change  scenarios,  like multiple administrators using  root  or
        administrator  vs cron. For each edit (or more generally run  command)
@@ -73,7 +81,7 @@ Script-Archive:
        changetrack (changetrack.sf.net) and lock.pl.
 </ul>
 
-<p>Some shell functions of interest are</p>
+<p>Some <a href="http://github.com/jakobi/script-archive/tree/master/cli.shell.functions/">shell functions</a> of interest are</p>
 <ul>
    <li> <B>_echo</B> (a version of ksh's print, honoring --, thus safe for echoing arbitrary files)
    <li> <B>f2a</B> (reads lines from files into an array, the safe multiple-file pendant of "$(command)")
