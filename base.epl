@@ -20,7 +20,7 @@
 <link rel="icon"          href="/favicon.png"/>
 <link rel="shortcut icon" href="/favicon.png"/>
 <meta name="Description" content="Unix shell and perl scripts for the commandline incl. tagls, mass-renamers like emv, sfre for system administration or waitcond. [+ "$s. $t." +]">
-<meta name="Keywords" content="[$ $k $]">
+<meta name="Keywords" content="[+ $k +]">
 <TITLE>[+ "$s$t" +]</TITLE>
 <style type="text/css"><!--
    .anno { font-size:.8em }
