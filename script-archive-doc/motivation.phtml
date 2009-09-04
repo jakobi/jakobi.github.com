@@ -137,4 +137,21 @@ Essay "In the Beginning was the Command Line".</p>
    <li>Marshall Kirk McKusick, The Design and Implementation of the FreeBSD Operating System, AW, 2004.
 </ul>
 
+<p  class=anno>Some topics just 'are in the air'. So to take a peek at
+a  completely  independent implementation of boolean expressions  over
+regular  expressions  and  perl  scraps,  check  e.g.  David  Coppit's
+mailgrep  and the -E option, as well as the Changelog for its history:
+"-E  allows for complex pattern matches involving logical  operators".
+Though I think I got annoyed at freewais and the limits of ice2-for.pl
+a  bit  earlier, with a subsequent patch to add boolean support to  <a
+href="http://www.objectweaver.de/ice/">ice</a>  (by  Christian  Neuss,
+perl  full text indexer and cgi searchform; licence: free educational,
+greenpeace-donation otherwise). With some squinting the origins of the
+'implicit   and'  can  be  imagined  in  '$need_op'.  fwait's  boolean
+reimplementation    should    probably    count   as    the    interim
+screen-space-is-expensive-attempt,  albeit with a certain elegance and
+doing  expression compilation with 'token' replacement in-situ.  While
+the  current  incarnation in tagls, waitcond and Grep.pm is  the  most
+adaptable and readable.
+
 [* } *][# MUST BE AT EOF! #]
