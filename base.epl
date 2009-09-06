@@ -8,6 +8,7 @@
    $t=$ENV{__EMB_EXTRATITLE}; $t = $t     ? " - $t"   : ""; 
    $m ="";
 warn "$ENV{PWD}\n";
+warn "$ENV{PATH_TRANSLATED}\n";
    $m ="Unix shell and perl scripts"
       if $ENV{PATH_TRANSLATED}=~/script-archive(-doc)?/;
    $m.=" for commandline use and system administration. Home of sfre, the system-flight-recorder-editor, waitcond, emv, Grep.xchange and tagls" 
