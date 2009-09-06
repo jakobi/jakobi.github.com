@@ -5,11 +5,11 @@ Please contact the server administrator,  and inform them of the time the error 
 <table cellspacing='2' cellpadding='5'>
 <tr bgcolor='#eeeeee'><td>
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-[9315]ERR:  404: : Not found 'script-archive-doc/README.md', searched: /home/jakobi/git/github/LINKLAYER//home/jakobi/git/github/LINKLAYER/../HTML/script-archive-doc/script-archive-doc/README.md;/home/jakobi/git/github/LINKLAYER//home/jakobi/git/github/LINKLAYER/../HTML/script-archive-doc/README.md;
+[4069]ERR:  404: : Not found 'HTML/script-archive-doc/README.md', searched: /home/jakobi/git/github/LINKLAYER/..//home/jakobi/git/github/LINKLAYER/../HTML*/HTML/script-archive-doc/HTML/script-archive-doc/README.md;/home/jakobi/git/github/LINKLAYER/..//home/jakobi/git/github/LINKLAYER/../HTML*/HTML/script-archive-doc/README.md;
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 </td></tr>
 </table>
 <br>
-Offline Embperl 2.2.0 [Sun Sep  6 17:27:19 2009]<P>
+Offline Embperl 2.2.0 [Sun Sep  6 17:14:19 2009]<P>
 </BODY></HTML>
 
