@@ -15,10 +15,10 @@
    $m.= $ENV{__EMB_EXTRAMETA}     ? " - $ENV{__EMB_EXTRAMETA}"   : ""; 
    $m = "$s$t"                    ? "$s$t".($m ? ". $m" : "")    : $m;
 
-   # add title/section to meta as well
    %k=();
    @k=qw/peter jakobi/;
-   push @k, split(/[\s,;:']+|[\-\.]($|\s)/, lc("$s, $t, $m"));
+   # add section and title to meta if not yet included and uniq the keywords
+   push @k, split(/[\s,;:']+|[\-\.]($|\s)/, lc("$s, $t, $m")); 
    foreach(@k){$k{$_}=1 if /[a-z]{2,}/i and not /^(the|and|or|is|of|for|home|are|not)$/i};
    @k=grep {$k{$_} and $k{$_}--} @k; 
    $k=join(", ", @k);
