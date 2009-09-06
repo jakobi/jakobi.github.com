@@ -6,21 +6,6 @@ To properly view these files as real HTML, go to
 For the script-archive, go to 
 [http://jakobi.github.com/script-archive-doc/](http://jakobi.github.com/script-archive-doc/).
 
-To view the HTML files
-----------------------
-
-* [script-archive-doc/googleb56fdb2b089ee576.html]
-  (http://jakobi.github.com/script-archive-doc/script-archive-doc/googleb56fdb2b089ee576.html)
-* [script-archive-doc/index.html]
-  (http://jakobi.github.com/script-archive-doc/script-archive-doc/index.html)
-* [script-archive-doc/installation.html]
-  (http://jakobi.github.com/script-archive-doc/script-archive-doc/installation.html)
-* [script-archive-doc/motivation.html]
-  (http://jakobi.github.com/script-archive-doc/script-archive-doc/motivation.html)
-* [script-archive-doc/suggestion.html]
-  (http://jakobi.github.com/script-archive-doc/script-archive-doc/suggestion.html)
-
-
 See also
 --------
 
