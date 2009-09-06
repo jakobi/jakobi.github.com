@@ -19,10 +19,10 @@ warn "$ENV{PATH_TRANSLATED}\n";
 
    # add title/section to meta as well
    %k=();
-   @k=qw//;
+   @k=qw/Peter Jakobi/;
    push @k, split(/[\s,;:']+|[\-\.]($|\s)/, lc("$s, $t, $m"));
    foreach(@k){$k{$_}=1 if /[a-z]{2,}/i and not /^(the|and|or|is|are|not)$/i};
-   @k=grep {$k{$_}} @k; 
+   @k=grep {$k{$_} and $k{$_}--} @k; 
    $k=join(", ", @k);
 -]
 
