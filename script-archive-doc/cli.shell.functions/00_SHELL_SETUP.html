@@ -1,76 +1,18 @@
-<HTML>
-<HEAD>
-<link rel="icon"          href="/favicon.png"/>
-<link rel="shortcut icon" href="/favicon.png"/>
-<meta name="Description" content="Peter's Script-Archive - Shell Functions and Setup. Unix shell and perl scripts">
-<meta name="Keywords" content="peter, script-archive, shell, functions, setup, peter, script-archive, shell, functions, setup, unix, shell, perl, scripts">
-<TITLE>Peter's Script-Archive - Shell Functions and Setup</TITLE>
-<style type="text/css"><!--
-   .anno { font-size:.8em }
---></style>
-<style type="text/css"><!--
-   .num { padding-left:1em; text-align:right; nopadding-right:1em}
-   .repo{ text-align:center}
-   .file{ nopadding-left:1em; font-family:monospace}
-.desc{ padding-left:2em}
---></style>
-</HEAD>
-<BODY>
+<HTML><HEAD><TITLE>Embperl Error</TITLE></HEAD><BODY bgcolor="#FFFFFF">
+<H1>Internal Server Error</H1>
+The server encountered an internal error or misconfiguration and was unable to complete your request.<P>
+Please contact the server administrator,  and inform them of the time the error occurred, and anything you might have done that may have caused the error.<P><P>
+<table cellspacing='2' cellpadding='5'>
+<tr bgcolor='#eeeeee'><td>
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+[11221]ERR:  24:  Error in Perl code: 	(in cleanup) Unmatched [ in regex; marked by &lt;-- HERE in m/[\s,;:']+|[ &lt;-- HERE \.\
+<br>&nbsp;&nbsp;&nbsp;&nbsp;;}
+<br>&nbsp;&nbsp;&nbsp;&nbsp; _ep_cp(2) ;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;#line 33 &quot;/ at /home/jakobi/git/github/LINKLAYER/HTML/base.epl line 25.
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+</td></tr>
+</table>
+<br>
+Offline Embperl 2.2.0 [Sun Sep  6 22:10:00 2009]<P>
+</BODY></HTML>
 
-<p class=anno>
-<a href="http://jakobi.github.com/">HOME</a>                                          &nbsp;|&nbsp; 
-<a href="http://github.com/jakobi/">GIT Overview</a>          &nbsp;|&nbsp;
-Script-Archive:
-<a href="/script-archive-doc/">(docs)</a> : 
-<a href="http://wiki.github.com/jakobi/script-archive/">(wiki)</a> : 
-<a href="http://github.com/jakobi/script-archive">(git)</a>    &nbsp;|&nbsp;
-...
-</p>
-
-<H1>Peter's Script-Archive - Shell Functions and Setup</H1>
-
-<hr>
-
-<p>Shell support functions and setup.</p>
-
-<H3>Some of the more interesting functions</H3>
-
-<p><a href="http://github.com/jakobi/script-archive/tree/master/cli.shell.functions/">Git
-    View of this section / Download</a></p>
-
-
-<ul>
-   <li>cd: portable version of <b>nico_cd</b> for bash and ksh (<i>NOT pd-ksh and derivatives; 
-       try looking for e.g. ksh93 instead</i>) - 
-       a proper directory stack with the ability to grep and edit the stack 
-       (cd.nico_cd_for_bash_and_ksh.func)
-   <li>cd: an extension of Halchenko's <B>dyndirstack</b> - a dynamic dirstack building
-       upon the bash builtins with completion support (cd.dyndirstack_bash.func)
-   <li>cd: see also <b>mt_dir</b> elsewhere in this archive (key-word based cd aliases)
-   <li><b>_echo, _warn</b> (bash actually manages to have no echo/print honoring -- as end-of-options-option;
-       the only reasonably safe function happens to be printf; 00_lib.func)
-   <li><b>f2a</b> is a shell function reading a file into an array, allowing
-       e.g. safe argument passing (00_lib.func):<BR>
-       <tt>ksh93$      find . -print | f2a -a ARGS; less "$ARGS[@]"</tt><BR>
-       <tt>bash$&nbsp; f2a -a ARGS < <(find . -print); less "$ARGS[@]"</tt>
-   <li><b>uniqpath</b> deals with :-separated strings and removes duplicates and 
-       optionally '.' and '' (both of which are a security risk e.g. in $PATH; 00_lib.func)
-</ul>
-
-
-<hr>
-<p class=anno>
-<a href="http://jakobi.github.com/">HOME</a>                                          &nbsp;|&nbsp; 
-<a href="http://github.com/jakobi/">GIT Overview</a>          &nbsp;|&nbsp;
-Script-Archive:
-<a href="/script-archive-doc/">(docs)</a> : 
-<a href="http://wiki.github.com/jakobi/script-archive/">(wiki)</a> : 
-<a href="http://github.com/jakobi/script-archive">(git)</a>    &nbsp;|&nbsp;
-...
-</p>
-
-<p class=anno>jakobi(at)acm.org, 2009-07 - 2009-09-06</p>
-</p>
-
-</BODY>
-</HTML>
