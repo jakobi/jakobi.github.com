@@ -8,8 +8,6 @@
    }
    $t=$ENV{__EMB_EXTRATITLE}; $t = $t     ? " - $t"   : ""; 
    $m ="";
-warn "$ENV{PWD}\n";
-warn "$ENV{PATH_TRANSLATED}\n";
    $m ="Unix shell and perl scripts"
       if $fp=~/script-archive(-doc)?/;
    $m.=" for commandline use and system administration. Home of sfre, the system-flight-recorder-editor, waitcond, emv, Grep.xchange and tagls" 
@@ -21,7 +19,7 @@ warn "$ENV{PATH_TRANSLATED}\n";
    %k=();
    @k=qw/peter jakobi/;
    push @k, split(/[\s,;:']+|[\-\.]($|\s)/, lc("$s, $t, $m"));
-   foreach(@k){$k{$_}=1 if /[a-z]{2,}/i and not /^(the|and|or|is|are|not)$/i};
+   foreach(@k){$k{$_}=1 if /[a-z]{2,}/i and not /^(the|and|or|is|of|for|home|are|not)$/i};
    @k=grep {$k{$_} and $k{$_}--} @k; 
    $k=join(", ", @k);
 -]
