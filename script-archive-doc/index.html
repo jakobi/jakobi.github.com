@@ -1,18 +1,1458 @@
-<HTML><HEAD><TITLE>Embperl Error</TITLE></HEAD><BODY bgcolor="#FFFFFF">
-<H1>Internal Server Error</H1>
-The server encountered an internal error or misconfiguration and was unable to complete your request.<P>
-Please contact the server administrator,  and inform them of the time the error occurred, and anything you might have done that may have caused the error.<P><P>
-<table cellspacing='2' cellpadding='5'>
-<tr bgcolor='#eeeeee'><td>
-<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-[11742]ERR:  24:  Error in Perl code: 	(in cleanup) Unmatched [ in regex; marked by &lt;-- HERE in m/[\s,;:']+|[ &lt;-- HERE \.\
-<br>&nbsp;&nbsp;&nbsp;&nbsp;;}
-<br>&nbsp;&nbsp;&nbsp;&nbsp; _ep_cp(2) ;
-<br>&nbsp;&nbsp;&nbsp;&nbsp;#line 33 &quot;/ at /home/jakobi/git/github/LINKLAYER/HTML/base.epl line 25.
-<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-</td></tr>
-</table>
-<br>
-Offline Embperl 2.2.0 [Sun Sep  6 22:10:31 2009]<P>
-</BODY></HTML>
+<HTML>
+<HEAD>
+<link rel="icon"          href="/favicon.png"/>
+<link rel="shortcut icon" href="/favicon.png"/>
+<meta name="Description" content="Peter's Script-Archive - Overview. Unix shell and perl scripts for commandline use and system administration. Home of sfre, the system-flight-recorder-editor, waitcond, emv, Grep.xchange and tagls">
+<meta name="Keywords" content="peter, script-archive, overview, peter, script-archive, overview, unix, shell, perl, scripts, for, commandline, use, system, administration, home, of, sfre, system-flight-recorder-editor, waitcond, emv, grep.xchange, tagls">
+<TITLE>Peter's Script-Archive - Overview</TITLE>
+<style type="text/css"><!--
+   .anno { font-size:.8em }
+--></style>
+<style type="text/css"><!--
+   .num { padding-left:1em; text-align:right; nopadding-right:1em}
+   .repo{ text-align:center}
+   .file{ nopadding-left:1em; font-family:monospace}
+.desc{ padding-left:2em}
+--></style>
+</HEAD>
+<BODY>
 
+<p class=anno>
+<a href="http://jakobi.github.com/">HOME</a>                                          &nbsp;|&nbsp; 
+<a href="http://github.com/jakobi/">GIT Overview</a>          &nbsp;|&nbsp;
+Script-Archive:
+<a href="/script-archive-doc/">(docs)</a> : 
+<a href="http://wiki.github.com/jakobi/script-archive/">(wiki)</a> : 
+<a href="http://github.com/jakobi/script-archive">(git)</a>    &nbsp;|&nbsp;
+...
+</p>
+
+<H1>Peter's Script-Archive - Overview</H1>
+
+<hr>
+
+<p>A  small  archive of 20 years of Unix and Linux Lore: programs  and
+scripts with a slight flavoring of configuration scraps and notes. The
+commands in the archive work with Linux (unless noted differently) and
+quite  likely  were also used in earlier incarnations on various  Unix
+versions.</p>
+
+<p  class=anno>Some  grizzled  veterans  date  back  to   pre-historic
+(non-)Unix   systems  and  perl3,  various  dialects  of  REXX,   M68K
+assembler,              K&amp;R-C              (too              often
+"unintentional-assembler-cum-obfuscation-contest";  compare that  with
+perl, which at least <i>only allows</i> for "intentional obfuscation",
+and  has some additional expressive power to offer as compensation for
+those  stretches  of  kermit-injected  line  noise)  or   <i>worse</i>
+(portable   awk  in  a  mixed  nawk/awk/oawk  multi-node-multi-version
+environment - oh joy!). A select few even had a language-change or two
+thrown  in.  But  most of these better remain resting in  the  archive
+dirtree  along with a fond memory of their associated environment  and
+hardware;  besides, is there really anyone being still afflicted  with
+these  programs'  raison d'etre like e.g. coping with PCL or  floppies
+:)?</p>
+
+
+
+<hr>
+<H2>About this Archive</H2>
+
+
+
+<H3>Philosophy, Ancient Artes and a Modern Tool Chest</H3>
+
+<p><a href="motivation.html">Some background on Unix and motivation of
+offering this archive.</A></p>
+
+
+
+<H3>Suggested Tools &amp; Etymology: TagLS</H3>
+
+
+<p>Please  have  a  look at  the  <a href="suggestion.html">suggested
+tools</a>  page which lists a selection of the  more  accessible/usable
+scripts. 
+
+<p><a href="cli.list.tagls/00_TAGS_AND_COMMANDLINE.html">Etymology:
+TagLS  -  a command to add tag support to the command line</a>  should
+also  make for an interesting read. Drop me a line on how you make use
+of tagls :).</p>
+
+
+
+<H3>Status and Updates</H3>
+
+<p>Status  of the commands checked into this archive: I do  <b>not</b>
+use  this  archive for development, but rather use a script to  export
+the   currently  used  versions  to  the  archive  once  in  a  while.
+<b>Bugs</b>:  Given  the  small size of the commands I do  not  use  a
+consistent  test  harness  setup,  thus the pushed  version  may  also
+contain  recent breakage until the next export. <B>So if you encounter
+a  bug  or  a "wishlist-item", drop me a mail</B> with  or  without  a
+patch;  I'm  interested  in fixing them or I might already  fixed  the
+problem locally.</p>
+
+
+
+<H3>Installation Notes</H3>
+
+<p><a href="installation.html">Read  this for information</A> on  the
+assumptions    I   tend   to   make   for   the   system   enivronment
+(Unix/perl/bash/ksh93).  This page also details the conventions I  use
+for  placement of Perl modules and configuration files. <i>Please also
+check this page in case of errors</i>.
+
+
+
+
+<H3>Licence</H3>
+
+<p>The     scripts    are    made    available    under     the     <a href="http://github.com/jakobi/script-archive/raw/master/gpl.txt">GPL
+v3</a> unless noted otherwise within the script.</p>
+
+
+
+<H2>Complete Filelist with Section Introductions</H2>
+
+<p><i>Please  imagine</i>  the usual web construction site road  sign:
+There are still some sections and stuff missing from the archive, even
+though  sometimes already included in the archive documentation. Let's
+consider  these wishlist-level bugs and drop me a mail if you want  to
+contribute or take a peek ahead of time.</p>
+
+<p>See also the <a href="http://github.com/jakobi/script-archive/">git
+view home page for the full archive</a>.</p>
+
+
+The  linked  pages in this filelist contain additional information  on
+specific  tool  groups within the archive. You can download a  group's
+files by following the tool group's GIT link below. Look around in the
+GIT  directory  of  the  group  and use  the  <B>download</B>  or  the
+<B>raw</B> link for the files you're interested in. Of course, you can
+also use native git to access the repository :).<p>
+
+
+<table>
+   <TR><TH>Date</TH><TH></TH><TH>Size</TH><TH>GIT-DIR</TH><TH>Filename</TH><TH width=50%>Description / Section Introduction</TH></TR>
+ <tr>
+      <TD >2009-09-06</TD>
+      <TD >*</TD>
+      <TD  class=num>0K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/README.md">README.md</A></TD>
+      <TD  class=desc>&nbsp;</TD>
+            </tr>
+
+    <tr>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'>2002-01-28</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=num>2K</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=repo><a href="http://github.com/jakobi/script-archive/tree/master/admin.misc/">GIT</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=file><a href="http://github.com/jakobi/script-archive/raw/master/admin.misc/tracefacility-example.aixtrace.pl">admin.misc/tracefacility-example.aixtrace.pl</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=desc>aix trace facility - experimental - restricting aix tracefacility (AIX5+: use strace instead)</TD>
+         </tr>
+
+    <tr>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'>2009-09-04</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'>*</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=num>4K</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=repo><a href="http://github.com/jakobi/script-archive/tree/master/admin.text/">GIT</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=file><a href="admin.text/00_ADMIN_TEXT.html">admin.text/00_ADMIN_TEXT.html</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=desc><a href="admin.text/00_ADMIN_TEXT.html"><B>--&gt; introduction to sfre and other tools for config file 'editing'  &lt;--</B></A></TD>
+      </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>4K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/admin.text/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/admin.text/selectlines">admin.text/selectlines</A></TD>
+      <TD  class=desc>selectlines - copy config files from templates, with line(de)selection</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>49K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/admin.text/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/admin.text/sfre">admin.text/sfre</A></TD>
+      <TD  class=desc>systemflightrecordereditor, or just sfre (REQ cli.lock/*, changetrack.sf.net)</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-25</TD>
+      <TD >*</TD>
+      <TD  class=num>2K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/admin.text/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/admin.text/sfre.sfrerc">admin.text/sfre.sfrerc</A></TD>
+      <TD  class=desc>&nbsp;</TD>
+            </tr>
+
+    <tr>
+      <TD >2009-08-09</TD>
+      <TD >*</TD>
+      <TD  class=num>14K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/admin.text/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/admin.text/unescape.pl">admin.text/unescape.pl</A></TD>
+      <TD  class=desc>unescape.pl - remove some line noise from typescripts (script output)</TD>
+         </tr>
+
+    <tr>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'>2009-09-04</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'>*</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=num>3K</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.HTML/">GIT</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=file><a href="cli.HTML/00_HTML-PROCESSING.html">cli.HTML/00_HTML-PROCESSING.html</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=desc><a href="cli.HTML/00_HTML-PROCESSING.html"><B>--&gt; some ancient HTML processing commands &lt;--</B></A></TD>
+      </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>22K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.HTML/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.HTML/COLLECT">cli.HTML/COLLECT</A></TD>
+      <TD  class=desc>COLLECT html files, text, etc into a single html file</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>14K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.HTML/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.HTML/DIFF">cli.HTML/DIFF</A></TD>
+      <TD  class=desc>DIFF two HTML files (from pre-diff-w days)</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>9K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.HTML/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.HTML/DIFFTREE">cli.HTML/DIFFTREE</A></TD>
+      <TD  class=desc>DIFFTREE - diff two HTML trees and show changes</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>7K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.HTML/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.HTML/LINKS">cli.HTML/LINKS</A></TD>
+      <TD  class=desc>LINKS extraction from documents in various formats</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>5K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.HTML/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.HTML/XLINKS">cli.HTML/XLINKS</A></TD>
+      <TD  class=desc>XLINKS extract links again, but with an eye toward spidering</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>31K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.HTML/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.HTML/db_cgi.p">cli.HTML/db_cgi.p</A></TD>
+      <TD  class=desc>db_cgi.p - html grab bag of things MIME -- in case ancient scripts still depends on it -- AVOID</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-09-06</TD>
+      <TD >*</TD>
+      <TD  class=num>4K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.HTML/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.HTML/dir.dir2array/">cli.HTML/dir.dir2array/</A></TD>
+      <TD  class=desc>dir2array -- a more modern embperl template approach to replace dir2html.pl 
+(also includes as example the code to export/generate the github sites as of 09-06-09)</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-18</TD>
+      <TD >*</TD>
+      <TD  class=num>24K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.HTML/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.HTML/dir2html.pl">cli.HTML/dir2html.pl</A></TD>
+      <TD  class=desc>dir2html.pl - ancient directory lister, early 90s style</TD>
+         </tr>
+
+    <tr>
+      <TD >1997-09-24</TD>
+      <TD ></TD>
+      <TD  class=num>4K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.HTML/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.HTML/domain.codes.txt">cli.HTML/domain.codes.txt</A></TD>
+      <TD  class=desc>ancient; some of the html stuff did depend on it</TD>
+         </tr>
+
+    <tr>
+      <TD >2007-11-22</TD>
+      <TD ></TD>
+      <TD  class=num>2K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.HTML/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.HTML/htmlcheck">cli.HTML/htmlcheck</A></TD>
+      <TD  class=desc>the ancient htmlchek validator with my old configuration</TD>
+         </tr>
+
+    <tr>
+      <TD >1997-09-24</TD>
+      <TD ></TD>
+      <TD  class=num>0K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.HTML/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.HTML/htmlcheck.tum.cfg">cli.HTML/htmlcheck.tum.cfg</A></TD>
+      <TD  class=desc>&nbsp;</TD>
+            </tr>
+
+    <tr>
+      <TD >2007-11-20</TD>
+      <TD ></TD>
+      <TD  class=num>72K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.HTML/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.HTML/htmlchek.pl">cli.HTML/htmlchek.pl</A></TD>
+      <TD  class=desc>&nbsp;</TD>
+            </tr>
+
+    <tr>
+      <TD >1997-09-24</TD>
+      <TD ></TD>
+      <TD  class=num>2K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.HTML/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.HTML/htmlchek.sh">cli.HTML/htmlchek.sh</A></TD>
+      <TD  class=desc>&nbsp;</TD>
+            </tr>
+
+    <tr>
+      <TD >1997-09-24</TD>
+      <TD ></TD>
+      <TD  class=num>2K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.HTML/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.HTML/htmlchkp.sh">cli.HTML/htmlchkp.sh</A></TD>
+      <TD  class=desc>&nbsp;</TD>
+            </tr>
+
+    <tr>
+      <TD >2009-08-22</TD>
+      <TD >*</TD>
+      <TD  class=num>1K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.HTML/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.HTML/remcr">cli.HTML/remcr</A></TD>
+      <TD  class=desc>addcr, foldlf, noumlaut, remcr: example stripping umlauts, cr, etc (REQ: sub.mime)</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-15</TD>
+      <TD >*</TD>
+      <TD  class=num>10K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.HTML/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.HTML/sub.mime">cli.HTML/sub.mime</A></TD>
+      <TD  class=desc>sub.mime - html grab bag of things MIME -- in case ancient scripts still depends on it -- AVOID</TD>
+         </tr>
+
+    <tr>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'>2009-09-04</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'>*</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=num>2K</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.backup/">GIT</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=file><a href="cli.backup/00_BACKUP.html">cli.backup/00_BACKUP.html</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=desc><a href="cli.backup/00_BACKUP.html"><B>--&gt; backup &lt;--</B></A></TD>
+      </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>13K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.backup/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.backup/expanfind">cli.backup/expanfind</A></TD>
+      <TD  class=desc>expanfind - expansyn for filelists: greps and 'grows' a filelist with 'related' files</TD>
+         </tr>
+
+    <tr>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'>2009-09-04</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'>*</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=num>1K</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.conf/">GIT</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=file><a href="cli.conf/00_EXAMPLE_CONFIGURATIONS.html">cli.conf/00_EXAMPLE_CONFIGURATIONS.html</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=desc><a href="cli.conf/00_EXAMPLE_CONFIGURATIONS.html"><B>--&gt; configuration examples for various commandline applications &lt;--</B></A></TD>
+      </tr>
+
+    <tr>
+      <TD >2009-09-06</TD>
+      <TD >*</TD>
+      <TD  class=num>4K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.conf/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.conf/dir.mc/">cli.conf/dir.mc/</A></TD>
+      <TD  class=desc>mc example configuration</TD>
+         </tr>
+
+    <tr>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'>2009-09-04</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'>*</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=num>5K</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.firefox/">GIT</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=file><a href="cli.firefox/00_FIREFOX.html">cli.firefox/00_FIREFOX.html</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=desc><a href="cli.firefox/00_FIREFOX.html"><B>--&gt; a firefox wrapper / accessing bookmarks from the cli &lt;--</B></A></TD>
+      </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>11K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.firefox/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.firefox/firefox">cli.firefox/firefox</A></TD>
+      <TD  class=desc>firefox invocation wrapper, warts and all (you'll probably want to write a simplified one yourself)</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-22</TD>
+      <TD >*</TD>
+      <TD  class=num>0K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.firefox/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.firefox/firefox.-example">cli.firefox/firefox.-example</A></TD>
+      <TD  class=desc>example of a shortcut file for the wrapper</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-03-17</TD>
+      <TD ></TD>
+      <TD  class=num>3K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.firefox/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.firefox/firefoxcookies">cli.firefox/firefoxcookies</A></TD>
+      <TD  class=desc>firefoxcookies - example getting at cookies</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-10</TD>
+      <TD >*</TD>
+      <TD  class=num>1K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.firefox/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.firefox/firefoxdelta">cli.firefox/firefoxdelta</A></TD>
+      <TD  class=desc>firefoxdelta: example on diffing bookmarks</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>9K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.firefox/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.firefox/firefoxgrep">cli.firefox/firefoxgrep</A></TD>
+      <TD  class=desc>firefoxgrep - grepping bookmarks</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>4K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.firefox/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.firefox/firefoxgrephtml">cli.firefox/firefoxgrephtml</A></TD>
+      <TD  class=desc>helper</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>8K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.firefox/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.firefox/firefoxgrepsqlite">cli.firefox/firefoxgrepsqlite</A></TD>
+      <TD  class=desc>helper</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-09-06</TD>
+      <TD >*</TD>
+      <TD  class=num>12K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.firefox/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.firefox/firefoxsessionlist">cli.firefox/firefoxsessionlist</A></TD>
+      <TD  class=desc>firefoxsessionlist - example getting open tabs / 'pretty printing' xml-ish files</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-09-06</TD>
+      <TD >*</TD>
+      <TD  class=num>9K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.firefox/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.firefox/firefoxstdin">cli.firefox/firefoxstdin</A></TD>
+      <TD  class=desc>firefoxstdin - load bookmarks and bookmark-greps from stdin - paste target.</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-07</TD>
+      <TD >*</TD>
+      <TD  class=num>4K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.firefox/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.firefox/userChrome.css">cli.firefox/userChrome.css</A></TD>
+      <TD  class=desc>grab bag of chrome settings, esp. wrt space-saving</TD>
+         </tr>
+
+    <tr>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'>2009-09-06</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'>*</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=num>4K</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.grep/">GIT</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=file><a href="cli.list.grep/00_LISTPROCESSING.html">cli.list.grep/00_LISTPROCESSING.html</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=desc><a href="cli.list.grep/00_LISTPROCESSING.html"><B>--&gt; introduction to list processing and boolean regular expressions &lt;--</B></A></TD>
+      </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>55K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.grep/Compact_pm/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.grep/Compact_pm/Grep.pm">cli.list.grep/Compact_pm/Grep.pm</A></TD>
+      <TD  class=desc>Grep.pm - perl grep with stemming, synonyms, boolean expression, ...</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-19</TD>
+      <TD >*</TD>
+      <TD  class=num>2K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.grep/Compact_pm/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.grep/Compact_pm/Grep.pm.moduletest">cli.list.grep/Compact_pm/Grep.pm.moduletest</A></TD>
+      <TD  class=desc>&nbsp;</TD>
+            </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>28K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.grep/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.grep/Grep.xchange">cli.list.grep/Grep.xchange</A></TD>
+      <TD  class=desc>Grep.xchange: mass-edit files by editing grep output (REQ Flock.pm)</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>4K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.grep/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.grep/cat0">cli.list.grep/cat0</A></TD>
+      <TD  class=desc>cat0 converts between n and 0 based lines</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>11K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.grep/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.grep/cat0par">cli.list.grep/cat0par</A></TD>
+      <TD  class=desc>cat0par converts arbitrary regex-based records from and to 0-lines</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>9K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.grep/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.grep/expansyn">cli.list.grep/expansyn</A></TD>
+      <TD  class=desc>expansyn - synonym expansion for words and simple regular expressions</TD>
+         </tr>
+
+    <tr>
+      <TD >2007-12-27</TD>
+      <TD ></TD>
+      <TD  class=num>0K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.grep/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.grep/expansyn.cfg">cli.list.grep/expansyn.cfg</A></TD>
+      <TD  class=desc>example configuration</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-15</TD>
+      <TD >*</TD>
+      <TD  class=num>3K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.grep/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.grep/hlgrep">cli.list.grep/hlgrep</A></TD>
+      <TD  class=desc>hlgrep - modified version to pass on all text plus highlighting (-A option)</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-09</TD>
+      <TD >*</TD>
+      <TD  class=num>0K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.grep/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.grep/nl0">cli.list.grep/nl0</A></TD>
+      <TD  class=desc>wrapper for nl for 0 lines</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-09-02</TD>
+      <TD >*</TD>
+      <TD  class=num>1K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.grep/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.grep/xargs0">cli.list.grep/xargs0</A></TD>
+      <TD  class=desc>wrapper for xargs for 0 lines (not necessary: xargs -0)</TD>
+         </tr>
+
+    <tr>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'>2009-09-04</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'>*</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=num>3K</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.rename/">GIT</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=file><a href="cli.list.rename/00_MASS-RENAME.html">cli.list.rename/00_MASS-RENAME.html</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=desc><a href="cli.list.rename/00_MASS-RENAME.html"><B>--&gt; introduction to mass file renaming scripts &lt;--</B></A></TD>
+      </tr>
+
+    <tr>
+      <TD >2009-09-01</TD>
+      <TD >*</TD>
+      <TD  class=num>59K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.rename/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.rename/emv">cli.list.rename/emv</A></TD>
+      <TD  class=desc>emv - editor mv: two-pass renaming, link target editing, ... in the editor</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-06-27</TD>
+      <TD ></TD>
+      <TD  class=num>0K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.rename/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.rename/emvp">cli.list.rename/emvp</A></TD>
+      <TD  class=desc>emvp - helper: using myrename for some text modification</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-03</TD>
+      <TD ></TD>
+      <TD  class=num>1K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.rename/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.rename/emvp0">cli.list.rename/emvp0</A></TD>
+      <TD  class=desc>emv helper - simplified standalone version of emvp</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-10</TD>
+      <TD >*</TD>
+      <TD  class=num>1K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.rename/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.rename/emvs">cli.list.rename/emvs</A></TD>
+      <TD  class=desc>emvs - helper: sort keeping dirs and children together</TD>
+         </tr>
+
+    <tr>
+      <TD >2008-11-12</TD>
+      <TD ></TD>
+      <TD  class=num>2K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.rename/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.rename/emvx">cli.list.rename/emvx</A></TD>
+      <TD  class=desc>emvx - helper: return extended listing for input</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>45K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.rename/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.rename/myrename">cli.list.rename/myrename</A></TD>
+      <TD  class=desc>myrename - customizable perl mass-renaming/link-editing/... of files</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-09-04</TD>
+      <TD >*</TD>
+      <TD  class=num>6K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.rename/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.rename/myrename.mangle">cli.list.rename/myrename.mangle</A></TD>
+      <TD  class=desc>myrename.mangle - encode/decode filenames to e.g. avoid whitespace while sorting</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-10</TD>
+      <TD >*</TD>
+      <TD  class=num>2K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.rename/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.rename/myrename.quote">cli.list.rename/myrename.quote</A></TD>
+      <TD  class=desc>myrename.quote: quote input in various ways</TD>
+         </tr>
+
+    <tr>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'>2009-09-04</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'>*</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=num>4K</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.tagls/">GIT</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=file><a href="cli.list.tagls/00_TAGS_AND_COMMANDLINE.html">cli.list.tagls/00_TAGS_AND_COMMANDLINE.html</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=desc><a href="cli.list.tagls/00_TAGS_AND_COMMANDLINE.html"><B>--&gt; introduction to tagls and commandline tag usage &lt;--</B></A></TD>
+      </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>33K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.tagls/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.tagls/tagls">cli.list.tagls/tagls</A></TD>
+      <TD  class=desc>talgs: tags for the command line</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>3K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.tagls/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.tagls/taglsc">cli.list.tagls/taglsc</A></TD>
+      <TD  class=desc>taglsc document collections - a simple wrapper around tagls</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-22</TD>
+      <TD >*</TD>
+      <TD  class=num>2K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.tagls/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.tagls/taglsc.cfg">cli.list.tagls/taglsc.cfg</A></TD>
+      <TD  class=desc>&nbsp;</TD>
+            </tr>
+
+    <tr>
+      <TD >2009-07-25</TD>
+      <TD ></TD>
+      <TD  class=num>0K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.tagls/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.tagls/taglsgrep">cli.list.tagls/taglsgrep</A></TD>
+      <TD  class=desc>example of using tagls as grep against stdin</TD>
+         </tr>
+
+    <tr>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'>2009-09-04</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'>*</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=num>2K</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.various/">GIT</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=file><a href="cli.list.various/00_LISTPROCESSING2.html">cli.list.various/00_LISTPROCESSING2.html</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=desc><a href="cli.list.various/00_LISTPROCESSING2.html"><B>--&gt; various smaller list processing helpers &lt;--</B></A></TD>
+      </tr>
+
+    <tr>
+      <TD >2009-08-09</TD>
+      <TD >*</TD>
+      <TD  class=num>2K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.various/USR1tail">cli.list.various/USR1tail</A></TD>
+      <TD  class=desc>USR1tail - perl tail example, honoring USR1 for redisplay</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-07-27</TD>
+      <TD ></TD>
+      <TD  class=num>0K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.various/args">cli.list.various/args</A></TD>
+      <TD  class=desc>small trick: echo arguments for debugging</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-09</TD>
+      <TD >*</TD>
+      <TD  class=num>3K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.various/busythreadtail.p">cli.list.various/busythreadtail.p</A></TD>
+      <TD  class=desc>busythreadtail.p - perl tail example, using threads</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-07-18</TD>
+      <TD ></TD>
+      <TD  class=num>2K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.various/ddnonblock">cli.list.various/ddnonblock</A></TD>
+      <TD  class=desc>more of a memory hint: non-blocking pipe io, using dd or perl</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-22</TD>
+      <TD >*</TD>
+      <TD  class=num>0K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.various/ddsponge">cli.list.various/ddsponge</A></TD>
+      <TD  class=desc>more of a memory hint: slurping all previous input in a pipe (dd/sponge/perl)</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-06-09</TD>
+      <TD ></TD>
+      <TD  class=num>0K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.various/echo2cat">cli.list.various/echo2cat</A></TD>
+      <TD  class=desc>small trick: echo arguments for debugging by abusing cat0</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>4K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.various/line.print">cli.list.various/line.print</A></TD>
+      <TD  class=desc>line.print - helper for grep pipes: print selected single lines</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-09-03</TD>
+      <TD >*</TD>
+      <TD  class=num>6K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.various/line.replace">cli.list.various/line.replace</A></TD>
+      <TD  class=desc>line.replace - helper for grep pipes: change selected single lines</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-15</TD>
+      <TD >*</TD>
+      <TD  class=num>7K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.various/pfind">cli.list.various/pfind</A></TD>
+      <TD  class=desc>pfind - a modified version of perl's find example script</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-02</TD>
+      <TD ></TD>
+      <TD  class=num>0K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.various/pipe.filerequest.gtk2">cli.list.various/pipe.filerequest.gtk2</A></TD>
+      <TD  class=desc>gtk2 example getting filenames in perl</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-02</TD>
+      <TD ></TD>
+      <TD  class=num>3K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.various/pipe.select.curses">cli.list.various/pipe.select.curses</A></TD>
+      <TD  class=desc>perl curses example showing/selecting lines within a pipe</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-02</TD>
+      <TD ></TD>
+      <TD  class=num>2K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.various/pipe.select.gtk2">cli.list.various/pipe.select.gtk2</A></TD>
+      <TD  class=desc>perl gtk2 example showing/selecting lines within a pipe</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>2K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.various/randomcat">cli.list.various/randomcat</A></TD>
+      <TD  class=desc>randomcat, randomlines: print a file with lines being randomized</TD>
+         </tr>
+
+    <tr>
+      <TD >2003-04-02</TD>
+      <TD ></TD>
+      <TD  class=num>0K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.various/randomecho">cli.list.various/randomecho</A></TD>
+      <TD  class=desc>randomecho: echo arguments in random order</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>7K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.various/range">cli.list.various/range</A></TD>
+      <TD  class=desc>range - print a range of numbers, optional 0-padding</TD>
+         </tr>
+
+    <tr>
+      <TD >2007-11-20</TD>
+      <TD ></TD>
+      <TD  class=num>1K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.various/revdatesort">cli.list.various/revdatesort</A></TD>
+      <TD  class=desc>revdatesort: normal sort, however sorting dates in reverse order</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-10</TD>
+      <TD >*</TD>
+      <TD  class=num>1K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.various/sort.ip4">cli.list.various/sort.ip4</A></TD>
+      <TD  class=desc>sort.ip4 - sorting ip4 addresses</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-09</TD>
+      <TD >*</TD>
+      <TD  class=num>9K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.various/teefork">cli.list.various/teefork</A></TD>
+      <TD  class=desc>teefork: extended version of the process output capable perl multiple tee example</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>9K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.list.various/xchange.pl">cli.list.various/xchange.pl</A></TD>
+      <TD  class=desc>xchange.pl - ancient file non-interactive perl text replacer (superseeded by Grep.xchange)</TD>
+         </tr>
+
+    <tr>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'>2009-08-28</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'>*</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=num>4K</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.lock/Compact_pm/">GIT</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.lock/Compact_pm/Flock.pm">cli.lock/Compact_pm/Flock.pm</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=desc>Flock.pm - perl module for lock handling using perl's portable flock</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-19</TD>
+      <TD >*</TD>
+      <TD  class=num>1K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.lock/Compact_pm/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.lock/Compact_pm/Flock.pm.moduletest">cli.lock/Compact_pm/Flock.pm.moduletest</A></TD>
+      <TD  class=desc>&nbsp;</TD>
+            </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>8K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.lock/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.lock/lock.pl">cli.lock/lock.pl</A></TD>
+      <TD  class=desc>lock.pl - locking using either atomic mkdir or perl-flock (REQ Flock.pm)</TD>
+         </tr>
+
+    <tr>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'>2009-09-04</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'>*</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=num>3K</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.mail/">GIT</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=file><a href="cli.mail/00_MAIL_SUPPORTSCRIPTS.html">cli.mail/00_MAIL_SUPPORTSCRIPTS.html</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=desc><a href="cli.mail/00_MAIL_SUPPORTSCRIPTS.html"><B>--&gt; programs for working with email &lt;--</B></A></TD>
+      </tr>
+
+    <tr>
+      <TD >2009-09-04</TD>
+      <TD >*</TD>
+      <TD  class=num>83K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.mail/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.mail/mygrepmail">cli.mail/mygrepmail</A></TD>
+      <TD  class=desc>mime-extended variant of grepmail 5.3033</TD>
+         </tr>
+
+    <tr>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'>2009-09-04</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'>*</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=num>2K</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.processes/">GIT</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=file><a href="cli.processes/00_PROCESS+EVENT-HANDLING.html">cli.processes/00_PROCESS+EVENT-HANDLING.html</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=desc><a href="cli.processes/00_PROCESS+EVENT-HANDLING.html"><B>--&gt; killing, monitoring &amp; waiting for processes &amp; their effects &lt;--</B></A></TD>
+      </tr>
+
+    <tr>
+      <TD >2009-08-26</TD>
+      <TD >*</TD>
+      <TD  class=num>3K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.processes/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.processes/dbus-monitor-tail">cli.processes/dbus-monitor-tail</A></TD>
+      <TD  class=desc>dbus-monitor-tail: report N selected dbus events, optionally edited with --eval; incl. an example for catching 'pings' from dbus-send or notify-send</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>4K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.processes/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.processes/fwait">cli.processes/fwait</A></TD>
+      <TD  class=desc>fwait - simplified condition waiter, boolean, original codebase</TD>
+         </tr>
+
+    <tr>
+      <TD >2004-05-12</TD>
+      <TD ></TD>
+      <TD  class=num>0K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.processes/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.processes/pwait">cli.processes/pwait</A></TD>
+      <TD  class=desc>pwait - wrapper for fwait</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>19K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.processes/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.processes/waitcond">cli.processes/waitcond</A></TD>
+      <TD  class=desc>waitcond - generic condition waiter: boolean expression over regexes, pids, files, idleness</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-25</TD>
+      <TD >*</TD>
+      <TD  class=num>2K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.processes/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.processes/waitcond.dbus.README">cli.processes/waitcond.dbus.README</A></TD>
+      <TD  class=desc>on using waitcond with the dbus</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>7K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.processes/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.processes/waitcond.timeout">cli.processes/waitcond.timeout</A></TD>
+      <TD  class=desc>waitcond.timeout executes process with timeout (time or exit of another process)</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-09-03</TD>
+      <TD >*</TD>
+      <TD  class=num>14K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.processes/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.processes/zap">cli.processes/zap</A></TD>
+      <TD  class=desc>zap - regex based process kill/list/nice</TD>
+         </tr>
+
+    <tr>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'>2009-09-04</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'>*</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=num>2K</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.shell.functions/">GIT</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=file><a href="cli.shell.functions/00_SHELL_SETUP.html">cli.shell.functions/00_SHELL_SETUP.html</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=desc><a href="cli.shell.functions/00_SHELL_SETUP.html"><B>--&gt; a modular shell setup and some shell functions of interest &lt;--</B></A></TD>
+      </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>3K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.shell.functions/dir.shell/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.shell.functions/dir.shell/00_ksh.func">cli.shell.functions/dir.shell/00_ksh.func</A></TD>
+      <TD  class=desc>ksh-specific initialization; all other files are both bash/ksh</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-09-04</TD>
+      <TD >*</TD>
+      <TD  class=num>4K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.shell.functions/dir.shell/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.shell.functions/dir.shell/00_lib.func">cli.shell.functions/dir.shell/00_lib.func</A></TD>
+      <TD  class=desc>** uniqpath, f2a and friends</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>2K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.shell.functions/dir.shell/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.shell.functions/dir.shell/01_initialize.func">cli.shell.functions/dir.shell/01_initialize.func</A></TD>
+      <TD  class=desc>common initialization</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>1K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.shell.functions/dir.shell/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.shell.functions/dir.shell/02_customize.func">cli.shell.functions/dir.shell/02_customize.func</A></TD>
+      <TD  class=desc>load host/account specific files</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>2K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.shell.functions/dir.shell/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.shell.functions/dir.shell/LOAD">cli.shell.functions/dir.shell/LOAD</A></TD>
+      <TD  class=desc>** loader for *.func; invoked from .bashrc (actually the only line to change in .bashrc:))</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>2K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.shell.functions/dir.shell/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.shell.functions/dir.shell/auth.func">cli.shell.functions/dir.shell/auth.func</A></TD>
+      <TD  class=desc>making ssh/gpg agents known</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>12K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.shell.functions/dir.shell/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.shell.functions/dir.shell/cd.dyndirstack_bash.func">cli.shell.functions/dir.shell/cd.dyndirstack_bash.func</A></TD>
+      <TD  class=desc>** extended bash-builtin dirstack (bash only)</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-09-02</TD>
+      <TD >*</TD>
+      <TD  class=num>2K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.shell.functions/dir.shell/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.shell.functions/dir.shell/cd.func">cli.shell.functions/dir.shell/cd.func</A></TD>
+      <TD  class=desc>setting CDPATH, mkdir aliases, etc</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>16K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.shell.functions/dir.shell/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.shell.functions/dir.shell/cd.nico_cd_for_bash_and_ksh.func">cli.shell.functions/dir.shell/cd.nico_cd_for_bash_and_ksh.func</A></TD>
+      <TD  class=desc>** bash and ksh (att ksh93, but not pd-ksh &amp; forks) compatible version of nico_cd dirstack</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>2K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.shell.functions/dir.shell/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.shell.functions/dir.shell/color.func">cli.shell.functions/dir.shell/color.func</A></TD>
+      <TD  class=desc>less and ls color</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>4K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.shell.functions/dir.shell/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.shell.functions/dir.shell/dict.func">cli.shell.functions/dir.shell/dict.func</A></TD>
+      <TD  class=desc>dictionary lookup, local and remote</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-09-01</TD>
+      <TD >*</TD>
+      <TD  class=num>3K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.shell.functions/dir.shell/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.shell.functions/dir.shell/grep.func">cli.shell.functions/dir.shell/grep.func</A></TD>
+      <TD  class=desc>Grep.pm the global filelist; sypport functions</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>0K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.shell.functions/dir.shell/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.shell.functions/dir.shell/mail.func">cli.shell.functions/dir.shell/mail.func</A></TD>
+      <TD  class=desc>mail aliases</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>1K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.shell.functions/dir.shell/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.shell.functions/dir.shell/media.func">cli.shell.functions/dir.shell/media.func</A></TD>
+      <TD  class=desc>media aliases</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>0K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.shell.functions/dir.shell/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.shell.functions/dir.shell/misc.func">cli.shell.functions/dir.shell/misc.func</A></TD>
+      <TD  class=desc>miscellaneous aliases and settings</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>2K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.shell.functions/dir.shell/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.shell.functions/dir.shell/promptcdtitledisplay.func">cli.shell.functions/dir.shell/promptcdtitledisplay.func</A></TD>
+      <TD  class=desc>customize window title and prompt</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>2K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.shell.functions/dir.shell/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.shell.functions/dir.shell/text.func">cli.shell.functions/dir.shell/text.func</A></TD>
+      <TD  class=desc>setup editors, less, etc (no color)</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>1K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.shell.functions/dir.shell/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.shell.functions/dir.shell/zz_finalize.func">cli.shell.functions/dir.shell/zz_finalize.func</A></TD>
+      <TD  class=desc>cleanup and uniqpath $PATH</TD>
+         </tr>
+
+    <tr>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'>2009-09-04</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'>*</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=num>3K</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.various/">GIT</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=file><a href="cli.various/00_VARIOUS.html">cli.various/00_VARIOUS.html</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=desc><a href="cli.various/00_VARIOUS.html"><B>--&gt; various scripts &lt;--</B></A></TD>
+      </tr>
+
+    <tr>
+      <TD >2009-06-22</TD>
+      <TD ></TD>
+      <TD  class=num>3K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.various/ALARM">cli.various/ALARM</A></TD>
+      <TD  class=desc>ALARM - example acoustic and visual alarm for use with e.g. waitcond</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-06-22</TD>
+      <TD ></TD>
+      <TD  class=num>0K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.various/ALERTCLR">cli.various/ALERTCLR</A></TD>
+      <TD  class=desc>ALERTCLR - example using the on-screen display (clear displayed alerts)</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-25</TD>
+      <TD >*</TD>
+      <TD  class=num>1K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.various/ALERTOSD">cli.various/ALERTOSD</A></TD>
+      <TD  class=desc>ALERTOSD - example using the on-screen display</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>8K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.various/append.p">cli.various/append.p</A></TD>
+      <TD  class=desc>append.p - append files to similarly named files in archive dir, knows gzip</TD>
+         </tr>
+
+    <tr>
+      <TD >2008-12-10</TD>
+      <TD ></TD>
+      <TD  class=num>1K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.various/date.before">cli.various/date.before</A></TD>
+      <TD  class=desc>date.before,date.after: return true/false on comparing dates (shell)</TD>
+         </tr>
+
+    <tr>
+      <TD >2008-02-04</TD>
+      <TD ></TD>
+      <TD  class=num>0K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.various/df.minfree">cli.various/df.minfree</A></TD>
+      <TD  class=desc>df.minfree - return true/false on available diskspace</TD>
+         </tr>
+
+    <tr>
+      <TD >2007-12-18</TD>
+      <TD ></TD>
+      <TD  class=num>2K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.various/diff.p">cli.various/diff.p</A></TD>
+      <TD  class=desc>diff.p - diff wrapper knowning about gzip</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-09-06</TD>
+      <TD >*</TD>
+      <TD  class=num>4K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.various/dir.fdupes/">cli.various/dir.fdupes/</A></TD>
+      <TD  class=desc>dir.fdupes - some notes on fdupes for file deduplication</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-09-06</TD>
+      <TD >*</TD>
+      <TD  class=num>4K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.various/dir.printing/">cli.various/dir.printing/</A></TD>
+      <TD  class=desc>my current network printing scripts for lprng, including an lpr wrapper to invoke them in spite of gtk-print</TD>
+         </tr>
+
+    <tr>
+      <TD >2007-12-25</TD>
+      <TD ></TD>
+      <TD  class=num>2K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.various/gunzipmemberextract">cli.various/gunzipmemberextract</A></TD>
+      <TD  class=desc>gunzipmemberextract - experimental code on recovering appended gzipped 'members' from a corrupted gzip file</TD>
+         </tr>
+
+    <tr>
+      <TD >2008-01-09</TD>
+      <TD ></TD>
+      <TD  class=num>3K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.various/gzip.rfix">cli.various/gzip.rfix</A></TD>
+      <TD  class=desc>gzip.rfix - clean up archive dirs after gzip -r</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-29</TD>
+      <TD >*</TD>
+      <TD  class=num>5K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.various/mt_dir">cli.various/mt_dir</A></TD>
+      <TD  class=desc>mt_dir - preconfigured directory short cuts for shell and mc</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-29</TD>
+      <TD >*</TD>
+      <TD  class=num>1K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.various/mt_dir.cfg">cli.various/mt_dir.cfg</A></TD>
+      <TD  class=desc>&nbsp;</TD>
+            </tr>
+
+    <tr>
+      <TD >2009-08-22</TD>
+      <TD >*</TD>
+      <TD  class=num>10K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.various/paradj">cli.various/paradj</A></TD>
+      <TD  class=desc>paradj - text formatting, modified</TD>
+         </tr>
+
+    <tr>
+      <TD >2007-11-20</TD>
+      <TD ></TD>
+      <TD  class=num>1K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.various/repeat">cli.various/repeat</A></TD>
+      <TD  class=desc>repeat commands</TD>
+         </tr>
+
+    <tr>
+      <TD >2006-05-04</TD>
+      <TD ></TD>
+      <TD  class=num>3K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.various/sanitize_filenames">cli.various/sanitize_filenames</A></TD>
+      <TD  class=desc>ancient latin1 filename sanitizing (superseded: myrename, utf8)</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-04-20</TD>
+      <TD ></TD>
+      <TD  class=num>0K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.various/sleep.pl">cli.various/sleep.pl</A></TD>
+      <TD  class=desc>sleep.pl - example of perl subsecond select sleep</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>4K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.various/sleepuntil">cli.various/sleepuntil</A></TD>
+      <TD  class=desc>sleepuntil sleeps until date, optionally executing commands</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-18</TD>
+      <TD >*</TD>
+      <TD  class=num>59K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.various/term.reset">cli.various/term.reset</A></TD>
+      <TD  class=desc>term.reset - terminal reset, copes with the corruption caused by vim highlighting bug meeting urxvt</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>8K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/cli.various/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/cli.various/watchfloat">cli.various/watchfloat</A></TD>
+      <TD  class=desc>watchfloat - extended example showing floating command output in a terminal</TD>
+         </tr>
+
+    <tr>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'>2009-08-07</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'>*</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=num>34K</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=repo><a href="http://github.com/jakobi/script-archive/tree/master/">GIT</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=file><a href="http://github.com/jakobi/script-archive/raw/master/gpl.txt">gpl.txt</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=desc>GPL v3 - the licence used for the files in this archive</TD>
+         </tr>
+
+    <tr>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'>2009-08-15</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'>*</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=num>4K</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=repo><a href="http://github.com/jakobi/script-archive/tree/master/hw.tablet/">GIT</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=file><a href="http://github.com/jakobi/script-archive/raw/master/hw.tablet/rotate.sh">hw.tablet/rotate.sh</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=desc>rotate.sh - toshiba tablet orientation scriptlet</TD>
+         </tr>
+
+    <tr>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'>2009-09-04</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;'>*</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=num>2K</TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=repo><a href="http://github.com/jakobi/script-archive/tree/master/vim/">GIT</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=file><a href="vim/00_VIM.html">vim/00_VIM.html</A></TD>
+      <TD style='border-top-style: dotted; border-top-style: 1px;' class=desc><a href="vim/00_VIM.html"><B>--&gt; vim scripts and macros (mostly placeholder) &lt;--</B></A></TD>
+      </tr>
+
+    <tr>
+      <TD >2009-08-22</TD>
+      <TD >*</TD>
+      <TD  class=num>4K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/vim/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/vim/dir.runtime/">vim/dir.runtime/</A></TD>
+      <TD  class=desc>vim runtime (placeholder)</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>4K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/vim/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/vim/pipe.vim">vim/pipe.vim</A></TD>
+      <TD  class=desc>pipe.vim - run vim in the middle of a pipe directly or with xargs</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-08-28</TD>
+      <TD >*</TD>
+      <TD  class=num>1K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/vim/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/vim/vimless">vim/vimless</A></TD>
+      <TD  class=desc>vimless - wrapper to use vim incl. its syntaxhighlighting instead of less</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-09-01</TD>
+      <TD >*</TD>
+      <TD  class=num>9K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/vim/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/vim/vimscript">vim/vimscript</A></TD>
+      <TD  class=desc>vimscript - an updated version to work in pipes on unix</TD>
+         </tr>
+
+    <tr>
+      <TD >2009-07-19</TD>
+      <TD ></TD>
+      <TD  class=num>0K</TD>
+      <TD  class=repo><a href="http://github.com/jakobi/script-archive/tree/master/vim/">GIT</A></TD>
+      <TD  class=file><a href="http://github.com/jakobi/script-archive/raw/master/vim/vimscript.range">vim/vimscript.range</A></TD>
+      <TD  class=desc>&nbsp;</TD>
+            </tr>
+</table>
+<hr>
+<p class=anno>
+<a href="http://jakobi.github.com/">HOME</a>                                          &nbsp;|&nbsp; 
+<a href="http://github.com/jakobi/">GIT Overview</a>          &nbsp;|&nbsp;
+Script-Archive:
+<a href="/script-archive-doc/">(docs)</a> : 
+<a href="http://wiki.github.com/jakobi/script-archive/">(wiki)</a> : 
+<a href="http://github.com/jakobi/script-archive">(git)</a>    &nbsp;|&nbsp;
+...
+</p>
+
+<p class=anno>jakobi(at)acm.org, 2009-07 - 2009-09-06</p>
+</p>
+
+</BODY>
+</HTML>
