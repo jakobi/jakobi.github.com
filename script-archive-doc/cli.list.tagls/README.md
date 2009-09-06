@@ -1,7 +1,3 @@
-[# #]
-[- 
-   $escmode=0;
--]
 Note
 ----
 
@@ -14,8 +10,6 @@ To properly view these files as real HTML, go to
 For the script-archive, go to 
 
 [http://jakobi.github.com/script-archive-doc/](http://jakobi.github.com/script-archive-doc/).
-
-[- Execute('*') -]
 
 See also
 --------
