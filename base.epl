@@ -5,12 +5,20 @@
       $s="Peter's Script-Archive" if $ENV{PATH_TRANSLATED}=~/script-archive(-doc)?/;
       $s="Peter's Homepage" if not $s;
    }
-   $t=$ENV{__EMB_EXTRATITLE}; $t = $t ? " - $t" : ""; 
+   $t=$ENV{__EMB_EXTRATITLE}; $t = $t     ? " - $t"   : ""; 
+   if (not $m) {
+      $m ="Unix shell and perl scripts"
+         if $ENV{PATH_TRANSLATED}=~/script-archive(-doc)?/;
+      $m.=" for commandline use and system administration. Home of sfre, the system-flight-recorder-editor, waitcond, emv, Grep.xchange and tagls" 
+         if $ENV{PATH_TRANSLATED}=~/script-archive(-doc)?.index.p?html/;
+   }
+   $m.= $ENV{__EMB_EXTRAMETA}     ? " - $ENV{__EMB_EXTRAMETA}"   : ""; 
+   $m = "$s$t"                    ? "$s$t. $m"                   : $m;
 
    # add title/section to meta as well
    %k=();
-   @k=qw/unix perl shell scripts vim tags commandline system-administration/;
-   push @k, split(/[\s,:\.']+/, lc("$s, $t"));
+   @k=qw//;
+   push @k, split(/[\s,:\.']+/, lc("$s, $t, $m"));
    foreach(@k){$k{$_}=1 if /[a-z]{2,}/i and not /^(the|and|or|is|are|not)$/i};
    @k=grep {$k{$_}} @k; 
    $k=join(", ", @k);
@@ -20,7 +28,7 @@
 <HEAD>
 <link rel="icon"          href="/favicon.png"/>
 <link rel="shortcut icon" href="/favicon.png"/>
-<meta name="Description" content="Unix shell and perl scripts for the commandline incl. tagls, mass-renamers like emv, sfre for system administration or waitcond. [+ "$s. $t." +]">
+<meta name="Description" content="Unix shell and perl scripts [+ $m +]">
 <meta name="Keywords" content="[+ $k +]">
 <TITLE>[+ "$s$t" +]</TITLE>
 <style type="text/css"><!--
