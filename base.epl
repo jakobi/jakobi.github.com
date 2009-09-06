@@ -18,6 +18,7 @@
    %k=();
    @k=qw/peter jakobi/;
    # add section and title to meta if not yet included and uniq the keywords
+# grep -r -i -e '<TITLE>' -e meta.name.. . | fgrep '.html:'
    push @k, split(/[\s,;:']+|[\-\.]($|\s)/, lc("$s, $t, $m")); 
    foreach(@k){$k{$_}=1 if /[a-z]{2,}/i and not /^(the|and|or|is|of|for|home|are|not)$/i};
    @k=grep {$k{$_} and $k{$_}--} @k; 
