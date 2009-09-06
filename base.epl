@@ -28,7 +28,7 @@
 <HEAD>
 <link rel="icon"          href="/favicon.png"/>
 <link rel="shortcut icon" href="/favicon.png"/>
-<meta name="Description" content="Unix shell and perl scripts [+ $m +]">
+<meta name="Description" content="[+ $m +]">
 <meta name="Keywords" content="[+ $k +]">
 <TITLE>[+ "$s$t" +]</TITLE>
 <style type="text/css"><!--
