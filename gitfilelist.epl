@@ -39,7 +39,7 @@ also use native git to access the repository :).<p>
        $oldd=$d;
    -]
    <TR>
-      <TD [+$pad+]>[+            $f->{date8} . ( $f->version ? / $f->{version} : "" )    +]</TD>
+      <TD [+$pad+]>[+            $f->{date8} . ( $f->version ? "/".$f->{version} : "" )    +]</TD>
       <TD [+$pad+]>[+            $f->{flags}   +]</TD>
       <TD [+$pad+] class=num>[+  $f->{sizek}   +]</TD>
       <TD [+$pad+] class=repo><A HREF="[+ "$u/$d" +]">GIT</A></TD>
