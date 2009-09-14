@@ -42,7 +42,7 @@ also use native git to access the repository :).<p>
       <TD [+$pad+]>[+            $f->{date8}   +]</TD>
       <TD [+$pad+]>[+            $f->{flags}   +]</TD>
       <TD [+$pad+] class=num>[+  $f->{sizek}   +]</TD>
-      <TD [+$pad+] class=num>[+  $f->{version} || "&nbsp;" +]</TD>
+      <TD [+$pad+] class=num>[+  $f->{version} +]</TD>
       <TD [+$pad+] class=repo><A HREF="[+ "$u/$d" +]">GIT</A></TD>
       <TD [+$pad+] class=file><A HREF="[+
          do{if ($n=~m!/00[^/]*html?$!) {
