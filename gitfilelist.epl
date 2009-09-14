@@ -40,7 +40,9 @@ also use native git to access the repository :).<p>
    -]
    <TR>
       <TD [+$pad+]>[+            ($f->{date8}) . ($f->{version} ? "\xa0/\xa0".$f->{version} : "")    +]</TD>
-      <TD [+$pad+]>[+            $f->{flags}   +]</TD>
+            [- $escmode=0 -]
+      <TD [+$pad+]>[+            $f->{flags} || "&nbsp;"  +]</TD>
+            [- $escmode=1 -]
       <TD [+$pad+] class=num>[+  $f->{sizek}   +]</TD>
       <TD [+$pad+] class=repo><A HREF="[+ "$u/$d" +]">GIT</A></TD>
       <TD [+$pad+] class=file><A HREF="[+
