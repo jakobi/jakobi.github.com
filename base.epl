@@ -10,11 +10,12 @@
    $t=$ENV{__EMB_EXTRATITLE}; $t = $t     ? " - $t"   : ""; 
 
    $m0=$s.$t;
-   $m0=~s/^Peter's Script-Archive(.{4,})/$1/;
+   $m0=~s/^Peter's Script-Archive\s*(.{4,})/$1/;
    $m.="Unix shell and perl scripts for commandline use and system administration. Home of sfre the system-flight-recorder-editor, waitcond, emv, Grep.pm, Grep.xchange and tagls" 
       if $fp=~/script-archive(-doc)?.index.p?html/;
-   $m.= $ENV{__EMB_EXTRAMETA}     ? " - $ENV{__EMB_EXTRAMETA}"   : ""; 
-   $m = $m0                       ? $m0 .  ($m ? ". $m" : "")    : $m;
+   $m.= $ENV{__EMB_EXTRAMETA}     ? " - $ENV{__EMB_EXTRAMETA}"                                          : ""; 
+   $m = $m0                       ? $m0 .  ($m ? ". $m"                     : ""                    )   : $m;
+   $m =~ s/^ - //g;
 
    %k=();
    @k=qw//;
@@ -25,7 +26,7 @@
    push @k, split(/[\s,;:\/\(\)']+|[\-\.]($|\s)/, lc("$s, $t, $m")); 
    foreach(@k){$k{$_}=1 if /[a-z]{2,}/i and not /^(the|and|or|is|of|for|home|are|not|use)$/i};
    @k=grep {$k{$_} and $k{$_}--} @k; 
-   @k=grep {not /\b(peter|jakobi|script-archive|shell|perl|placeholder)\b/} @k;
+   @k=grep {not /\b(peter|jakobi|script-archive|placeholder)\b/} @k;
    $k=join(" ", @k);
 -]
 
