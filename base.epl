@@ -22,7 +22,7 @@
    push @k, split(/[\s,;:\/\(\)']+|[\-\.]($|\s)/, lc("$s, $t, $m")); 
    foreach(@k){$k{$_}=1 if /[a-z]{2,}/i and not /^(the|and|or|is|of|for|home|are|not|use)$/i};
    @k=grep {$k{$_} and $k{$_}--} @k; 
-   @k=grep {not /\b(peter|jakobi|script-archive|scripts\?)\b/} @k;
+   @k=grep {not /\b(peter|jakobi|script-archive|scripts\?|placeholder)\b/} @k;
    $k=join(" ", @k);
 -]
 
