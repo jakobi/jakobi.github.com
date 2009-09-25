@@ -14,8 +14,8 @@
    $m.="Unix shell and perl scripts for commandline use and system administration. Home of sfre the system-flight-recorder-editor, waitcond, emv, Grep.pm, Grep.xchange and tagls" 
       if $fp=~/script-archive(-doc)?.index.p?html/;
    $m.= $ENV{__EMB_EXTRAMETA}     ? " - $ENV{__EMB_EXTRAMETA}"                                          : ""; 
-   $m = $m0                       ? $m0 .  ($m ? ". $m"                     : ""                    )   : $m;
-   $m =~ s/^\s*-\s+//g;
+   $m = $m0                       ? $m0 .  ($m ? ": $m"                     : ""                    )   : $m;
+   $m =~ s/(^|\.|:)\s*-\s+/$1/g;
 
    %k=();
    @k=qw//;
