@@ -19,7 +19,7 @@
    @k=qw//;
    # add section and title to meta if not yet included and uniq the keywords
 # grep -r -i -e '<TITLE>' -e meta.name.. . | fgrep '.html:'
-   push @k, split(/[\s,;:']+|[\-\.]($|\s)/, lc("$s, $t, $m")); 
+   push @k, split(/[\s,;:\/\(\)']+|[\-\.]($|\s)/, lc("$s, $t, $m")); 
    foreach(@k){$k{$_}=1 if /[a-z]{2,}/i and not /^(the|and|or|is|of|for|home|are|not|use)$/i};
    @k=grep {$k{$_} and $k{$_}--} @k; 
    @k=grep {not /\b(peter|jakobi|script-archive|scripts\?)\b/} @k;
