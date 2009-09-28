@@ -1,0 +1,87 @@
+<HTML>
+<HEAD>
+<link rel="icon"          href="/favicon.png"/>
+<link rel="shortcut icon" href="/favicon.png"/>
+<meta name="description" content="Minor List Processing Tools">
+<meta name="keywords" content="list processing tools unix shell perl scripts">
+<meta name="author" content="Peter Jakobi">
+<TITLE>Peter's Script-Archive - Minor List Processing Tools</TITLE>
+<style type="text/css"><!--
+   .anno { font-size:.8em }
+--></style>
+<style type="text/css"><!--
+   .num { padding-left:1em; text-align:right; nopadding-right:1em}
+   .repo{ text-align:center}
+   .file{ nopadding-left:1em; font-family:monospace}
+.desc{ padding-left:2em}
+--></style>
+</HEAD>
+
+<BODY>
+
+<p class=anno>
+<a href="http://jakobi.github.com/">HOME</a>                                          &nbsp;|&nbsp; 
+<a href="http://github.com/jakobi/">GIT Overview</a>          &nbsp;|&nbsp;
+Script-Archive:
+<a href="/script-archive-doc/">(docs)</a> : 
+<a href="http://wiki.github.com/jakobi/script-archive/">(wiki)</a> : 
+<a href="http://github.com/jakobi/script-archive">(git)</a>    &nbsp;|&nbsp;
+...
+</p>
+
+<H1>Peter's Script-Archive - Minor List Processing Tools</H1>
+
+<hr>
+
+<p>Some additional small tools for lists and pipes.</p>
+
+<H3>Commands</H3>
+
+<p><a href="http://github.com/jakobi/script-archive/tree/master/cli.list.various/">Git
+    View of this section / Download</a></p>
+
+
+<ul>
+   <li><B>ddnonblock, ddsponge</b> (not actually dd, just mnemonically named commands; 
+       GNU dd: use both BS=HUGENUMBER <i>and</i> OBS to force acting like a sponge)
+   <li><b>echo2cat</b> (abusing cat0 to turn command arguments into input lines)
+   <li><b>line.print, line.replace</b>: combined with grep/grep -v
+       the scripts allow basic line-editing using single line commands,
+       with the strings being a mostly verbatim part of the command arguments,
+       a history of the commands is already part-way to creating an UNDO log
+       for basic editing actions.
+   <li>a modified version of <b>pfind</b> (find with regex)
+   <li><b>pipe.select.curses, pipe.select.gtk2</b> (examples to select lines within pipes)
+   <li><b>range</b> (yet another command to print numeric ranges, with/without leading 0)
+   <li><b>randomecho</b>, <b>randomcat</b>
+   <li><b>revdatesort</b>
+   <li><b>sort.ip4</b>
+   <li><b>teefork</b> (slightly modified version of the old process-capable perl tee script)
+   <li>tailing files: <b>USR1tail</b>, <b>busythreadtail</b>
+   
+</ul>
+   
+<p>See also:</p>
+<ul>
+   <li><a href="../cli.shell.functions/00_SHELL_SETUP.html"><b>f2a</b></a>
+        in 00_lib.func: a shell function reading a file into an array.
+   <li><b>pipe.vim (aka vimpipe) , vimless</b> to run vim in the middle of a pipe or
+       as a less replacement. Both are in the <a href="../vim/00_VIM.html">vim section</a>.
+</ul>
+
+<hr>
+<p class=anno>
+<a href="http://jakobi.github.com/">HOME</a>                                          &nbsp;|&nbsp; 
+<a href="http://github.com/jakobi/">GIT Overview</a>          &nbsp;|&nbsp;
+Script-Archive:
+<a href="/script-archive-doc/">(docs)</a> : 
+<a href="http://wiki.github.com/jakobi/script-archive/">(wiki)</a> : 
+<a href="http://github.com/jakobi/script-archive">(git)</a>    &nbsp;|&nbsp;
+...
+</p>
+
+<p class=anno>jakobi(at)acm.org, 2009-07 - 2009-09</p>
+</p>
+
+</BODY>
+</HTML>
