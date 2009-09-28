@@ -1,15 +1,94 @@
-<HTML><HEAD><TITLE>Embperl Error</TITLE></HEAD><BODY bgcolor="#FFFFFF">
-<H1>Internal Server Error</H1>
-The server encountered an internal error or misconfiguration and was unable to complete your request.<P>
-Please contact the server administrator,  and inform them of the time the error occurred, and anything you might have done that may have caused the error.<P><P>
-<table cellspacing='2' cellpadding='5'>
-<tr bgcolor='#eeeeee'><td>
-<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-[30888]ERR:  24:  Error in Perl code: syntax error at /home/jakobi/git/github/LINKLAYER/HTML/base.epl line 80, near &quot;if if&quot;
-<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-</td></tr>
-</table>
-<br>
-Offline Embperl 2.2.0 [Mon Sep 28 10:41:09 2009]<P>
-</BODY></HTML>
+<HTML>
+<HEAD>
+<link rel="icon"          href="/favicon.png"/>
+<link rel="shortcut icon" href="/favicon.png"/>
+<meta name="description" content="VIM (Placeholder): commands to use vim in pipes both as vimscript and interactively as well as vim macros and functions">
+<meta name="keywords" content="vim commands pipes both as vimscript interactively well macros functions unix shell perl scripts">
+<meta name="author" content="Peter Jakobi">
+<TITLE>Peter's Script-Archive - VIM (Placeholder)</TITLE>
+<style type="text/css"><!--
+   .anno { font-size:.8em }
+--></style>
+<style type="text/css"><!--
+   .num { padding-left:1em; text-align:right; nopadding-right:1em}
+   .repo{ text-align:center}
+   .file{ nopadding-left:1em; font-family:monospace}
+.desc{ padding-left:2em}
+--></style>
+</HEAD>
 
+<BODY>
+
+<p class=anno>
+<a href="http://jakobi.github.com/">HOME</a>                                          &nbsp;|&nbsp; 
+<a href="http://github.com/jakobi/">GIT Overview</a>          &nbsp;|&nbsp;
+Script-Archive:
+<a href="/script-archive-doc/">(docs)</a> : 
+<a href="http://wiki.github.com/jakobi/script-archive/">(wiki)</a> : 
+<a href="http://github.com/jakobi/script-archive">(git)</a>    &nbsp;|&nbsp;
+...
+</p>
+
+<H1>Peter's Script-Archive - VIM (Placeholder)</H1>
+
+<hr>
+
+<p>I  still  want to finish some macros and finally split my grab  bag
+vim script file into presentable sections. Don't hold your breath.</p>
+
+<H3>Files of Interest</H3>
+
+<p><a href="http://github.com/jakobi/script-archive/tree/master/vim/">Git
+    View of this section / Download</a></p>
+
+
+<ul>
+   <li>shell scripts
+      <ul> 
+         <li>experimental: <b>vimscript</b> uses vim as interpreter for file containing
+            non-interactive vim script. Can be used with pipes. Note that the
+            script still requires a TTY due to short-comings of vim's head-less mode.
+            For the time being, do <i>not</i> try to run multiple scripts in parallel; 
+            the tempfile handling needs fixing (bash; full rewrite of the original vimsh 
+            vimscript example). Published as 
+            <a href="http://www.vim.org/scripts/script.php?script_id=2768">vimscript#2768</a> ).
+        <li><b>pipe.vim</b> aka <b>vimpipe</b> (interactively use vim within a pipe, 
+            e.g. for <tt>grep|pipe.vim|Grep.xchange</tt>. It also allow end-of-pipe
+            style uses like <tt>find|xargs pipe.vim</tt>, editing all files being 
+            passed as arguments from xargs, with help and the contents of stdin 
+            available in the last buffer. Note that both pipe.vim and vimless
+            do <i>wait for the end of input</i> from earlier pipe stages. Published as 
+            <a href="http://www.vim.org/scripts/script.php?script_id=2769">vimscript#2769</a> .
+        <li><b>vimless</b> (similar, but for the last stage of a pipe, slightly preconfigured
+            to implement a less-clone capable of syntax highlighting. Like pipe.vim, it can 
+            also be wrapped by e.g. xargs. Simple vim options can also be placed in
+            VIMLESSOPT, e.g. export VIMLESSOPT='-c "set ft=perl"')
+      </ul>
+   <li>vim scripts
+      <ul>
+         <li>to be added: configuration files
+         <li>to be added: vimsh with pty3 + urxvt patch (vimsh for interactive commands 
+             and improved session subscripts)
+         <li>to be added: vim scripts (after a clean up and split of .vimrc and 
+             my function library file)
+      </ul>
+</ul>
+
+
+
+<hr>
+<p class=anno>
+<a href="http://jakobi.github.com/">HOME</a>                                          &nbsp;|&nbsp; 
+<a href="http://github.com/jakobi/">GIT Overview</a>          &nbsp;|&nbsp;
+Script-Archive:
+<a href="/script-archive-doc/">(docs)</a> : 
+<a href="http://wiki.github.com/jakobi/script-archive/">(wiki)</a> : 
+<a href="http://github.com/jakobi/script-archive">(git)</a>    &nbsp;|&nbsp;
+...
+</p>
+
+<p class=anno>jakobi(at)acm.org, 2009-07 - 2009-09</p>
+</p>
+
+</BODY>
+</HTML>

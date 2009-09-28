@@ -1,15 +1,126 @@
-<HTML><HEAD><TITLE>Embperl Error</TITLE></HEAD><BODY bgcolor="#FFFFFF">
-<H1>Internal Server Error</H1>
-The server encountered an internal error or misconfiguration and was unable to complete your request.<P>
-Please contact the server administrator,  and inform them of the time the error occurred, and anything you might have done that may have caused the error.<P><P>
-<table cellspacing='2' cellpadding='5'>
-<tr bgcolor='#eeeeee'><td>
-<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-[30843]ERR:  24:  Error in Perl code: syntax error at /home/jakobi/git/github/LINKLAYER/HTML/base.epl line 80, near &quot;if if&quot;
-<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-</td></tr>
-</table>
-<br>
-Offline Embperl 2.2.0 [Mon Sep 28 10:41:08 2009]<P>
-</BODY></HTML>
+<HTML>
+<HEAD>
+<link rel="icon"          href="/favicon.png"/>
+<link rel="shortcut icon" href="/favicon.png"/>
+<meta name="description" content="some scripts for Firefox: load, grep or extract cookies, open tabs and bookmarks">
+<meta name="keywords" content="some scripts firefox load grep extract cookies open tabs bookmarks unix shell perl">
+<meta name="author" content="Peter Jakobi">
+<TITLE>Peter's Script-Archive - some scripts for Firefox</TITLE>
+<style type="text/css"><!--
+   .anno { font-size:.8em }
+--></style>
+<style type="text/css"><!--
+   .num { padding-left:1em; text-align:right; nopadding-right:1em}
+   .repo{ text-align:center}
+   .file{ nopadding-left:1em; font-family:monospace}
+.desc{ padding-left:2em}
+--></style>
+</HEAD>
 
+<BODY>
+
+<p class=anno>
+<a href="http://jakobi.github.com/">HOME</a>                                          &nbsp;|&nbsp; 
+<a href="http://github.com/jakobi/">GIT Overview</a>          &nbsp;|&nbsp;
+Script-Archive:
+<a href="/script-archive-doc/">(docs)</a> : 
+<a href="http://wiki.github.com/jakobi/script-archive/">(wiki)</a> : 
+<a href="http://github.com/jakobi/script-archive">(git)</a>    &nbsp;|&nbsp;
+...
+</p>
+
+<H1>Peter's Script-Archive - some scripts for Firefox</H1>
+
+<hr>
+
+<p>Some   firefox  command  line  support  scripts  addressing   usage
+deficiencies  of  firefox.  Usable to e.g. load all bookmarks  from  a
+number  of  bookmarkfolders  (have  firefox  or  firefoxstdin   invoke
+firefoxgrep...) . In a pinch, the scripts below also offer a low level
+method to diff/copy a few changed bookmarks.<p>
+
+<p>Note  that  the  firefox wrapper should be rewritten in  perl  with
+firefoxstdin  folded  into the code. Currently thee two  scripts  call
+each other for a number of functions... . Thus I see the scripts (with
+the  possible exception of firefoxgrep* itself) not as a released  set
+of  scripts,  but  more  of a working  example  on  accessing/grepping
+bookmarks and interacting with firefox from the the command line.</p>
+
+
+<p>Some remarks:</p>
+<ul>
+  <li>sqlite3 FILE.SQLIST vacuum can be used to clean a sqlite file when firefox is not running.
+  <li>a cheap trick to get sqlite content (read-only): ask the user to leave the browser 
+     idle for a few seconds, then just cp the sqlite file of interest. The data should have
+     been flushed to disk, and copying will break locks and make the contents accessible again.
+     See e.g. firefoxgrep*sqlite in this section.
+  <li><b>userChrome.css</b> contains a collection of settings to somewhat reduce the wasted
+     screen real estate. To further reduce wastage, hide navbar and bookmark bar and configure
+     the menubar to show the url field and forward/back/stop/reload (small-icons/no-text).
+     With above Chrome settings, even microfox(sp?) isn't able to reclaim much more space :).
+     I've placed the file into this section.
+  <li>My required minimum of addons to get along with firefox:
+  <ul>
+     <li>System: Addblock Plus, Add N Edit Cookies (if necessary modify the jar and 
+         edit the version number to allow installation; I've yet to see a worthwile substitute), 
+         Noscript,  Secure Login, User Agent Switcher, ModifyHeaders, JSView.
+     <li>Usability: AOIS Sidebar, Tabkit (replaced tabmixplus; one pet-peeve: opening a 
+         bookmark folder from the menu also <i>replaces</i> the current tab)
+     <li>Usability 2: AutoPager.
+     <li>Usability &amp; nice to have: SplitBrowser, ResurrectPage, GreaseMonkey
+     <li>Information Overload: NewsFox (though firefoxgrep goes a long way to deal with
+         periodic weekly or monthly site visits: create a folder like watch/news.weekly, and ask
+         the wrapper with 'firefox -weekly' to grep for urls and folders ending in weekly. 
+         Alternatively, just open each '*.weekly' folder from the bookmarks menu, selecting
+         open all)
+     <li>Information Overload &amp; nice to have: Zotero's local data store's actually quite accessible
+         using a little bit of sql/sqlite. So that's another nice tool, and it is possible
+         to extract things from Zotero using the command line.
+     <li>xul/migemo <i>would be very nice as well</i> if it wouldn't crash on me as soon as 
+        I try to search using regular expressiones.
+   </ul>
+</ul>
+
+<H3>Commands</H3>
+
+<p><a href="http://github.com/jakobi/script-archive/tree/master/cli.firefox/">Git
+    View of this section / Download</a></p>
+
+
+<ul>
+   <li><b>firefox</b> is a rather ugly script with grown warts; actually nowadays, 
+       firefox 3.5 finally implements some of the features I'm using this wrapper
+       for. Note that to directly load a set of urls from a file firefox.-NAME, 
+       you need to add -NAME to the list of shortcuts in the script. If the file for
+       the shortcut doesn't exist, firefoxstdin is invoked instead with this option.
+   <li><b>firefoxcookies</b> dumps cookies.sqlite.
+   <li><b>firefoxdelta</b> is a helper to show differences in bookmarks.
+   <li><b>firefoxgrep*</b> greps both html and sqlite bookmarks.
+   <li><b>firefoxstdin</b>: given urls or grep commands on stdin, get the urls, repair
+       them (e.g. urls pasted from email) and use the firefox wrapper to open them in
+       the running firefox instance. Some shortcuts
+       like -weekly are defined, which is translated to the input line "GREP 'weekly ::'",
+       which is expanded to the output of a firefoxgrep for all bookmarks ending with 
+       weekly or being in folders ending with the string weekly. This implements a way 
+       to open a number of folders straight from the command line.
+   <li><b>firefoxsessionlist</b> dumps xml-ish files like the firefox sessionstore
+       in a number of representations, with some grepping added.
+</ul>
+
+
+<hr>
+<p class=anno>
+<a href="http://jakobi.github.com/">HOME</a>                                          &nbsp;|&nbsp; 
+<a href="http://github.com/jakobi/">GIT Overview</a>          &nbsp;|&nbsp;
+Script-Archive:
+<a href="/script-archive-doc/">(docs)</a> : 
+<a href="http://wiki.github.com/jakobi/script-archive/">(wiki)</a> : 
+<a href="http://github.com/jakobi/script-archive">(git)</a>    &nbsp;|&nbsp;
+...
+</p>
+
+<p class=anno>jakobi(at)acm.org, 2009-07 - 2009-09</p>
+</p>
+
+</BODY>
+</HTML>
