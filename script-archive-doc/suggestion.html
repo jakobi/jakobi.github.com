@@ -1,0 +1,117 @@
+<HTML>
+<HEAD>
+<link rel="icon"          href="/favicon.png"/>
+<link rel="shortcut icon" href="/favicon.png"/>
+<meta name="description" content="Suggested Tools - A Selection">
+<meta name="keywords" content="suggested tools selection unix shell perl scripts">
+<meta name="author" content="Peter Jakobi">
+<TITLE>Peter's Script-Archive - Suggested Tools - A Selection</TITLE>
+<style type="text/css"><!--
+   .anno { font-size:.8em }
+--></style>
+<style type="text/css"><!--
+   .num { padding-left:1em; text-align:right; nopadding-right:1em}
+   .repo{ text-align:center}
+   .file{ nopadding-left:1em; font-family:monospace}
+.desc{ padding-left:2em}
+--></style>
+</HEAD>
+
+<BODY>
+
+<p class=anno>
+<a href="http://jakobi.github.com/">HOME</a>                                          &nbsp;|&nbsp; 
+<a href="http://github.com/jakobi/">GIT Overview</a>          &nbsp;|&nbsp;
+Script-Archive:
+<a href="/script-archive-doc/">(docs)</a> : 
+<a href="http://wiki.github.com/jakobi/script-archive/">(wiki)</a> : 
+<a href="http://github.com/jakobi/script-archive">(git)</a>    &nbsp;|&nbsp;
+...
+</p>
+
+<H1>Peter's Script-Archive - Suggested Tools - A Selection</H1>
+
+<hr>
+
+<H2>Tool Selection</H2>
+
+<p>The immediately usable scripts probably are</p>
+<ul>
+  <li><a href="cli.list.grep/00_LISTPROCESSING.html"><B>cat0/cat0par</B></a>:
+       conversion from/to \0-based lines; also 
+       allows  use of grep/sort/... with arbitrary record-based files
+  <li><a href="cli.list.rename/00_MASS-RENAME.html"><B>emv</B></a>:
+       for interactive  mass-renaming files using your favorite editor.
+       Not just for renaming.
+  <li><a href="cli.list.grep/00_LISTPROCESSING.html"><B>Grep.pm</B></a>: 
+       extended grep using boolean expression on top of regex or perl,
+       with highlighting, synonyms, etc; use with vim.pipe and Grep.xchange for
+       emv-style semi-interactive mass-editing of files.
+  <li><a href="cli.list.tagls/00_TAGS_AND_COMMANDLINE.html"><B>tagls</B></a>: 
+       use tags on the commandline to describe sets of files: 
+       turn arbitrary file names and lists of filenames into 
+       searchable collections of tagged file names.
+  <li><a href="cli.processes/00_PROCESS+EVENT-HANDLING.html">Managing processes</a>: 
+  <ul><LI><B>waitcond</B></a>: wait for events like 'make has finished' by 
+       building arbitrary boolean expressions over a language of tests like
+       existance-of-file, recent-file-modification, grep-in-file-or-command-output, 
+       diskidle/netidle/cpuidle, successful-ping, successful-shell-commands, or 
+       just plain ps-visible processes.
+       <LI><B>waitcond.timeout</B>: run a shell command and kill it after a timeout, which
+       might be the return of a second shell command.
+       <li><B>zap</B>: perl-camel-book process-killer that by now learned about
+       process trees, and the non-mortal arts of process listing and nicing.
+  </ul>
+</ul>
+
+<p>With the exception of cat0 and zap, you'll find these also as small
+projects on my <a href="http://freshmeat.net/users/jakobi2/">freshmeat
+page</a>,  together  with  sfre below. I'll bump  freshmeats'  version
+numbers  on  major  changes, so you can 'subscribe' to  the  freshmeat
+feeds for updates.</p>
+
+
+<p>A bit more special-interest are</p>
+<ul>
+   <li><a href="cli.firefox/00_FIREFOX.html"><b>firefox wrapper</b></a>:
+       To access firefox bookmarks 
+       (both html as well as sqlite versions),
+       opened  tabs,  etc, from the shell, have a look at  the firefox
+       wrapper set of scripts
+   <li><a href="http://github.com/jakobi/script-archive/tree/master/cli.mail/"><b>mygrepmail</b></a>:
+       If  you  liked  <B>grepmail</B>, the archive
+       contains  a  butchered version that doesn't give up when confronted with MIMEs.
+   <li><a href="admin.text/00_ADMIN_TEXT.html"><b>sfre</b></a>: 
+       Still  a  bit experimental,  <b>systemflightrecordereditor</b>'s
+       goal  is sequencing changes and augmenting group memory in  concurrent
+       file  change  scenarios,  like multiple administrators using  root  or
+       administrator  vs cron. For each edit (or more generally run  command)
+       it  logs a description to a journal, f-locks the plain file  arguments
+       of  the  command and uses changetrack to backup changes.  It  requires
+       changetrack (changetrack.sf.net) and lock.pl.
+</ul>
+
+<p>Some <a href="cli.shell.functions/00_SHELL_SETUP.html">shell functions</a> of interest are</p>
+<ul>
+   <li> <B>_echo</B> (a version of ksh's print, honoring --, thus safe for echoing arbitrary files)
+   <li> <B>f2a</B> (reads lines from files into an array, the safe multiple-file pendant of "$(command)")
+   <li> <B>uniqpath</B> (strip duplicates or . from :-path-style strings)
+   <li> a modified <B>nico_cd dir stack</B> working in both bash and ksh93
+</ul>
+
+<hr>
+<p class=anno>
+<a href="http://jakobi.github.com/">HOME</a>                                          &nbsp;|&nbsp; 
+<a href="http://github.com/jakobi/">GIT Overview</a>          &nbsp;|&nbsp;
+Script-Archive:
+<a href="/script-archive-doc/">(docs)</a> : 
+<a href="http://wiki.github.com/jakobi/script-archive/">(wiki)</a> : 
+<a href="http://github.com/jakobi/script-archive">(git)</a>    &nbsp;|&nbsp;
+...
+</p>
+
+<p class=anno>jakobi(at)acm.org, 2009-07 - 2009-09</p>
+</p>
+
+</BODY>
+</HTML>
