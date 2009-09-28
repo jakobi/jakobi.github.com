@@ -1,97 +1,15 @@
-<HTML>
-<HEAD>
-<link rel="icon"          href="/favicon.png"/>
-<link rel="shortcut icon" href="/favicon.png"/>
-<meta name="description" content="HTML: mostly old-style scripts to create/parse/maintain HTML files and sites, including book generation for e.g. printout and whole site diffs">
-<meta name="keywords" content="html mostly old-style scripts create parse maintain files sites including book generation printout whole site diffs unix shell perl">
-<meta name="author" content="Peter Jakobi">
-<TITLE>Peter's Script-Archive - HTML</TITLE>
-<style type="text/css"><!--
-   .anno { font-size:.8em }
---></style>
-<style type="text/css"><!--
-   .num { padding-left:1em; text-align:right; nopadding-right:1em}
-   .repo{ text-align:center}
-   .file{ nopadding-left:1em; font-family:monospace}
-.desc{ padding-left:2em}
---></style>
-</HEAD>
+<HTML><HEAD><TITLE>Embperl Error</TITLE></HEAD><BODY bgcolor="#FFFFFF">
+<H1>Internal Server Error</H1>
+The server encountered an internal error or misconfiguration and was unable to complete your request.<P>
+Please contact the server administrator,  and inform them of the time the error occurred, and anything you might have done that may have caused the error.<P><P>
+<table cellspacing='2' cellpadding='5'>
+<tr bgcolor='#eeeeee'><td>
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+[30828]ERR:  24:  Error in Perl code: syntax error at /home/jakobi/git/github/LINKLAYER/HTML/base.epl line 80, near &quot;if if&quot;
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+</td></tr>
+</table>
+<br>
+Offline Embperl 2.2.0 [Mon Sep 28 10:41:08 2009]<P>
+</BODY></HTML>
 
-<BODY>
-
-<p class=anno>
-<a href="http://jakobi.github.com/">HOME</a>                                          &nbsp;|&nbsp; 
-<a href="http://github.com/jakobi/">GIT Overview</a>          &nbsp;|&nbsp;
-Script-Archive:
-<a href="/script-archive-doc/">(docs)</a> : 
-<a href="http://wiki.github.com/jakobi/script-archive/">(wiki)</a> : 
-<a href="http://github.com/jakobi/script-archive">(git)</a>    &nbsp;|&nbsp;
-...
-</p>
-
-<H1>Peter's Script-Archive - HTML</H1>
-
-<hr>
-
-<p>Commands  dealing with HTML. Most of these are pretty ancient,  but
-sometimes still surprisingly useful.</p>
-
-<H3>Major Commands (early 90's style)</H3>
-
-<p><a href="http://github.com/jakobi/script-archive/tree/master/cli.HTML/">Git
-    View of this section / Download</a></p>
-
-
-<ul>
-   <li><B>COLLECT</B> turns a set of html files into a single html document.
-   <li><B>DIFF, DIFFTREE</B> diffs single html documents or whole site trees.
-   <li><b>htmlcheck / htmlchek</b> is a truly ancient but handy html validator; 
-       I think the configuration and some suppression of warnings was all I changed.
-   <li><B>LINKS</B> extracts the links from an HTML document in HTML or list format
-       for further processing. Does try basic guessing for form-based links.
-   <li><B>XLINKS</B> another link extractor with its reporting geared as a first
-       step for spidering.
-   <li><b>db_cgi.p</b> is the retired DBFW's grab-bag of utility functions 
-      (DBFW - a simple textual tagged database framework based on pipe filters
-       which was also usable as CGI).
-      Some scripts may still depend on one or the other of these functions.
-   <li><b>dir2html.pl</b> provides old style configurable dirtree filelist generation
-      using .name and .skip files for control. 
-</ul>
-
-<p>Of  course,  there are better ways than an early 90's mix  of  code
-riddled  with  html  scraps. Think e.g. MVC and  templates  and  we've
-advanced  to the late 90's: <b>dir2array</b> just guts the  convoluted
-(and  inherently  buggy aka "heuristic") dir2html.pl and  stops  after
-collecting  the filelist information. Feed that to an embperl template
-(gitfilelist.epl),  and  include  that template from  any  phtml  page
-requiring   a  filelist.  Way  more  flexible/extensible,  dreamy   to
-maintain, less buggy and shorter to boot.</p>
-
-<p  class=anno>The  directory dir.dir2array contains the early  August
-'09  embperl  templates (incl. gitfilelist.epl) for my github site  as
-well  as the script to statically translate the embperl pages to plain
-html,  copy files contents as specified by a tree of symlinks,  commit
-them  to a local git and finally push the differences to github.  Note
-that  commandline embperl invoked from embpexec isn't quite as  modern
-and  comfortable as embperl running within the webserver: this affects
-both   invoking  embperl  and  the  searching/loading   of   baseclass
-templates.</p>
-
-
-<hr>
-<p class=anno>
-<a href="http://jakobi.github.com/">HOME</a>                                          &nbsp;|&nbsp; 
-<a href="http://github.com/jakobi/">GIT Overview</a>          &nbsp;|&nbsp;
-Script-Archive:
-<a href="/script-archive-doc/">(docs)</a> : 
-<a href="http://wiki.github.com/jakobi/script-archive/">(wiki)</a> : 
-<a href="http://github.com/jakobi/script-archive">(git)</a>    &nbsp;|&nbsp;
-...
-</p>
-
-<p class=anno>jakobi(at)acm.org, 2009-07 - 2009-09</p>
-</p>
-
-</BODY>
-</HTML>

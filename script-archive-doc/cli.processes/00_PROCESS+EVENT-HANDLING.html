@@ -1,99 +1,15 @@
-<HTML>
-<HEAD>
-<link rel="icon"          href="/favicon.png"/>
-<link rel="shortcut icon" href="/favicon.png"/>
-<meta name="description" content="Process Handling: wait for file or process-related events with waitcond. kill/list/nice processes with zap">
-<meta name="keywords" content="process handling wait file process-related events waitcond kill list nice processes zap unix shell perl scripts">
-<meta name="author" content="Peter Jakobi">
-<TITLE>Peter's Script-Archive - Process Handling</TITLE>
-<style type="text/css"><!--
-   .anno { font-size:.8em }
---></style>
-<style type="text/css"><!--
-   .num { padding-left:1em; text-align:right; nopadding-right:1em}
-   .repo{ text-align:center}
-   .file{ nopadding-left:1em; font-family:monospace}
-.desc{ padding-left:2em}
---></style>
-</HEAD>
+<HTML><HEAD><TITLE>Embperl Error</TITLE></HEAD><BODY bgcolor="#FFFFFF">
+<H1>Internal Server Error</H1>
+The server encountered an internal error or misconfiguration and was unable to complete your request.<P>
+Please contact the server administrator,  and inform them of the time the error occurred, and anything you might have done that may have caused the error.<P><P>
+<table cellspacing='2' cellpadding='5'>
+<tr bgcolor='#eeeeee'><td>
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+[30873]ERR:  24:  Error in Perl code: syntax error at /home/jakobi/git/github/LINKLAYER/HTML/base.epl line 80, near &quot;if if&quot;
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+</td></tr>
+</table>
+<br>
+Offline Embperl 2.2.0 [Mon Sep 28 10:41:09 2009]<P>
+</BODY></HTML>
 
-<BODY>
-
-<p class=anno>
-<a href="http://jakobi.github.com/">HOME</a>                                          &nbsp;|&nbsp; 
-<a href="http://github.com/jakobi/">GIT Overview</a>          &nbsp;|&nbsp;
-Script-Archive:
-<a href="/script-archive-doc/">(docs)</a> : 
-<a href="http://wiki.github.com/jakobi/script-archive/">(wiki)</a> : 
-<a href="http://github.com/jakobi/script-archive">(git)</a>    &nbsp;|&nbsp;
-...
-</p>
-
-<H1>Peter's Script-Archive - Process Handling</H1>
-
-<hr>
-
-<p>Some  scripts  for  dealing  with  processes  and   process-related
-events.</p>
-
-<H3>Major Commands</H3>
-
-<p><a href="http://github.com/jakobi/script-archive/tree/master/cli.processes/">Git
-    View of this section / Download</a></p>
-
-
-<ul>
-   <li><b>waitcond</b> (perl) - test or wait for an event. Like tagls/Grep.pm, 
-       this one also offers boolean expressions, this time on top of a 
-       language of tests including
-   <ul>
-      <LI>grep in files or command output
-      <LI>successful execution of shell commands
-      <LI>host pinging
-      <LI>(dis)appearance of files
-      <LI>(dis)appearance of processes in ps output
-      <LI>threshold-based file modification time
-      <LI>threshold-based cpu/net/disk idleness
-   </ul>
-       See waitcond.dbus.README for ideas on using dbus-events with waitcond
-       (waiting for events like 'ping', HAL, FUSE, Desktop-Notifications).
-       You will probably want to combine waitcond with some notification tool 
-       like the trumpets of Jericho (or just ALARM, maybe also something boring 
-       like eMail or SMS) to be indeed sucessfully notified of the fact that your 20 hour 
-       compile just failed with a syntax error after just 58 minutes... . 
-       Published on <a href="http://freshmeat.net/projects/waitcond">freshmeat</a>
-       and <a href="http://search.cpan.org/search?query=waitcond">cpan</a>. 
-       (the changes between version 0.2.2 to 0.32 are just CPAN-related and don't
-        change the actual code).
-   <li>A simplified variant with different history and codebase is
-       <b>fwait/pwait</b>, which is probably the most authentic and still used version
-       of my original boolean regex patch that I created for a small perl fulltext
-       indexer (96-97 maybe?). Note that neither fwait nor waitcond allow 
-       arbitrary perl (e.g. 'do{}') in the boolean expression.
-   <li><b>waitcond.timeout</b> is an extended version of Piotr Roszatycki's script.
-       It runs a command and kills it after a period. The
-       timelimit specification allows using a command such as waitcond.
-   <li><b>zap</b> (perl) has come a long way from the its old incarnation in the camel book. 
-       Nowadays it lists, nices or kills processes or process trees 
-       matching a regex with or without user interaction. Includes ionice support 
-       and also tries to cpulimit for higher nice values (if a cpulimit or ionice
-       command is available and zap's nice-personality is active).
-</ul>
-
-
-<hr>
-<p class=anno>
-<a href="http://jakobi.github.com/">HOME</a>                                          &nbsp;|&nbsp; 
-<a href="http://github.com/jakobi/">GIT Overview</a>          &nbsp;|&nbsp;
-Script-Archive:
-<a href="/script-archive-doc/">(docs)</a> : 
-<a href="http://wiki.github.com/jakobi/script-archive/">(wiki)</a> : 
-<a href="http://github.com/jakobi/script-archive">(git)</a>    &nbsp;|&nbsp;
-...
-</p>
-
-<p class=anno>jakobi(at)acm.org, 2009-07 - 2009-09</p>
-</p>
-
-</BODY>
-</HTML>

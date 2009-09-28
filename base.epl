@@ -74,7 +74,11 @@ Script-Archive:
 ...
 </p>
 
-[- @time=localtime(time); $t=sprintf "%04d-%02d",$time[5]+1900,$time[4]+1; -]
+[- 
+   @time=localtime(time); 
+   $t=sprintf "%04d-%02d",$time[5]+1900,$time[4]+1; 
+   $t.=sprintf "-%02d" if if $fp=~/script-archive(-doc)?\/?(index.p?html)?$/;
+-]
 <p class=anno>jakobi(at)acm.org, 2009-07 - [+$t+]</p>
 </p>
 
