@@ -1,0 +1,167 @@
+[*
+   $ENV{__EMB_EXTRATITLE}="Motivation - The Unix Philosophy";
+   $ENV{__EMB_COUNT}++; 
+   if (1==$ENV{__EMB_COUNT}) {
+      Execute('base.epl');
+   } else {
+
+*]
+
+<H2>Philosophy, "Ancient Artes" and a Modern Tool Chest</H2>
+
+<p>A  small detour. In the Middle Ages, the Arts, Math and  Philosophy
+were  considered  pretty similar. Even a millenium later, this  common
+root  and the combination of concepts and ideas from these fields make
+up  a  very  valuable way of thinking about systems: For  an  elegant,
+efficient  problem  solution that won't degenerate immediately into  a
+maintenance     nightmare,     you    still    need     to     combine
+<B>Arts&amp;Crafts/</B>    (skills    -   sic!),    <B>Philosophy</B>,
+<B>Logic&amp;Mathematics</B>,  and  <B>Engineering</B>. Just  consider
+the  title of a classic of the field of Informatics: D.E.Knuth's  "Art
+of Programming". Or just one keyword: City Architecture.</p>
+
+<p   class=anno>I  hope  you  did  think  of  the   Gang-Of-Four   and
+Design-Patterns just now, right :) ?</p>
+
+<p>Back   to  Unix:  The  <B>Unix  tool  chest</B>  is  a  quite  nice
+demonstration  of  <i>combining mostly-orthogonal  viewpoints</i>  and
+taking that combination as far as possible. And given the rejuvenation
+of  Unix  after  a decade of corporate mistreatments (the  Unix  wars)
+thanks  to a medicine called Linux, there's still no end in sight  for
+development,  while the foundations and basics have been proven  solid
+by the test of time. With some interesting offspring like the Internet
+and the Web.</p>
+
+
+
+<H2>Combining Orthogonal Concepts</H2>
+
+<p>At its core, Unix is just a suitable combination (read: at just the
+right  level  of  abstraction) of a set of  basic  (read:  excellently
+selected  and  combined) orthogonal concepts. The concepts as well  as
+many  of  the ways to combine them have been extended (e.g. NFS),  but
+the  core remains unchanged: a thirty year old shell script has pretty
+solid  chances  of working unchanged. With a small  difference:  Given
+e.g.  network  access  or  process  substitution,  even  that  ancient
+unchanged script suddenly gains new features and uses.</p>
+
+<p>Let's just consider two of these concepts: 1. Everything is a file,
+2. Pipes. Now you can already easily extend the usage possibilities of
+basic  commands. Maybe even add mknod and sockets, if you're tired  of
+being  restricted  to a perceived linear-monocausal design. These  two
+concepts  already offer a pretty interesting toolkit, don't they?  Way
+better  than  requiring  a programmer to pre-imagine the  set  of  all
+possible usage scenarios ahead of time...</p>
+
+<p>Now,  add a third slightly more recent concept to the mix and check
+the  set  of  usage scenarios again. So just add a  pinch  of  regular
+expressions  and stir; and suddenly basic tools allow solving  complex
+tasks previously impossible.</p>
+
+<p>Too abstract, you say. You want a program to run?</p>
+
+<p>With  those  3 concepts we have e.g. grep command and some  of  its
+common  usage  scenarios.  Now add an editor like vi or  sed:  we  can
+<i>modify</i> files and data passing through a pipe - e.g. the matches
+found  by  <i>grep</i>. While we can just use sed -i.bak to  mass-edit
+files  (<i>sed</i>  combines the concepts of regexes, pipes  and  line
+editing),  adding  a  <i>"backend"</i> that takes grep  output  allows
+better file locking and say improved logging.</p>
+
+<p>Now  add  the  concept of change-sets between versions of  a  file.
+That's  the <i>diff</i> and <i>patch</i> command. Now let's  implement
+that  backend in perl, taking grep output edited with <i>vi</i>,  have
+the backend locate the grepped matches in the files specified by grep,
+apply  some  perl  expression to them, and lock, backup and  diff  the
+files        on        change.       This       is       the        <a
+href="cli.list.grep/00%5FLISTPROCESSING.html"><b>Grep.xchange</b></a>
+command  in this very archive: a simple idea building upon those  four
+concepts,  bridging grep output to diff/patch and thus implementing  a
+mass  file changer with unlimited undo/redo. And that kind of  logging
+just  happens  to  turn Grep.xchange into a generic  patch  generating
+tool.  It  can  be  invoked with a simple pipe  like  <tt>grep  ...  |
+vim.pipe  |  Grep.xchange</tt>,  while performing  undo/redo  for  any
+number of involved files with just a <tt>patch -u &lt; LOG</tt>.<p>
+
+<p><a
+href="cli.list.tagls/00%5FTAGS%5FAND%5FCOMMANDLINE.html"><b>tagls</b></a>
+is another nice example for combining concepts to gain expressiveness,
+implemented  in  a  way that allows tagls itself to become  a  bulding
+block/concept to build upon. The command's also fun, as it extends the
+use  of  regular  expressions  by both  adding  synonyms  and  boolean
+expressions  into  the mix (as does <b>Grep.pm</b> as a more  ordinary
+kind of grep).</p>
+
+<p>                                Or                               <a
+href="cli.processes/00%5FPROCESS%2BEVENT-HANDLING.html"><b>waitcond</b></a>,
+which  implements  a small mini-language of boolean  expressions  over
+various  tests including greps to test/describe/wait-for what might be
+called "dynamic system processing states".</p>
+
+<p>Of  course, combining, customizing and extending the basic concepts
+and building blocks is part of the charm of Unix, and thus you'll find
+a  part  of  my tool chest in this archive.</p>
+
+
+
+<H2>Fast Forward to the Present</H2>
+
+<p>That's  obsolete  stuff just deals with ancient  pre-UNICODE  ASCII
+text,  you object. Aren't pipes and commandlines unusable, given  XML,
+you ask.</p>
+
+<p>Even  with XML, suitably modified grep, diff and sort commands  are
+quite  helpful  in pipes. Just consider XPATH. Just  structuring  text
+doesn't  affect  the usability of Unix core concepts at all  -  simply
+replace  one  command or another with a more suitable  domain-specific
+version,  and  the  time-honed command patterns still  allow  avoiding
+tedious  interactive  changes.  And if you want to start or  end  your
+workflow in a graphical application, Unix offers those as well.</p>
+
+<p><i>When  working  with the proper abstraction, "things"  don't  really
+change that much at all...</i></p>
+
+
+
+<H2>Further Reading</H2>
+
+<ul>
+   <li>Mike Gancarz, Linux and the Unix Philosophy, Butterworth Heinemann, 2003.
+   <li>Marshall Kirk McKusick, The Design and Implementation of the FreeBSD Operating System, AW, 2004.
+</ul>
+
+<p>The  first one offers more on the concepts of Unix, the second  one
+offers  the  real  meat of the implementation details,  albeit  a  bit
+kernel-centric. The slightly heretic "Unix Toolbox" from Kernighan and
+Pike  offers a complementaries programmer's tool smith perspective  to
+the  first  book. If you haven't read it yet, also  check  Stevenson's
+Essay "In the Beginning was the Command Line".</p>
+
+
+<H2>Must Be In The Air - A Foot Note On Parallel Evolution</H2>
+
+<p>Some topics just 'are in the air'. So to take a peek at
+a  completely  independent implementation of boolean expressions  over
+regular  expressions  and  perl  scraps,  check  e.g.  David  Coppit's
+mailgrep  and the -E option, as well as the Changelog for its  history
+(around  4.80/y2k):  "-E  allows  for  complex  pattern   matches
+involving logical operators".</p>
+
+<p>For my own part, late in 1997, I got annoyed at freewais and wanted
+to  switch  to  something maintainable like ice, but didn't  like  its
+limits. Thus I provided a patch to add boolean support to ice2-for.pl
+(<a href="http://www.objectweaver.de/ice/">ICE</a>, by Christian Neuss,
+is  an  old-school  light-weight  perl  full  text  indexer  and   cgi
+searchform;  licence: free educational, greenpeace-donation otherwise).
+</p>
+
+<p>With  some squinting the origins of the 'implicit and' can be imagined
+in  '$need_op'. fwait's boolean reimplementation should probably count
+as  the interim screen-space-is-way-too-expensive-attempt, albeit with
+a  certain  elegance  and doing expression  compilation  with  'token'
+regex-replacement  in-situ.  While the current incarnation  in  tagls,
+waitcond and Grep.pm is the most adaptable and readable.</p>
+
+
+
+[* } *][# MUST BE AT EOF! #]

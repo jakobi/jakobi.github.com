@@ -1,0 +1,99 @@
+<HTML>
+<HEAD>
+<link rel="icon"          href="/favicon.png"/>
+<link rel="shortcut icon" href="/favicon.png"/>
+<meta name="description" content="Various Scripts">
+<meta name="keywords" content="various scripts unix shell perl">
+<meta name="author" content="Peter Jakobi">
+<TITLE>Peter's Script-Archive - Various Scripts</TITLE>
+<style type="text/css"><!--
+   .anno { font-size:.8em }
+--></style>
+<style type="text/css"><!--
+   .num { padding-left:1em; text-align:right; nopadding-right:1em}
+   .repo{ text-align:center}
+   .file{ nopadding-left:1em; font-family:monospace}
+.desc{ padding-left:2em}
+--></style>
+</HEAD>
+
+<BODY>
+
+<p class=anno>
+<a href="http://jakobi.github.com/">HOME</a>                                          &nbsp;|&nbsp; 
+<a href="http://github.com/jakobi/">GIT Overview</a>          &nbsp;|&nbsp;
+Script-Archive:
+<a href="/script-archive-doc/">(docs)</a> : 
+<a href="http://wiki.github.com/jakobi/script-archive/">(wiki)</a> : 
+<a href="http://github.com/jakobi/script-archive">(git)</a>    &nbsp;|&nbsp;
+...
+</p>
+
+<H1>Peter's Script-Archive - Various Scripts</H1>
+
+<hr>
+
+<p>Some scripts, helpers and experiments that don't quite fit the other categories.</p>
+
+<H3>Commands</H3>
+
+<p><a href="http://github.com/jakobi/script-archive/tree/master/cli.various/">Git
+    View of this section / Download</a></p>
+
+
+<ul>
+   <li><B>ALARM</B> (mostly acoustic environmental damage, for use with waitcond)
+   <li><B>ALERTOSD</B> (using the on-screen display to print an alert)
+   <li><B>append.p</b> (append files to similar named files in another dir, knows gzip;
+        though mostly I just use mc for moving files into an archive dir and 
+        appending files in case of collisions)
+   <li><B>df.minfree</b> (checks free space and warns if lower than requested)
+   <li><B>diff.p</b> (diff wrapper knowing about gzip)
+   <li><b>gzip.r</b>, <b>gzip.rfix</B> (gzip -r with some exceptions; archive cleanup after gzip -r)
+   <li><b>gunzipmemberextract</b> (experimental demo on how to extract gzipped appended members from
+        a corrupted gzip file - a bit painful, but not impossible; still the gzip format shows its
+        age and its deficiencies; if only some bzip2 modes would trade space inefficiency for more speed).
+   <li><b>mt_dir</b> (configures directory short names and invokes one of echo/cd/mc; see
+        also the nico_cd stack in the shell function section)
+   <li><b>paradj</b> (format or justify a text; modified from J. Duque; can now skip \ 
+        to format perl double quoted text for output)
+   <li><b>repeat</b> (when I'm too lazy to write a while ... do; command; done loop)
+   <li><b>sanitize_filenames</b> (rename files containing certain characters, umlauts,
+       etc; superseeded by myrename)
+   <li><b>sleep.p</b> (select-based sub-second sleep example)
+   <li><b>sleepuntil</b> [ -c COMMAND] TIMESPEC ... sleeps until TIMESPEC, then 
+       optionally execute the previously defined command. Knows some short-hand 
+       notations like sleepuntil +20s or sleeptuntil 16:00.
+   <li><b>unescape.pl</b> (modified version of Guide de Rosa's unescape; strip 
+       some of the noise from script's typescript sessions logs; tries to strip
+       e.g. vi sessions from the logs to increase their usability)
+   <li><b>watchfloat</b> (write background command output to a floating region of a tty)
+</ul>
+
+<p>See also:</p>
+<ul>
+   <li><B>addcr/foldlf/remcr</B> - adding/removing umlauts or cr from files, (placed into
+     the <a href="../cli.HTML/00_HTML-PROCESSING.html">html section</a>
+     due to the use of sub.mime)
+   <li>some notes on a work-around for using <b>fdupes</b> for duplicate detection and relinking
+   <li>some helper for <B>printing</b> and coping with gnome-gtk print making a mess of
+     Unix basics like the possibility of printing via pipelines.
+</ul>
+
+
+<hr>
+<p class=anno>
+<a href="http://jakobi.github.com/">HOME</a>                                          &nbsp;|&nbsp; 
+<a href="http://github.com/jakobi/">GIT Overview</a>          &nbsp;|&nbsp;
+Script-Archive:
+<a href="/script-archive-doc/">(docs)</a> : 
+<a href="http://wiki.github.com/jakobi/script-archive/">(wiki)</a> : 
+<a href="http://github.com/jakobi/script-archive">(git)</a>    &nbsp;|&nbsp;
+...
+</p>
+
+<p class=anno>jakobi(at)acm.org, 2009-07 - 2009-09</p>
+</p>
+
+</BODY>
+</HTML>
