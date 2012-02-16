@@ -107,15 +107,33 @@ some xterms, firefox and LibreOffice.</p>
 <p>I  cannot help but assume that Android devices were never  expected
 to  grow  to  Deskop  size, considering  user  interface,  application
 presentation  and  some sneak peeks into the framework  source.  Maybe
-Google  wanted to be polite and offer the user to install a dozen apps
-of his own.</p>
+Google  wanted to be polite and offer the user to maybe install upto a
+dozen apps of his own.</p>
 
 <p>But  a  modern  Android runs on  different  hardware:  Desktop-size
 displays  (1280x800)  coupled  with Desktop-size RAM (1GB)  and  Flash
 sizes  already  suitable  to  a full-sized  Linux  or  Windows  "root"
 installation. Available space and possibilities tend to be used, so we
 have  standard  Android setups using 180 apps as part of the rom  blob
-with maybe 200 to 300 additional installs from the user.</p>
+with  maybe 200 to 300 additional installs from the user.</p>
+
+<p>Severe  growth  pains  and  unsuitable design  decisions  are  e.g.
+visible  in system_server and twlauncher: Confront them with more than
+a  dozen  or  two  sdcard application  "installs"  -  twlauncher  gets
+unstable,  but system_server timeouts and the phone does a soft reboot
+loop  (only  recoverable by adb shell and doing uninstalls of most  of
+the  sdcard  apps).  The  framework also  regularly  forgets  assigned
+application  numbers  (abused unix user id/group id) as logged in  the
+shamefully  hidden  /data/system/uiderrors.txt. If you've an app  that
+suddenly  only  force-closes on startup, this is the likely reason  as
+affected  apps  are  incapable  of  accessing  their  own  files   and
+databases.</p>
+
+<p  class=anno>I  wonder what Google does the non-rooted user want  to
+do? Probably sending the device in to service, and buy a second device
+to survive until the slow (off-shore) service returns the (un)repaired
+device?  Once again, the only usable, moderately up-to-date and secure
+android device is a rooted one.</p>
 
 <p>This  article describes an approach to use the default app launcher
 of  the  Note to organize your apps and to reuse that data outside  of
