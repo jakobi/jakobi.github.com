@@ -46,31 +46,33 @@ below. </p>
 <p>The snapshot contains scripts for android unix-side userspace,
 a  collection  of  static armel binaries, the tree  structure  of  the
 chroot  on the Galaxy Note, as well as scripts and configuration files
-used  for  monitoring,  backup,  etc from a remote  linux  server  via
+used  for  monitoring,  backup,  etc from a remote  Linux  server  via
 cron.</p>
 
-
+The Articles are licensed as CC-BY-SA.
 
 <hr>
 <a href="01_setup.html"><H2>01 - Setting  up  the Samsung Galaxy Note as a Unix  Box</H2></a>
 
-<p  class=anno>(or  at  least as much as we can get away  with,  given
-Google's  kernel  patches and dumbed-down configuratin)</p>
+<p  class=anno><i>(or  at  least as much as we can get away  with,  given
+Google's  Linux kernel  patches and dumbed-down kernel configuration)</i></p>
 
-<p>This  article  is a demonstration of setting up an ordinary  <B>1GB
-RAM  DUAL  CORE PC</B> also known as <b>Samsung Galaxy  Note</b>.  The
-Note  is often wrongly accused to be a less powerful mere internet  or
-media tablet or a traditional-style smartphone. Some even combine both
-insults and call it a <i>phablet</i>. VOIP, some cheap prehistoric gsm
-feature  plus small weight seem to be too distracting to perceive such
-a basic fact.</p>
+<p>This  article demonstrates a sane setup of GNU/Linux on an ordinary
+last-year's  <B>1-GB-RAM  DUAL-CORE PC</B> (also known  as  <b>Samsung
+Galaxy Note</b>).</p>
 
-<p>The  only difference to the current crop of tablets is the  display
-density. Comparing hardware specifications of Note vs PC (you want an
-USB host port for external hardware: you already have one installed on
-the  Note), the only interesting difference is in software, and in the
-encoded  usage  / user interface assumptions. And I consider  some  of
-Google's  assumptions  (derived from RAM-starved PDAs) to  be  already
+<p>The  Note  is  often  wrongly accused to be a  less  powerful  mere
+internet  or media tablet or a traditional-style smartphone. Some even
+combine  both  insults and call it a <i>phablet</i>. VOIP, some  cheap
+prehistoric  gsm feature plus small weight seem to be too  distracting
+to perceive such a basic fact.</p>
+
+<p>The  only difference to the best of the current crop of tablets  is
+the  display density. Comparing hardware specifications of Note vs  PC
+(you  want  an USB host port for external hardware: you've got an  OTG
+one  on the Note), the only interesting difference is in software, and
+in the encoded usage / user interface assumptions. And I consider some
+of  Google's assumptions (derived from RAM-starved PDAs) to be already
 obsolete in the face of current hardware.</p>
 
 <p  class=anno>Remember  Moore's Law - modern <i>real</i>  smartphones
@@ -81,20 +83,26 @@ isn't. Smart that is.</p>
 for  more than just remote USB storage and taking a few of your  files
 along.</p>
 
-<p>Let's escape from Google's dumb-down  getting-in-your-workflow
-single-task  Android usage mode, while neither going full cloud  (with
-all associated disadvantages) nor lugging around a laptop.</p>
+<p>Let's  escape  from  Google's  dumb-down   getting-in-your-workflow
+single-task Android usage mode, and put the GNU back in GNU/Linux. You
+gain  use  of a full Desktop everywhere you are, while  neither  going
+full  cloud  (with  all associated disadvantages) nor  having  to  lug
+around a 20-times-heavier laptop.</p>
 
-<p>The  first  part  describes setting up enough of a real  Unix  user
+<p>The  first  part  investigates the device and contains  some  notes
+of available  resources and rooting.</p>
+
+<p>The  second  part describes setting up enough of a real  Unix  user
 space to actually permit proper use of the shell.</p>
 
-<p>Building  on these basics, the second part looks at taking a  fully
+<p>Building  on these basics, the third part looks at taking a  fully
 customized  desktop  setup on the road: Create a  Desktop-size  DEBIAN
 armel  CHROOT setup and make that a first class citizen in any LAN you
-encounter  (ssh, file serving and filesystem mounting). The final step
-is  running  a  local  X11 Desktop on the  Note,  using  the  chroot's
-vncserver  or  Xvnc  (market: Xvnc). To access, either use  the  local
-display of the Note or any PC with a vncviewer.</p>
+encounter  (ssh, file serving and filesystem mounting).</p>
+
+<p>The  final  step is running a local X11 Desktop on the Note,  using
+the  chroot's vncserver or Xvnc (market: Xvnc). To access, either  use
+the local display of the Note or any PC with a vncviewer.</p>
 
 <p  class=anno>This  setup  is  enough  for  normal  LibreOffice  text
 editing,   programming  or  some  light  web  browsing  (firefox9  and
@@ -155,10 +163,12 @@ management after e.g. flashing a new rom.</p>
 
 <p>A  look  at the privacy and security implications  of  smartphones,
 using  the  Galaxy  Note  as  an example. Also  some  notes  on  (not)
-empowering users. For technical content, this sections montions the FW
-firewall  script  from the previous article and takes a quick look  at
-LBE,      Permissions-Denied     (both     market)     and     Android
-permissions/intents/receivers.</p>
+empowering users.</p>
+
+<p>For  technical  content,  this sections mentions  the  FW  firewall
+script  from the previous article, checks recurring netstat output for
+network connectivity and takes a quick look at LBE, Permissions-Denied
+(both market) and Android permissions/intents/receivers.</p>
 
 <p>Again,  part of the problem is misunderstanding and misrepresenting
 desktop-class  portable  computers  as the  magical-but-dumb  physical
