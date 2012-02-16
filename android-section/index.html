@@ -44,29 +44,36 @@ chroot  on the Galaxy note, as well as scripts and configuration files
 used  for  monitoring,  backup,  etc from a remote  linux  server  via
 cron.</p>
 
-<hr>  <H2>Setting  up  the Samsung Galaxy Note as a Unix  Box  (native
-shell plus DEBIAN chroot)</H2>
+<hr><H2>Setting  up  the Samsung Galaxy Note as a Unix  Box</H2>
 
-<p>(or at least as much as we can get away with, given Google's kernel
-patches)</p>
+<p  class=anno>(or  at  least as much as we can get away  with,  given
+Google's kernel patches)</p>
+
+<p>This  article  is an example of how to sanely setup Android  native
+user space to enable proper use of the shell. In the second part deals
+with  setting up a DEBIAN chroot and making the Android a proper  host
+in  the  lan  with remote access, X11, and some  automation  including
+remote cron, backup and simple monitoring.</p>
 
 <hr>
 <H2>Coping with Size</H2>
 
-I  cannot help but assume that Android devices were never expected  to
-grow   to  Deskop  size,  considering  user   interface,   application
-presentation  and some sneak peeks into the framework source. Maybe be
-polite  and  offer the user to install a dozen apps of his own. But  a
-modern  Android  runs  on different  hardware:  Desktop-size  displays
-(1280x800) coupled with Desktop-size RAM (1GB) and Flash sizes already
-suitable  to  a full-sized Linux or Windows "root" installation.  This
-results  in  setups using about 200 apps as part of the rom and  maybe
-200 to 300 additional installs from the user.
+<p>I  cannot help but assume that Android devices were never  expected
+to  grow  to  Deskop  size, considering  user  interface,  application
+presentation  and  some sneak peeks into the framework  source.  Maybe
+Google  wanted to be polite and offer the user to install a dozen apps
+of his own.</p>
 
-This  article describes an approach to use the default app launcher of
+<p>But  a  modern  Android runs on  different  hardware:  Desktop-size
+displays  (1280x800)  coupled  with Desktop-size RAM (1GB)  and  Flash
+sizes  already  suitable  to  a full-sized  Linux  or  Windows  "root"
+installation.  This results in setups using about 200 apps as part  of
+the rom and maybe 200 to 300 additional installs from the user.</p>
+
+<p>This  article describes an approach to use the default app launcher of
 the  note to organize your apps and to reuse that data outside of  the
 launcher,  e.g. in conjunction with titanium backup and apk management
-after e.g. flashing a new rom.
+after e.g. flashing a new rom.</p>
 
 <hr>
 <H2>A look at the privacy and security implications of smartphones, 
