@@ -1,0 +1,124 @@
+<HTML>
+<HEAD>
+<link rel="icon"          href="/favicon.png"/>
+<link rel="shortcut icon" href="/favicon.png"/>
+<meta name="description" content="Coping with Android: survival unix shell chroot debian ubuntu google android tutorial samsung galaxy note vnc X11 xvnc bash office arm armel">
+<meta name="keywords" content="coping android survival unix shell chroot debian ubuntu google tutorial samsung galaxy note vnc xvnc bash office arm armel">
+<meta name="author" content="Peter Jakobi">
+<TITLE>Coping with Android</TITLE>
+<style type="text/css"><!--
+   .anno { font-size:.8em }
+--></style>
+<style type="text/css"><!--
+   .num { padding-left:1em; text-align:right; nopadding-right:1em}
+   .repo{ text-align:center}
+   .file{ nopadding-left:1em; font-family:monospace}
+.desc{ padding-left:2em}
+--></style>
+</HEAD>
+
+<BODY>
+
+<p class=anno>
+<a href="http://jakobi.github.com/">HOME</a>                                          &nbsp;|&nbsp; 
+<a href="http://github.com/jakobi/">GIT Overview</a>          &nbsp;|&nbsp;
+Script-Archive:
+<a href="/script-archive-doc/">(docs)</a> : 
+<a href="http://wiki.github.com/jakobi/script-archive/">(wiki)</a> : 
+<a href="http://github.com/jakobi/script-archive">(git)</a>    &nbsp;|&nbsp;
+...
+</p>
+
+<H1>Coping with Android</H1>
+
+<hr>
+
+<p>Also                  see                  the                   <a href="http://github.com/jakobi/script-archive/tree/master/android">Android
+directory  of  the  script-archive</a>.</p>
+
+<p>Besides  some scripts, this directory contains a one-time  snapshot
+of  my working android environment intended to complement the articles
+below. </p>
+
+<p>The snapshot contains scripts for android unix-side userspace,
+a  collection  of  static armel binaries, the tree  structure  of  the
+chroot  on the Galaxy note, as well as scripts and configuration files
+used  for  monitoring,  backup,  etc from a remote  linux  server  via
+cron.</p>
+
+
+
+<hr>
+<a href="01_setup.html"><H2>C01 - Setting  up  the Samsung Galaxy Note as a Unix  Box</H2></a>
+
+<p class=anno>(or at least as much as we can get away with it,  given
+Google's kernel patches)</p>
+
+<p>Last change: 20120216</p>
+
+<hr>
+<p>Still polishing notes - version 1 to be online before 20120220</p>
+
+<pre>
+
+This  article  is a demonstration of setting up an ordinary  <B>1GB
+RAM  DUAL  CORE  PC</B> also known as <b>Samsung Galaxy  Note</b>  and
+wrongly  accused to be merely a traditional style smartphone.
+
+The only difference to the current crop of tablets is the display
+density. Comparing hardware specifications of Note and PC (you want an
+USB host port for external hardware: you already have one installed on
+the  Note), the only interesting difference is in software, and in the
+encoded  usage  / user interface assumptions. And I consider  some  of
+Google's  assumptions  (derived from RAM-starved PDAs) to  be  already
+obsolete in the face of current hardware.
+
+So  for now, let's just prove Google wrong, and use the Galaxy Note
+for  more than just remote USB storage and taking a few of your  files
+along.
+
+Let's escape from Google's dumb-down  getting-in-your-workflow
+single-task  Android usage mode, while neither going full cloud  (with
+all associated disadvantages) nor lugging around a laptop.
+
+The  first  part  describes setting up enough of a real  Unix  user
+space to actually permit proper use of the shell.
+
+Building  on these basics, the second part looks at taking a  fully
+customized  desktop  setup on the road: Create a  Desktop-size  DEBIAN
+armel  CHROOT setup and make that a first class citizen in any LAN you
+encounter  (ssh, file serving and filesystem mounting). The final step
+is  running  a  local  X11 Desktop on the  Note,  using  the  chroot's
+vncserver  or  Xvnc  (market: Xvnc). To access, either use  the  local
+display of the Note or any PC with a vncviewer.
+
+This  setup  is  enough  for  normal  LibreOffice  text
+editing,   programming  or  some  light  web  browsing  (firefox9  and
+chromium-browser  fail,  iceweasel/firefox  3.5 and  the  webkit/gecko
+based  browsers  work), even without swap: I've usually  beyond  350MB
+free  (free+buffers+cache) before starting X, which is enough for X11,
+some xterms, firefox and LibreOffice.
+</pre>
+
+
+
+<!-- ------------------------------------------------------------ -->
+
+<hr>
+<p>Back to the <a href="index.html">Android Section Overview</a>.</p>
+
+<hr>
+<p class=anno>
+<a href="http://jakobi.github.com/">HOME</a>                                          &nbsp;|&nbsp; 
+<a href="http://github.com/jakobi/">GIT Overview</a>          &nbsp;|&nbsp;
+Script-Archive:
+<a href="/script-archive-doc/">(docs)</a> : 
+<a href="http://wiki.github.com/jakobi/script-archive/">(wiki)</a> : 
+<a href="http://github.com/jakobi/script-archive">(git)</a>    &nbsp;|&nbsp;
+...
+</p>
+
+<p class=anno>jakobi(at)acm.org, 2009-07 - 2012-02</p>
+
+</BODY>
+</HTML>
