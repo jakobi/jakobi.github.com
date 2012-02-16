@@ -71,22 +71,29 @@ isn't. Smart that is.</p>
 
 <p>So  for now, let's just prove Google wrong, and use the Galaxy Note
 for  more than just remote USB storage and taking a few of your  files
-along.  Let's escape from Google's dumb-down  getting-in-your-workflow
+along.</p>
+
+<p>Let's escape from Google's dumb-down  getting-in-your-workflow
 single-task  Android usage mode, while neither going full cloud  (with
 all associated disadvantages) nor lugging around a laptop.</p>
 
 <p>The  first  part  describes setting up enough of a real  Unix  user
 space to actually permit proper use of the shell.</p>
 
-<p>With  these  basics, the second part will take a look at  taking  a
-fully  customized <b>non-cloud</b> desktop setup on the road: Create a
-Desktop-size  DEBIAN CHROOT setup and make that a first class  citizen
-in  any LAN you encounter (ssh, file serving and filesystem mounting).
-Naturally,  you  don't want to scatter your files all over the  place,
-but rather use your own computer to edit say a personal document using
-OpenOffice/LibreOffice.  So  let's use the chroot's vncserver or  Xvnc
-(market: Xvnc) and run X11 apps locally on the Note. To access, either
-use the local display of the Note or any PC with a vncviewer.</p>
+<p>Building  on these basics, the second part looks at taking a  fully
+customized  desktop  setup on the road: Create a  Desktop-size  DEBIAN
+armel  CHROOT setup and make that a first class citizen in any LAN you
+encounter  (ssh, file serving and filesystem mounting). The final step
+is  running  a  local  X11 Desktop on the  Note,  using  the  chroot's
+vncserver  or  Xvnc  (market: Xvnc). To access, either use  the  local
+display of the Note or any PC with a vncviewer.</p>
+
+<p  class=anno>This  setup  is  enough  for  normal  LibreOffice  text
+editing,   programming  or  some  light  web  browsing  (firefox9  and
+chromium-browser  fail,  iceweasel/firefox  3.5 and  the  webkit/gecko
+based  browsers  work), even without swap: I've usually  beyond  350MB
+free  (free+buffers+cache) before starting X, which is enough for X11,
+some xterms, firefox and LibreOffice.</p>
 
 
 
