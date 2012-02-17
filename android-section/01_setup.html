@@ -57,11 +57,6 @@ cron.</p>
 <p  class=anno><i>(or  at  least as much as we can get away  with,  given
 Google's  Linux kernel  patches and dumbed-down kernel configuration)</i></p>
 
-
-<p>Last change: 20120216</p>
-<p>License: CC-BY-SA.</p>
-
-
 <H3>Table of contents</H3>
 <a name=toc></a>
 <ul>
@@ -70,6 +65,11 @@ Google's  Linux kernel  patches and dumbed-down kernel configuration)</i></p>
 <li><a href="#chroot">CHROOT and Turning the Android into a First Class LAN Citizen/a>
 <li><a href="#vnc">Desktop and X11</a>
 </ul>
+
+<p>
+Last change: 20120216<BR>
+License: CC-BY-SA.
+</p>
 
 
 
@@ -82,41 +82,7 @@ Google's  Linux kernel  patches and dumbed-down kernel configuration)</i></p>
 <a name=firstlook></a>
 <H3>A first look at the Note / Web-Resources / Rooting</H3>
 
-
-
-
-<p><a href="#toc">Table of contents</a>.</p>
-<hr>
-<a name=shell></a>
-<H3>Adding Unix Standards to the Android Shell</H3>
-
-TERMIDE
-BUSYBOX
-SSHDROID
-
-
-
-<p><a href="#toc">Table of contents</a>.</p>
-<hr>
-<a name=chroot></a>
-<H3>CHROOT and Turning the Android into a First Class LAN Citizen</H3>
-
-
-
-
-<p><a href="#toc">Table of contents</a>.</p>
-<hr>
-<a name=vnc></a>
-<H3>Desktop and X11</H3>
-
-
-
-
-<p><a href="#toc">Table of contents</a>.</p>
-<hr>
-
 <pre>
-
 
 This  article demonstrates a sane setup of GNU/Linux on an ordinary
 last-year's  <B>1-GB-RAM  DUAL-CORE PC</B> (also known  as  <b>Samsung
@@ -161,14 +127,56 @@ around a 20-times-heavier laptop.
 
 The  first  part  investigates the device and contains  some  notes
 of available  resources and rooting.
+</pre>
 
+
+
+<!-- ------------------------------------------------------------------------------------- -->
+<p><a href="#toc">Table of contents</a>.</p>
+<hr>
+<a name=shell></a>
+<H3>Adding Unix Standards to the Android Shell</H3>
+
+<pre>
 The  second  part describes setting up enough of a real  Unix  user
 space to actually permit proper use of the shell.
 
+TERMIDE
+BUSYBOX
+SSHDROID
+</pre>
+
+
+
+<!-- ------------------------------------------------------------------------------------- -->
+<p><a href="#toc">Table of contents</a>.</p>
+<hr>
+<a name=chroot></a>
+<H3>CHROOT and Turning the Android into a First Class LAN Citizen</H3>
+
+
+
+<!-- ------------------------------------------------------------------------------------- -->
+<p><a href="#toc">Table of contents</a>.</p>
+<hr>
+<a name=vnc></a>
+<H3>Desktop and X11</H3>
+
+<pre>
 Building  on these basics, the third part looks at taking a  fully
 customized  desktop  setup on the road: Create a  Desktop-size  DEBIAN
 armel  CHROOT setup and make that a first class citizen in any LAN you
 encounter  (ssh, file serving and filesystem mounting).
+</pre>
+
+
+
+<!-- ------------------------------------------------------------------------------------- -->
+<p><a href="#toc">Table of contents</a>.</p>
+<hr>
+
+<pre>
+
 
 The  final  step is running a local X11 Desktop on the Note,  using
 the  chroot's vncserver or Xvnc (market: Xvnc). To access, either  use
