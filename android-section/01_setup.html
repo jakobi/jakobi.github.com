@@ -459,8 +459,8 @@ and  hope  that  something (the user...) keeps them in sync  with  the
 framework's  properties (setprop/getprop shell command). For  busybox,
 the  stericson  version you installed into /system/xbin does  use  DNS
 properly,  while  the  versions from <i>sshdroid</i>  and  <i>terminal
-ide</i> do not. I defined an alias iresolver to reorder PATH to enable
-DNS-related shell commands.</p>
+ide</i>  do  not and only permit raw IP addresses. I defined an  alias
+iresolver to reorder PATH to enable DNS-related shell commands.</p>
 
 <p>Google   also   reinvented  the  wheel  with  logcat.  Again   with
 interesting  effects:  they didn't mangle all parts of the kernel,  so
@@ -538,13 +538,10 @@ package (all 3 on market).</p>
 <li>CHROOT.run (often aliased to x); starts a shell in the chroot or
     run chroot commands as part of a pipe. But more on this will
     have to wait until part 3.
-<li>psg is a <i>ps -ef|grep</i> style alias. It also offers to just list
-    non standard jobs, or to classify processes as kernel / Android 
+<li>psg is a <i>ps -ef|grep</i> style alias. It also offers to list
+    non-standard jobs of interest, or to classify processes as kernel / Android 
     framework/Java / shell or chroot. As busybox doesn't implement ps -ef,
     the script uses busybox top as base.
-<li>TERMIDE (often aliased to t): starts a shell in the <i>terminal ide</i> 
-    environment as root with suitable settings to access executables and
-    profiles as used by <i>terminal ide</i>. Running the app is not required.
 <li>TOP augments to output of TOP with various Android specific information
     from watching df, checking that interesting filesystems are still read-write,
     to battery status and cpu frequencies. No interactive top command keys possible.
@@ -571,9 +568,21 @@ android shell outside of a chroot. It offers e.g.</p>
 <li>vim (_the_ editor)
 </ul>
 
+<p>With  some  coaxing in the form of custom profiles and  the  script
+TERMIDE  (often aliased to t), the environment is also usable  outside
+the    app,    e.g.    from    ssh   or    for    root.    See    both
+data/data/com.spartacusrex.spartacuside/files/root                 and
+data/data/com.spartacusrex.spartacuside/files.  The example will  also
+clone   two   bash  files  from  the  chroot's   root   account   into
+data/data/com.spartacusrex.spartacuside/files/root   to   maintain   a
+single  environment  inside  and  outside of the  chroot,  inside  the
+<i>terminal  ide</i> app and outside, for both the <i>terminal ide</i>
+user account or for root. Running  the app is not required.</p>
+
 <p>Note  that  an <i>terminal ide</i> bash may block attempts  to  run
 <i>mount  -oro,remount /system</i>. /s/INSTALL reliably triggers  that
 issue.</p>
+
 
 
 
@@ -606,8 +615,9 @@ your own socks daemon, take a look at the hpsockd.conf in the examples
 including  sftp server and scp. Another copy is offered by <i>terminal
 ide</i>.  A real openssh build is part of <i>sshtunnel</i>, also named
 sshtunnel. As android app, consider <i>connectbot</i>. As ssh-server I
-use  dropbear  as  provided by <i>sshdroid</i> and only rarely  run  a
-second sshd -p <portnumber> in the chroot.</p>
+use dropbear as provided by <i>sshdroid</i> (<i>terminal ide</i> again
+provides  a  second  copy)  and  only rarely  run  a  second  sshd  -p
+<portnumber> on an alternate port in the chroot.</p>
 
 <p>Iptables  is  hopefully part of your custom ROM. Iptables  is  also
 part  of <i>proxydroid</i>, <i>sshtunnel</i> and <i>orbot</i> packages
