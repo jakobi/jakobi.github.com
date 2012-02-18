@@ -142,6 +142,7 @@ some of the more annoying apps in your firmware (kies, socialhub).</p>
 
 <p><b>Things to avoid</b>:</p>
 <ul>
+<li>adb and using symlinks in Android-side paths - silent failure.
 <li>bad flash (in all possible senses of the word :)
 <li>kies (connectivity suite / flashing windows software provided by Samsung)
 <li>use of app2sd: do move all apps to the phone (/data) - the core of
@@ -162,9 +163,9 @@ to Provider to OTA distribution, rooting enables more options for
 <ul>
 <li>backup/restore
 <li>battery management
-<li>privacy (LBA, aspotcat, ...; personal firewalls)
+<li>privacy (LBA, aspotcat, ...; iptables-based "personal" outbound firewalls)
 <li>routing (improved tethering and intelligent "routing" at ip route/iptables level)
-<li>security (lookout, avast; access to iptables and real firewalls)
+<li>security (lookout, avast; the ability to create a real iptables-based inbound packet-filter/firewall)
 <li>access to non-Android programs, for the Android shell or for a chroot
     maybe containing a full DEBIAN or Ubuntu.
 </ul>
@@ -180,11 +181,36 @@ so what.
 
 <h4>Research Phase</h4>
 
-
+<p><b>Web Resources</b>:</p>
 <ul>
 <li><a href="http://www.androidnz.net/2011/12/samsung-galaxy-note-complete-review.html">AndroidNZ review with some app suggestions</a>
 <li><a href="http://forum.xda-developers.com/forumdisplay.php?f=1349">XDA Note forum</a>
 </ul>
+
+<p>ROMs  are very device specific, so Android ecosystem and  community
+are  <i>extremely fragmented</i>: <b>Good community support and custom
+roms  are  a  pre-requirement for buying</b>. Some custom  roms  reuse
+stock   kernels,   some  also  use  custom  kernel  builds   (official
+cyanogenmod roms).</p>
+
+<p   class=anno>Bad  makers  or  lack  of  community  lead  to   early
+obsolescence  of the device and wasted money (consider the  disastrous
+Motorola  Milestone).  Depending on the number of non-standard  chips,
+various firmware-blobs might be required to get a fully working kernel
+/  firmware. With some makers not even supporting devices, the initial
+release  kernel might well be the only Linux kernel ever working on  a
+device  (again the Milestone example). This will also worsen community
+support  and  shorten  availability  of community  firmware  for  this
+maker's devices (which has to reuse the old buggy kernel). <b>Some</b>
+of  this  already is visible for the Note: the unofficial  CM9  builds
+still lack blobs for camera and accelerated display.</p>
+
+<ul>
+<li><a href="http://forum.xda-developers.com/showthread.php?t=1423795&page=52">XDA: some roms</a>
+<li><a href="http://cyanogenmod.com">CyanogenMod</a> does not offer official builds, but there are
+    already unofficial CM7 and CM9 builds available (though lacking some firmware blobs)
+</ul>
+
 
 
 
@@ -197,7 +223,7 @@ your PC (e.g. as port of a nightly backup schedule).</i>.</p>
 
 
 
-<h4>Rooting sketch</h4>
+<h4>The Way of Rooting - A Sketch</h4>
 
 
 <pre>
@@ -240,7 +266,7 @@ recognition aren't quite there yet in gingerbread)</p>
 
 <p>2. Required market apps for the rest of this article:</p>
 <ul>
-<li>busybox installer
+<li>busybox installer (use /system/xbin as installation path)
 <li>connectbot (use ssh to connect to remote systems)
 <li>fileexpert or any other filemanager capable of accessing non-sdcard directories
 <li>sshdroid (permit incoming ssh connections, dropbear-based)
@@ -259,7 +285,7 @@ installer))</p>
 
 <p>3. PC-side applications</p>
 <ul>
-<li>adb (in the <a href="http://developer.android.com/sdk">Android SDK</a>, tools directory; <b>Warning</b>: never use symlinks on the Android side of a path - it silently fails)
+<li>adb (in the <a href="http://developer.android.com/sdk">Android SDK</a>, tools directory)
 </ul>
 
 
