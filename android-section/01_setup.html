@@ -518,7 +518,7 @@ busybox  programs within a single pipe hosted by busybox sh  (spurious
 output write errors between pipe stages).</p>
 
 <p>To  use  Perl  in the shell, see the system/xbin/perl  example  and
-install      sl4a      and      the     perl     apk      from      <a href="http://code.google.com/p/android-scripting/">Scripting Linguages
+install      sl4a      and      the     perl     apk      from      <a href="http://code.google.com/p/android-scripting/">Scripting Languages
 for  Android</a>.  Python  and lua wrappers are also included,  but  I
 don't  really use them. In case of <i>sl4a</i> crashes, uninstall  and
 reinstall  the  crashing  language.  Consider  creating  the   symlink
@@ -532,13 +532,6 @@ Keep open <i>sl4a</i> and set suitable environment variables according
 to  the captured output. Maybe also of interest/possibly working as  a
 "host":  <i>tasker</i>  and  <i>taskbomb</i> with its  script  support
 package (all 3 on market).</p>
-
-<p>
-
-<p>Iptables  is  hopefully part of your custom ROM. Iptables  is  also
-part  of <i>proxydroid</i>, <i>sshtunnel</i> and <i>orbot</i> packages
-from  market. <i>lbe privacy guard</i> or any of the personal firewall
-tools should also contain or offer to install a copy iptables.</p>
 
 Script examples:
 <ul>
@@ -574,15 +567,6 @@ Note that an active bash /
 
 <h4>Advanced Networking</h4>
 
-<p>ssh / connectbot</p>
-<pre># openssh5.8p2 (what was my issue here???)
-/data/data/org.sshtunnel.beta/sshtunnel
-
-# dropbear
-/data/data/com.spartacusrex.spartacuside/files/system/bin/ssh
-/data/data/berserker.android.apps.sshdroid/dropbear/ssh
-</pre>
-
 
 <p>VPN example</p>
 
@@ -596,6 +580,18 @@ Note that an active bash /
 alternately use the ap mode and wlan
 proxies: sshtunnel, ORBOT.
 </p>
+
+<p>Ssh-client and scp can be found as part of <i>sshdroid</i>. Another
+copy  is offered by <i>terminal ide</i>. A real openssh build is  part
+of  <i>sshtunnel</i>,  also named sshtunnel. As android app,  consider
+<i>connectbot</i>.  As  ssh-server  I  use  dropbear  as  provided  by
+<i>sshdroid</i>. Add your the host key and your personal public key to
+/data/data/berserker.android.apps.sshdroid/.ssh/authorized_keys.</p>
+
+<p>Iptables  is  hopefully part of your custom ROM. Iptables  is  also
+part  of <i>proxydroid</i>, <i>sshtunnel</i> and <i>orbot</i> packages
+from  market. <i>lbe privacy guard</i> or any of the personal firewall
+tools should also contain or offer to install a copy iptables.</p>
 
 
 Script examples:
