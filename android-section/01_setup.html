@@ -473,6 +473,8 @@ similarly mistreated. Which just happens to be a <b>severe reliability
 issue</b>.  Note that there's nothing in a chroot that can work around
 this problem.</p>
 
+<p class=anno>(logcat use may require insmod /lib/modules/logger.ko)</a>
+
 <p>Other   things  that  may  be  unavailable:  Shared  memory.  Again
 improperly removed/unconfigured, leading to crashes and the X11 shared
 memory  workaround  reported later on. NFS client or  server  support.
@@ -502,16 +504,26 @@ found  in /system/xbin, and as part of <i>sshdroid</i> and <i>terminal
 ide</i>.  A real port of vim is available with <i>terminal ide</i>. On
 the graphical side, consider <i>jota</i></p>
 
-<p>I  found a few working static armel binaries for bash, mc,  tcpdump
-and  strace and included them with the example files. Bash and mc  are
-included  with  <i>terminal ide</i>, but the terminal-ide  mc  version
-lacks sub-shell support.</p>
+<p>I  found  a few working static armel binaries for bash, mc,  rsync,
+strace,  tcpdump, and wget. They are included in the example files  in
+system/xbin.  Bash and mc are also included with <i>terminal  ide</i>,
+but  the terminal-ide mc version lacks sub-shell support. A simplified
+wget is also part of busybox.</p>
+
+<p>The shell: sh is part of both busybox and toolbox. As I've run into
+a  slew of toolbox bugs, I'd suggest to use /system/xbin/sh. Or  bash,
+as mentioned in the previous paragraph. (consider a symlink /bin/bash,
+but it's probably better to avoid /bin/sh). Don't mix GNU programs and
+busybox  programs within a single pipe hosted by busybox sh  (spurious
+output write errors between pipe stages).</p>
 
 <p>To  use  Perl  in the shell, see the system/xbin/perl  example  and
 install      sl4a      and      the     perl     apk      from      <a href="http://code.google.com/p/android-scripting/">Scripting Linguages
 for  Android</a>.  Python  and lua wrappers are also included,  but  I
 don't  really use them. In case of <i>sl4a</i> crashes, uninstall  and
-reinstall  the crashing language.</p>
+reinstall  the  crashing  language.  Consider  creating  the   symlink
+/usr/bin/perl  and  adding  /usr/bin  to the  PATH  to  permit  normal
+invocation.</p>
 
 <p  class=anno>To use the Android GUI in say ssh scripts, you need the
 access  data  from a running "host environment" like <i>sl4a</i>:  run
@@ -521,23 +533,46 @@ to  the captured output. Maybe also of interest/possibly working as  a
 "host":  <i>tasker</i>  and  <i>taskbomb</i> with its  script  support
 package (all 3 on market).</p>
 
-
-
-
 <p>
 
+<p>Iptables  is  hopefully part of your custom ROM. Iptables  is  also
+part  of <i>proxydroid</i>, <i>sshtunnel</i> and <i>orbot</i> packages
+from  market. <i>lbe privacy guard</i> or any of the personal firewall
+tools should also contain or offer to install a copy iptables.</p>
+
+Script examples:
+<ul>
+<li>CHROOT.run (often aliased to x); starts a shell in the chroot or
+    run chroot commands as part of a pipe. But more on this will
+    have to wait until part 3.
+<li>psg is a <i>ps -ef|grep</i> style alias. It also offers to just list
+    non standard jobs, or to classify processes as kernel / Android 
+    framework/Java / shell or chroot. As busybox doesn't implement ps -ef,
+    the script uses busybox top as base.
+<li>TERMIDE (often aliased to t): starts a shell in the <i>terminal ide</i> 
+    environment as root with suitable settings to access executables and
+    profiles as used by <i>terminal ide</i>. Running the app is not required.
+<li>TOP augments to output of TOP with various Android specific information
+    from watching df, checking that interesting filesystems are still read-write,
+    to battery status and cpu frequencies. No interactive top command keys possible.
+<li>WAKELOCK is a convenient wrapper used to setup/discard and list wake locks, 
+    and used in many of the other scripts.
+</ul>
 
 
 
-
+<h4>Treasure Trove Terminal IDE</h4>
 
 <p>terminal ide</p>
 
 
+Note that an active bash /
+<i>terminal  ide</i>  process  may  block  attempts  to  run  <i>mount
+-oro,remount  /system</i>. 
 
 
 
-
+<h4>Advanced Networking</h4>
 
 <p>ssh / connectbot</p>
 <pre># openssh5.8p2 (what was my issue here???)
@@ -547,9 +582,6 @@ package (all 3 on market).</p>
 /data/data/com.spartacusrex.spartacuside/files/system/bin/ssh
 /data/data/berserker.android.apps.sshdroid/dropbear/ssh
 </pre>
-<p>mc</p>
-<p>bash</p>
-<p>strace</p>
 
 
 <p>VPN example</p>
@@ -558,37 +590,19 @@ package (all 3 on market).</p>
 
 <p>VNC</p>
 
-<p>FW</p>
-
-<p>remote files</p>
+<p>remote files -> later on SSHFS</p>
 
 <p>tethering: just modprobe usbnet and use usb0.
 alternately use the ap mode and wlan
 proxies: sshtunnel, ORBOT.
 </p>
 
-<p>Example files not yet mentioned:</p>
+
+Script examples:
 <ul>
-<li>wget, psg, strace
-<li>
-<li>
-<li>
+<li>VPN
+<li>FW
 </ul>
-
-Things to consider or to avoid:
-<ul>
-<li>/system/bin/sh is toolbox, not busybox; in CHROOT.run I've run into
-    a number of toolbox bugs. If sh or /system/bin/sh strangely misbehaves, try
-    /system/xbin/sh instead.
-<li>running a script with busybox sh and using e.g. a GNU grep within a pipe
-    also containing busybox commands may create write failures (busybox seems
-    to take shortcuts in setting up pipes to cope with crippled kernels)
-<li>active bash/<i>terminal ide</i> processes may block attempts to run 
-    <i>mount -oro,remount /system</i>
-<li>enabling logcat output may require <i>insmod /lib/modules/logger.ko</i>, depending on the kernel.
-</ul>
-
-
 
 
 
