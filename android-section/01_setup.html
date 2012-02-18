@@ -683,7 +683,7 @@ desktop   using   VNC,   consider  <i>androidVNC</i>.</p>
 
 <p  class=anno>(the Note's resolution is great, but my eye isn't  upto
 to  the  Note's  300dpi,  so vnc use requires  zooming.  There's  also
-multi-head  issue: no vnc app was up to deal with a multihead  display
+a multihead  issue: no vnc app was up to deal with a multihead  display
 of  two different sized monitors -&gt; run a a (smaller) vncserver  on
 the remote host)</p>
 
@@ -699,26 +699,42 @@ access  remote  files  or offer access to remote files.  As  for  NFS,
 without  kernel support, you cannot neither access NFS files nor offer
 them.</p>
 
-<p>Unless  you have access to a Linux box elsewhere and run fuse sshfs
-in  the direction you want to. The Linux box can then either offer the
-Note's  files  per NFS or forward contents of NFS mounts to  the  Note
-(chroot  required  for this direction). See the example  SSHFS  script
-later on.</p>
+<p  class=anno>Unless you have access to a Linux box elsewhere and run
+fuse sshfs in the direction you want to: The Linux box can then either
+offer  the  Note's files per NFS or forward contents of NFS mounts  to
+the  Note  (chroot  required  for  this  direction;  see  the  example
+abin/SSHFS script later on).</p>
 
 <p>For connecting to a WLAN and AP mode (WLAN tethering), just use the
 settings  menu on the Note and e.g. network manager on the Linux  box.
 For  tethering via USB, connect the Note and select USB tethering.  On
 the  Linux box run <i>modprobe usbnet</i>, maybe also  <i>dhclient</i>
 and  have a look at usb0. I didn't test inverse tethering (making  the
-Note use the Linux Box's connection to the internet), but even a short
-search returned 11 pretty dissimilar sketches from using ppp or ssh or
+Note  use the Linux Box's connection to the internet), but on a  short
+search  I found 11 pretty dissimilar sketches from using ppp or ssh or
 adb with portforwarding to bridging.</p>
 
-<p>Personal firewalls</p>
+<p>Network security</p>
+<ul>
+<li>Antivirus  is a prime requirement. <i>avast</i> and  <i>lookout</i> on
+the graphical app side sound sane and add some device-location and anti-theft features.</p>
+<li><i>Personal  firewalls</i> or rather <i>iptables-based outbound packet filters</i>
+control outbound packages and are used to augment (<i>LBE  privacy  guard</i>)  or 
+substitute  for  actual application  permission management.  Some  antivirus  apps
+also include  this  feature  when running on a rooted Note (<i>avast</i>). Note
+that this does guarantee only slightly more than an ordinary Windows personal firewall. 
+Even a mere DNS name lookup can leak arbitrary information to a selected target host.
+It's also not quite the right place to block apps for ideas like battery saving.
+<li><i>system/xbin/FW</i>: I didn't find any <b>real firewall</b> that deals with inbound packages.
+There are some inbound call and sms blockers, but one of the real basics of
+network security doesn't seem to exist for Google and every Android developper.
+See system/xbin/FW for script to create and destroy a firewall. It is loosely
+based on the rules as created by ufw on an Ubuntu box. Note that we cannot
+use syslog for logging, so for rule testing, you need to run dmesg|grep ...
+to see any logged packets.
+</ul>
 
-<p>Antivirus</p>
 
-<p>A real inbound firewall / classical packet filtering firewall: See the FW script.</p>
 
 
 
