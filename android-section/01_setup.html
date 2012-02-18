@@ -399,6 +399,11 @@ installer))</p>
 </ul>
 
 
+<p><b>Summary:</b>  By now you've a rooted Android device, seen a  few
+XDA support threads as well as some checklists for use when reflashing
+the ROM.</p>
+
+
 
 
 <!-- ------------------------------------------------------------------------------------- -->
@@ -656,7 +661,11 @@ filelists.  As  invoked for the Note, it uses also rsync for copy  and
 cleanup  of removed files, and it also keeps numbered daily/weekly/...
 snapshots.              Execution             starts              with
 home/jakobi/bin/xfer_backup.wrapper.anuurn.local,  which is invoked by
-a nightly root cron job.</p>
+a  nightly  root cron job (ensure that <i>titanium backup</i>  on  the
+Note  is finished first). Furthermore check the copied titanium backup
+location  on  the  host  after  the  first  run  -  I  initially  used
+/mnt/sdcard/external_sd/BAK,   however   a  directory  like   BAK   is
+automatically excluded in my setup...</p>
 
 <p>Using  a  VPN: OpenVPN and tun.ko is hopefully already part of  the
 custom  ROM (or in case of tun.ko optionally also a part of the kernel
@@ -717,26 +726,32 @@ adb with portforwarding to bridging.</p>
 <p>Network security</p>
 <ul>
 <li>Antivirus  is a prime requirement. <i>avast</i> and  <i>lookout</i> on
-the graphical app side sound sane and add some device-location and anti-theft features.</p>
+the graphical app side sound sane and add some device-location and anti-theft features.
 <li><i>Personal  firewalls</i> or rather <i>iptables-based outbound packet filters</i>
 control outbound packages and are used to augment (<i>LBE  privacy  guard</i>)  or 
 substitute  for  actual application  permission management.  Some  antivirus  apps
 also include  this  feature  when running on a rooted Note (<i>avast</i>). Note
-that this does guarantee only slightly more than an ordinary Windows personal firewall. 
-Even a mere DNS name lookup can leak arbitrary information to a selected target host.
-It's also not quite the right place to block apps for ideas like battery saving.
+that this is only slightly more capable than your ordinary Windows personal firewall - 
+even something as basic as a mere DNS name lookup can leak arbitrary information to a
+selected target host. "Personal firewalls" are also not quite the right place 
+to block apps for ideas like battery saving.
 <li><i>system/xbin/FW</i>: I didn't find any <b>real firewall</b> that deals with inbound packages.
 There are some inbound call and sms blockers, but one of the real basics of
 network security doesn't seem to exist for Google and every Android developper.
-See system/xbin/FW for script to create and destroy a firewall. It is loosely
+See system/xbin/FW for a script to create and destroy a firewall. It is loosely
 based on the rules as created by ufw on an Ubuntu box. Note that we cannot
-use syslog for logging, so for rule testing, you need to run dmesg|grep ...
-to see any logged packets.
+use syslog for logging, so for rule testing, you need to run <i>dmesg|grep ...</i>
+to see output for logged packets.
 </ul>
 
 
 
-
+<p><b>Summary:</b>  By  now we have a somewhat usable  and  moderately
+comfortable  Android  shell.  We  have basic  networking  commands  to
+connect  remote  servers and we we can run perl scripts.  An  external
+host  can  be used to run shell commands on the Note or run  rsync  to
+create  a  file  backup of the note. We also have seen  an  automation
+example consisting of a remote triggered backup.</p>
 
 
 
