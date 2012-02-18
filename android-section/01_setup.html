@@ -185,13 +185,14 @@ so what.
 <ul>
 <li><a href="http://www.androidnz.net/2011/12/samsung-galaxy-note-complete-review.html">AndroidNZ review with some app suggestions</a>
 <li><a href="http://forum.xda-developers.com/forumdisplay.php?f=1349">XDA Note forum</a>
+<li><a href="http://sammobile.com" <a>Sammobile</a>: (aka samfirmware.com == samsung-firmwares.com; also contains stock images for reflashing)
 </ul>
 
 <p>ROMs  are very device specific, so Android ecosystem and  community
 are  <i>extremely fragmented</i>: <b>Good community support and custom
 roms  are  a  pre-requirement for buying</b>. Some custom  roms  reuse
-stock   kernels,   some  also  use  custom  kernel  builds   (official
-cyanogenmod roms).</p>
+stock  kernels,  some also use custom kernel builds (usually based  on
+Android Open Source Project (AOSP); cyanogenmod roms).</p>
 
 <p   class=anno>Bad  makers  or  lack  of  community  lead  to   early
 obsolescence  of the device and wasted money (consider the  disastrous
@@ -202,15 +203,20 @@ release  kernel might well be the only Linux kernel ever working on  a
 device  (again the Milestone example). This will also worsen community
 support  and  shorten  availability  of community  firmware  for  this
 maker's devices (which has to reuse the old buggy kernel). <b>Some</b>
-of  this  already is visible for the Note: the unofficial  CM9  builds
+of  this  is visible for the Note as well: the unofficial  CM9  builds
 still lack blobs for camera and accelerated display.</p>
 
 <ul>
-<li><a href="http://forum.xda-developers.com/showthread.php?t=1423795&page=52">XDA: some roms</a>
-<li><a href="http://cyanogenmod.com">CyanogenMod</a> does not offer official builds, but there are
-    already unofficial CM7 and CM9 builds available (though lacking some firmware blobs)
+<li><a href="http://forum.xda-developers.com/showthread.php?t=1424997">XDA: stock rom list and rom overview</a>
+<li><a href="http://cyanogenmod.com">Cyanogenmod</a> and <a href="http://teamhacksung.org/wiki/index.php/Main_Page">teamhacksung</a> (only preliminary unofficial CM7 and CM9 builds for the Note, still lacking some blobs; <a href="http://forum.xda-developers.com/showthread.php?t=1423795&page=52">XDA: cm9</a>)
+<li><a href="http://forum.xda-developers.com/showthread.php?t=1331784">XDA: Chainfire's CFROOT with CWM (clockworkmod)</a>
+<li><a href="http://forum.xda-developers.com/showthread.php?t=1352945">Sheeprom</a> by Frank_M aka Riversource
+<li><a href="http://forum.xda-developers.com/showthread.php?t=1352945">Chris_X roms</a> by Chris_X
+<li>Other mentions were villain rom and <a href="http://forum.xda-developers.com/showthread.php?t=1380284">XDA: rocket v13</a>.
 </ul>
 
+
+<p class=anno>(state 201112-201201, Note gingerbread ROMs)</p>
 
 
 
@@ -220,6 +226,19 @@ still lack blobs for camera and accelerated display.</p>
 <p><i>Do  update and validate titanium backups (doubly so on  external
 sdcards) before flashing new firmware. Copy the backups to
 your PC (e.g. as port of a nightly backup schedule).</i>.</p>
+
+<pre>
+keep a backup of /efs (imei!)
+
+odin: http://droidangel.blogspot.com/2011/05/odin-multi-downloader-flasher-program.html
+      we need odin3 v183 or 185
+
+for simpler cases, mobile odin / cfroot cwm should suffice
+
+see the support threads of the chosen kernel
+
+
+</pre>
 
 
 
@@ -233,12 +252,42 @@ Heimdall (Linux, untested): in case mobile Odin/CFROOT is unavailable/insufficie
 install ODIN on a windows pc
 install initial cwm/cfroot with an early rom
 install install rooted custom rom of your choice with cfroot/cwm.
+
+vulcan nerve pinch a la note:  download mode: lower vol-down + home + power
+                      cwm recovery mode: upper vol-up + home + power
+                          (incl. reboot via cwm, avoiding hassles with the battery gauge snafu)
+
+chainfire cfroot w cwm (clockworkmod) and stock kernels
+   cfroot5 rooted stock kernel kl8
+   need to go to stock kj1, then flash modded factoryfs (/system of kj1)
+   should retain root, cfroot, cwm, etc and root on the flash even of stock, 
+   [throw in a wipe or three]
+   http://forum.xda-developers.com/showthread.php?t=1331784
+   download.chainfire.eu/131/CF-Root/SGN/CF-Root-SGN_XX_OXA_KL8-v5.0-CWM5.zip
+
+
+
 </pre>
 
 
 <h4>Post Flashing Checklist</H4>
 
-
+<pre>
+only apk:
+- cleaning data/dalvik-cache and /cache adds about 12min to initial bootup instead of 30+
+  -> dalvik kind of precompiles or rather indexes positions inside the apk bundle
+  (apk: jars and c++ system libs to be used from within the file by the dalvik engine,
+   the c++ stuff either on the fly or pre-extracted and installed into /system or /data(?);
+   however, for apk installed on sdcard/apps2sd we strangely use a loopmount claiming 
+   apk to be fat per application, thus possibly avoiding the libs in /system or /data,
+   but then again, this still does leave some MB per app in the system/data flash partitions :( )
+- system and twlaunch kind of app-launch dalvik children to run apps, but some of
+  the two system/twlaunch keep a lot of pipes, to fwd e.g. input or android events I think?
+- NEVER OVERWRITE BUSYBOXES IN */bin (kills cfroot); at most IF REQUIRED put them into some xbin 
+- /data/local/zImage ist auf dem Handy. zImage Verzeichnis InitialCFRootFlasher on PC. 
+- frosting / defrost system: adb shell: pm list packages, pm enable <package>, titanium backup
+  /data/system/packages.xml  -> set enabled="true" here
+</pre>
 
 
 
