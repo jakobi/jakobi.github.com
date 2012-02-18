@@ -215,7 +215,6 @@ still lack blobs for camera and accelerated display.</p>
 <li>Other mentions were villain rom and <a href="http://forum.xda-developers.com/showthread.php?t=1380284">XDA: rocket v13</a>.
 </ul>
 
-
 <p class=anno>(state 201112-201201, Note gingerbread ROMs)</p>
 
 
@@ -242,32 +241,52 @@ see the support threads of the chosen kernel
 
 
 
-<h4>The Way of Rooting - A Sketch</h4>
+<h4>The Way of Rooting (Tourist Travel Sketch, with dogeared threads)</h4>
 
+<p>At the end of the research phase, you should have selected a target
+custom  rom, and maybe one or more intermediate steps if you start out
+with  a  stock rom. In my case the sequence led from stock to  a  full
+install  of the older KJ1 with CFROOT/CWM, and then forward to Chris_X
+4lph4 roms offering KL8 using the AbyssNote 2.6.35 Kernel.</p>
 
-<pre>
-Odin (Windows, forget the version chaos and choose one that mentions Galaxy Note N7000), 
-Heimdall (Linux, untested): in case mobile Odin/CFROOT is unavailable/insufficient for flashing
+<p><b>Stock to Chainfire KJ1 including the modified factoryfs</b> (see
+<a href="http://forum.xda-developers.com/showthread.php?t=1331784">posting
+1+2</a>).  If  your  rom doesn't offer CFROOT/CWM, you first  need  to
+install  a version of ODIN on Windows that lists the Note as supported
+(v3  version 1.83 or 1.85 was the one I found - there doesn't seem  to
+be  any official home page or author, nor any sane version numbering).
+For  Linux,  Heimdall  might  work (untested). To set  the  Note  into
+download  mode,  use lower-vol + home + power and connect to USB.  For
+more detail, check the XDA threads for your selected ROM.</p>
 
-install ODIN on a windows pc
-install initial cwm/cfroot with an early rom
-install install rooted custom rom of your choice with cfroot/cwm.
+<p><b>Chainfire     KJ1     to    Chris_X    4lph4</b>     (see     <a href="http://forum.xda-developers.com/showthread.php?t=1424401">XDA</a>).
+As  we  now  have CFROOT/CWM available, this step no  longer  requires
+Windows  and Odin. I repeated this step once to go to a newer ROM from
+Chris,  currently  the v1.0.5 from early January which is very  stable
+(excluding  Google's  carefully  prepared pitfalls  concerning  shared
+memory  and  system_server  vs app2sd). 
 
-vulcan nerve pinch a la note:  download mode: lower vol-down + home + power
-                      cwm recovery mode: upper vol-up + home + power
-                          (incl. reboot via cwm, avoiding hassles with the battery gauge snafu)
+<p  class=anno>As of mid February, Chris is at v1.7. I will follow him
+irregularly  until ICS is available as a CFROOT/CWM supported rom.  In
+the long run, I'll expect to end up with CM9 or newer.</p>
 
-chainfire cfroot w cwm (clockworkmod) and stock kernels
-   cfroot5 rooted stock kernel kl8
-   need to go to stock kj1, then flash modded factoryfs (/system of kj1)
-   should retain root, cfroot, cwm, etc and root on the flash even of stock, 
-   [throw in a wipe or three]
-   http://forum.xda-developers.com/showthread.php?t=1331784
-   download.chainfire.eu/131/CF-Root/SGN/CF-Root-SGN_XX_OXA_KL8-v5.0-CWM5.zip
+<p>Notes:</p>
+<ul>
+<li>Ensure a high battery level first.
+<li>Entering recovery: CWM application or upper vol + home + power
+<li>Using CWM to delete the contents of the cache partition and dalvik
+cache  is  a  good  idea (the last adds about  15min  to  the  initial
+boot).
+<li>You may need to be selective in restoring titanium backups: browser 
+and market may have different versions, so restoring user data may lead to force crashes.
+This fragility is why Chris strongly requires full wipes as part of the install. Note
+that restoring 300 user apps takes a whee bit of time.
+<li>If you made a CWM Backup before flashing, do not use it as-is from CWM
+recovery, as you'd restore the previous state and fully or partially undo
+a successful flashing. Though it's perfect to undo a bad flashing or to go back
+from testing another ROM.
+</ul>
 
-
-
-</pre>
 
 
 <h4>Post Flashing Checklist</H4>
@@ -315,7 +334,7 @@ recognition aren't quite there yet in gingerbread)</p>
 
 <p>2. Required market apps for the rest of this article:</p>
 <ul>
-<li>busybox installer (use /system/xbin as installation path)
+<li>busybox installer (stericson, use /system/xbin as installation path)
 <li>connectbot (use ssh to connect to remote systems)
 <li>fileexpert or any other filemanager capable of accessing non-sdcard directories
 <li>sshdroid (permit incoming ssh connections, dropbear-based)
