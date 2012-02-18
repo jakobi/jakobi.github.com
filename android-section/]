@@ -1,42 +1,26 @@
-<HTML>
-<HEAD>
-<link rel="icon"          href="/favicon.png"/>
-<link rel="shortcut icon" href="/favicon.png"/>
-<meta name="description" content="Coping with Android - Setup as a Unix Box: survival unix shell chroot debian ubuntu google android tutorial samsung galaxy note vnc X11 xvnc bash office arm armel">
-<meta name="keywords" content="coping android setup as unix box survival shell chroot debian ubuntu google tutorial samsung galaxy note vnc xvnc bash office arm armel">
-<meta name="author" content="Peter Jakobi">
-<TITLE>Coping with Android - Setup as a Unix Box</TITLE>
-<style type="text/css"><!--
-   .anno { font-size:.8em }
---></style>
-<style type="text/css"><!--
-   .num { padding-left:1em; text-align:right; nopadding-right:1em}
-   .repo{ text-align:center}
-   .file{ nopadding-left:1em; font-family:monospace}
-.desc{ padding-left:2em}
---></style>
-</HEAD>
+[- qw! "$0" ${1:+"$@"}; exit; reinvoke with embpexec! -]
 
-<BODY style="background-color:#ffffee">
+[*
+   # PATH_TRANSLATED - calling name
+   $ENV{__EMB_SECTION}="Coping with Android";
+   $ENV{__EMB_EXTRATITLE}="Setup as a Unix Box";
+   $ENV{__EMB_EXTRAMETA}="survival unix shell chroot debian ubuntu google android tutorial samsung galaxy note vnc X11 xvnc bash office arm armel";
 
-<p class=anno>
-<a href="http://jakobi.github.com/">HOME</a>                                          &nbsp;|&nbsp; 
-<a href="http://github.com/jakobi/">GIT Overview</a>          &nbsp;|&nbsp;
-Script-Archive:
-<a href="/script-archive-doc/">(docs)</a> : 
-<a href="http://wiki.github.com/jakobi/script-archive/">(wiki)</a> : 
-<a href="http://github.com/jakobi/script-archive">(git)</a>    &nbsp;|&nbsp;
-Android:
-<a href="http://jakobi.github.com/android-section/">(articles)</a> :
-<a href="http://github.com/jakobi/script-archive/tree/master/android">(files)</a> &nbsp;|&nbsp;
-...
-</p>
+   $ENV{__EMB_FL_URL}="http://github.com/jakobi/script-archive/tree/master/android";
+   $ENV{__EMB_FL_RAW}=$ENV{__EMB_FL_URL}; $ENV{__EMB_FL_RAW}=~s/tree/raw/;
+   $ENV{__EMB_FL_DIR}="../REPO.script-archive";
 
-<H1>Coping with Android - Setup as a Unix Box</H1>
+   $ENV{__EMB_COUNT}++; 
+   if (1==$ENV{__EMB_COUNT}) {
+      Execute('base.epl');
+   } else {
 
-<hr>
+*]
 
-<p>Also                  see                  the                   <a href="http://github.com/jakobi/script-archive/tree/master/android">Android
+
+
+<p>Also                  see                  the                   <a
+href="http://github.com/jakobi/script-archive/tree/master/android">Android
 directory  of  the  script-archive</a>.</p>
 
 <p>Besides some scripts, this directory contains a mothballed snapshot
@@ -181,7 +165,8 @@ to Provider to OTA distribution, rooting enables more options for
 </ul>
 
 Depending  on how you root the device, the flash counter may  increase
-(though that <a href="http://forum.xda-developers.com/showthread.php?t=1354888">301K
+(though that <a
+href="http://forum.xda-developers.com/showthread.php?t=1354888">301K
 resistor  field testing jig</a> may help). But in case of mailing  in
 the  device, you need to reflash a stock firmware anyway. In  summary:
 so what.
@@ -212,7 +197,7 @@ still lack blobs for camera and accelerated display.</p>
 
 <ul>
 <li><a href="http://forum.xda-developers.com/forumdisplay.php?f=1349">XDA Note forum</a>
-<li><a href="http://sammobile.com" <a>Sammobile</a> (aka samfirmware.com aka samsung-firmwares.com; also contains stock images for reflashing)
+<li><a href="http://sammobile.com"</a>Sammobile</a> (aka samfirmware.com aka samsung-firmwares.com; also contains stock images for reflashing)
 <li><a href="http://forum.xda-developers.com/showthread.php?t=1424997">XDA: stock rom list and rom overview</a>
 <li><a href="http://cyanogenmod.com">Cyanogenmod</a> and <a href="http://teamhacksung.org/wiki/index.php/Main_Page">teamhacksung</a> (only preliminary unofficial CM7 and CM9 builds for the Note, still lacking some blobs; <a href="http://forum.xda-developers.com/showthread.php?t=1423795&page=52">XDA: cm9</a>)
 <li>ROM: <a href="http://forum.xda-developers.com/showthread.php?t=1331784">XDA: Chainfire's CFROOT with CWM (clockworkmod)</a>
@@ -259,17 +244,20 @@ again  to  Chris_X 4lph4 ROMs offering KL8 using the AbyssNote  2.6.35
 kernel.</p>
 
 <p><i>Stock to Chainfire KJ1 including the modified factoryfs</i> (see
-<a href="http://forum.xda-developers.com/showthread.php?t=1331784">posting
+<a
+href="http://forum.xda-developers.com/showthread.php?t=1331784">posting
 1+2</a>).  If  your  rom doesn't offer CFROOT/CWM, you first  need  to
 install  a version of ODIN on Windows that lists the Note as supported
 (v3  version 1.83 or 1.85 was the one I found - there doesn't seem  to
 be any official home page or author, nor any sane version numbering; a
-list        if       provided       e.g.       in       this        <a href="http://droidangel.blogspot.com/2011/05/odin-multi-downloader-flasher-program.html">overview</a>).
+list        if       provided       e.g.       in       this        <a
+href="http://droidangel.blogspot.com/2011/05/odin-multi-downloader-flasher-program.html">overview</a>).
 For  Linux,  Heimdall  might  work (untested). To set  the  Note  into
 download  mode,  use lower-vol + home + power and connect to USB.  For
 more detail, check the XDA threads for your selected ROM.</p>
 
-<p><i>Chainfire     KJ1     to    Chris_X    4lph4</i>     (see     <a href="http://forum.xda-developers.com/showthread.php?t=1424401">XDA</a>).
+<p><i>Chainfire     KJ1     to    Chris_X    4lph4</i>     (see     <a
+href="http://forum.xda-developers.com/showthread.php?t=1424401">XDA</a>).
 As  we  now  have CFROOT/CWM available, this step no  longer  requires
 Windows  and Odin. I repeated this step once to go to a newer ROM from
 Chris,  currently  the v1.0.5 from early January which is very  stable
@@ -485,58 +473,13 @@ may  have  a duration of a few minutes. Large sleeps are affected  way
 worse:  Sleeps  aren't ended when the system activates again  and  the
 real  time  is  after the intended end of sleep. Thus  a  chroot  cron
 becomes  pretty  much unusable without constantly  maintaining  active
-wakelocks.    See    the   example   <i>system/xbin/WAKELOCK</i>    to
-set/clear/list wake locks.</p>
+wakelocks. See the example system/xbin/WAKELOCK to set/clear/list wake
+locks.</p>
 
-<p  class=anno>(see e.g. <a href="http://lwn.net/Articles/318611/">LWN:
+<p  class=anno>see e.g. <a href="http://lwn.net/Articles/318611/">LWN:
 Wakelocks and the embedded problem</a> - inconsiderate patches such as
-these  with  heavy collaterate damage do have a hard time to  make  it
-upstream into the Linux kernel sources)</p>
-
-
-
-<h4>Notes on Functionality and Commands</h4>
-
-<p>Editing  text:  a  simple vi clone is part of busybox, and  can  be
-found  in /system/xbin, and as part of <i>sshdroid</i> and <i>terminal
-ide</i>.  A real port of vim is available with <i>terminal ide</i>. On
-the graphical side, consider <i>jota</i></p>
-
-<p>I  found a few working static armel binaries for bash, mc,  tcpdump
-and  strace and included them with the example files. Bash and mc  are
-included  with  <i>terminal ide</i>, but the terminal-ide  mc  version
-lacks sub-shell support.</p>
-
-<p>To  use  Perl  in the shell, see the system/xbin/perl  example  and
-install      sl4a      and      the     perl     apk      from      <a href="http://code.google.com/p/android-scripting/">Scripting Linguages
-for  Android</a>.  Python  and lua wrappers are also included,  but  I
-don't  really use them. In case of <i>sl4a</i> crashes, uninstall  and
-reinstall  the crashing language.</p>
-
-<p  class=anno>To use the Android GUI in say ssh scripts, you need the
-access  data  from a running "host environment" like <i>sl4a</i>:  run
-the  shell  in <i>sl4a</i> and redirect the output of set to  a  file.
-Keep open <i>sl4a</i> and set suitable environment variables according
-to  the captured output. Maybe also of interest/possibly working as  a
-"host":  <i>tasker</i>  and  <i>taskbomb</i> with its  script  support
-package (all 3 on market).</p>
-
-
-
-
-<p>
-
-
-
-
-
-
-<p>terminal ide</p>
-
-
-
-
-
+these  with  heavy  collaterate  damage do have a hard time  to  make  it
+upstream into the Linux kernel sources.</p>
 
 
 <p>ssh / connectbot</p>
@@ -547,10 +490,12 @@ package (all 3 on market).</p>
 /data/data/com.spartacusrex.spartacuside/files/system/bin/ssh
 /data/data/berserker.android.apps.sshdroid/dropbear/ssh
 </pre>
+<p>vi</p>
 <p>mc</p>
 <p>bash</p>
 <p>strace</p>
 
+<p>terminal ide</p>
 
 <p>VPN example</p>
 
@@ -569,7 +514,7 @@ proxies: sshtunnel, ORBOT.
 
 <p>Example files not yet mentioned:</p>
 <ul>
-<li>wget, psg, strace
+<li>WAKELOCK
 <li>
 <li>
 <li>
@@ -671,21 +616,4 @@ the frequent firmware updates of quality vendors for all early ssd shows the sev
 <hr><a href="#toc">(table of contents)</a><hr>
 <p>Back to the <a href="index.html">Android Section Overview</a>.</p>
 
-<hr>
-<p class=anno>
-<a href="http://jakobi.github.com/">HOME</a>                                          &nbsp;|&nbsp; 
-<a href="http://github.com/jakobi/">GIT Overview</a>          &nbsp;|&nbsp;
-Script-Archive:
-<a href="/script-archive-doc/">(docs)</a> : 
-<a href="http://wiki.github.com/jakobi/script-archive/">(wiki)</a> : 
-<a href="http://github.com/jakobi/script-archive">(git)</a>    &nbsp;|&nbsp;
-Android:
-<a href="http://jakobi.github.com/android-section/">(articles)</a> 
-<a href="http://github.com/jakobi/script-archive/tree/master/android">(files)</a> &nbsp;|&nbsp;
-...
-</p>
-
-<p class=anno>jakobi(at)acm.org, 2012-01 - 2012-02</p>
-
-</BODY>
-</HTML>
+[* } *][# MUST BE AT EOF! #]
