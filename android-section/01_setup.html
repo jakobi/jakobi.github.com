@@ -92,13 +92,13 @@ errata at the end of each part.</p>
 <H3>A first look at the Note / Web-Resources / Rooting</H3>
 
 <p>This  article  sketches  a sane setup of GNU/Linux on  an  ordinary
-<B>1-GB-RAM   DUAL-CORE  PC</B>  (henceforth  to  called   the   armel
+<B>1-GB-RAM   DUAL-CORE  PC</B>  (henceforth  called   the   armel
 architecture  Android device <b>Samsung Galaxy Note</b> GT-N7000).
 
-<p>This is more than enough for a moderate desktop pc that is not used
-for  heavy  gaming, virtualization or video editing. In this  article,
-I'm     not     interested    in    audio/video    input/output     or
-phone/s-pen/sensor/camera  use.</p>
+<p>This hardware is more than enough for a moderate desktop pc that is
+not  used  for heavy gaming, virtualization or video editing. In  this
+article,   I'm   not  interested  in  audio/video   input/output   nor
+phone/s-pen/sensor/camera use.</p>
 
 
 <p>Web Resources of interest:</p>
@@ -141,7 +141,7 @@ find the chroot remounted read-only, as this means to shutdown/restart
 the chroot and running fsck (no loss of data though). When switching I
 had  a  look at the external sdcard's FAT filesystem and  my  titanium
 backup files:  Massive  data corruption. Flash problems may well  have  been
-worsened  by  whatever timeout changes, etc, Google patched  into  the
+worsened  by  whatever timeout changes&amp;co Google patched  into  the
 kernel.</p>
 
 
@@ -158,7 +158,7 @@ some of the more annoying and power hungry apps in your firmware (kies, socialhu
 <p>Known pitfalls to avoid:</p>
 <ul>
 <li><i>adb</i> and using symlinks in Android-side paths - silent failure.
-<li>bad flash (in all possible senses of the word :)
+<li>bad flash (in all possible meanings)
 <li><i>kies</i> (connectivity suite / flashing windows software provided by Samsung)
 <li>use of app2sd: do move all apps to the phone (/data) - the core of
     the Android framework has <B>MAJOR PROBLEMS</B> with apps on sdcards,
@@ -188,7 +188,7 @@ to Provider to OTA distribution, rooting enables more options for
 Depending  on how you root the device, the flash counter may  increase
 (though that <a href="http://forum.xda-developers.com/showthread.php?t=1354888">301K
 resistor  field testing jig</a> may help). But in case of mailing  in
-the  device, you need to reflash a stock firmware anyway. In  summary:
+the  device for service, you need to reflash a stock firmware anyway. In  summary:
 so what.
 
 
@@ -284,9 +284,9 @@ memory  and  system_server  vs app2sd).
 
 <p  class=anno>As of mid February, Chris is at v1.7.</p>
 
-<p  class=anno>I  will  likely  follow him irregularly  until  ICS  is
+<p  class=anno>I  will  follow  Chris once in a  while  until  ICS  is
 available  as a CFROOT/CWM supported rom. In the long run, I'll expect
-to end up with CM9 or newer.</p>
+to end up on CM9 or newer.</p>
 
 <p>Notes:</p>
 <ul>
@@ -770,31 +770,80 @@ Linux networking setup and access to a real classic inbound firewall (FW).</p>
 <H3>CHROOT and Turning the Android into a First Class LAN Citizen</H3>
 
 
-<-- -------------------------^^^ clean \/\/\/ borked ---------------------------------------------------------------- -->
 
-<pre>
+<H4>Overview of Services</h4>
 
+<p>Basic  cron  services  are  problematic, as  sleep  is  unreliable.
+abin/CRON* offers an example setup to to cope with this situation. The
+15min  job  contains  code to catch missed runs of  the  slower  shell
+scripts  and  tries to resynchronize them with their  original  window
+when  delayed.  All  you  need to do is  invoking  x  /abin/CRON.15min
+remotely  or with <i>tasker</i> or from multiple invocation sources at
+once  (the  jobs  maintain suitable locking). This  example  might  be
+extended  with anacron and more of the actual cron jobs configured  in
+/etc.</p>
 
-shortcoming: no kernel updates / no security fixes / as 3D/GPU stuff and
-e.g. camera often involve binary firmware blobs, choice of kernel is further limited, if you want
-to retain access to the by-design-crippled devices.
+<p>In  my  case  I've instead added a repeated short  period  WAKELOCK
+invocation  to  the root cronjob on my Linux box. Thus  sleep  becomes
+reliable  in  my home WLAN and the ordinary cron (if started) can  run
+normally  during  the night. However this also implies that not  using
+the CPU by sleeping now costs extra battery, as the Note can no longer
+do a quick automatic suspend-to-RAM.</p>
 
-security  and maintainability is certainly not comparable to a  native
-debian install, where the kernel is properly select by grub on boot, as we're restricted
-to mere userspace.
+<p>Monitoring:  the  example  abin/CHECK  offers  a  basic  monitoring
+script,  which can be run by ssh and evaluated remotely (see the  root
+cronjob and watch_delta).</p>
 
----
+<p>Mail  notification  and forwarding: Without out setup exim4  places
+all  email  in  the  /var/mail/mail  spool  file.  abin/CHECK  reports
+available  mail, as should TOP. Again have a look at the root  cronjob
+file  for  an example to forward this mail to accounts on  the  remote
+Linux box. </p>
 
-note: debian or ubuntu armhf port (efficient support of FPU)
-I had a look at the new armhf debian architecture to be, but the repo I used was
-too incomplete to even survive debootstrap stage 1.
+<p>Using  sshd:  I'm  still using <i>sshdroid</i>'s  dropbear  as  the
+primary  ssh daemon, dealing with backup traffic, and everything.  The
+chroot  from  the linux box by running <i>ssh root@note x  COMMAND</i>
+(e.g.  done  by  unison;  rsync dislikes the space  in  'remote  rsync
+command   names'   and  requires  the  chroot-rsync  dummy   file   in
+sshdroid/dropbear).   If   you  need  a  real  sshd  without   similar
+work-around,  just  run  <i>sshd  -p PORT  &amp;</i>  in  the  chroot,
+possibly also stopping sshdroid. If you really want to, you can add it
+to  system/etc/init.d/S99zz_compact_jobs  to  start  at  boot  of  the
+Note.</p>
 
-Building  on these basics, the third part looks at taking a  fully
-customized  desktop  setup on the road: Create a  Desktop-size  DEBIAN
-armel  CHROOT setup and make that a first class citizen in any LAN you
-encounter  (ssh, file serving and filesystem mounting).
-</pre>
+<p>Accessing remote filesystems: Have a look at the example abin/SSHFS
+containing simple mount/umount commands to permit access to files on a
+remote Linux box. This requires the fuse sshfs package and even offers
+access  to anything mounted on the remote Linux box. SSHFS is intended
+to  also  deal with SMB, and NFS (if the kernel permits), but this  is
+not yet tested.</p>
 
+<p>File serving: Use the usual culprits of ftp, apache and samba as on
+any  Linux  box. Don't forget to edit and rerun FW on if you  need  to
+open ports in the firewall.</p>
+
+<p>Notes</p>
+<ul>
+<li>in  the  long  run, this  chroot  setup  is  still  not
+comparable  to a native install, that can replace and update the Linux
+kernel  as  part of the normal package maintenance. We still  have  to
+rely  on  availability of stock kernels as part of the custom ROM,  as
+it's  unlikely that some of the device blobs will be availble with new
+kernels.  Furthermore,  vulnerabilities of the outside  Android  still
+apply  and  will  only get worse when the device is obsoleted  by  the
+maker  (at least Samsung doesn't do this before release to the market,
+like some other makers).
+<li>a newer architecture called <b>armhf</b> is being in the works at 
+DEBIAN and Ubuntu, which introduces support for more modern CPU features 
+and improves FPU support. However the
+repository mentioned in the article on armhf failed already in stage
+one of debootstrap in early January. This should prove interesting 
+in the medium term. When it's ready, just replace <i>armel</i> with
+<i>armhf</i>. (Check the release note and check with Google - it might even be 
+possible to just change architectures in sources-list on an uptodate 
+armel setup and reinstall (all) DEBIAN packages for use of armhf without
+starting over with debootstrap and an empty directory).
+</ul>
 
 <p><b>Summary:</b>  By  now we have a DEBIAN chroot and can access  it
 from   the   Android  shell  interactively  or  as  part  of  a   pipe
@@ -808,6 +857,7 @@ and folder synchronization.</p>
 <a name=vnc></a>
 <H3>Desktop and X11</H3>
 
+<-- -------------------------^^^ clean \/\/\/ borked ---------------------------------------------------------------- -->
 
 <pre>
 
