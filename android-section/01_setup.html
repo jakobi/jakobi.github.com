@@ -88,24 +88,27 @@ License: CC-BY-SA.
 
 <p>This  article  sketches  a sane setup of GNU/Linux on  an  ordinary
 <B>1-GB-RAM   DUAL-CORE  PC</B>  (henceforth  to  called   the   armel
-architecture  Android device <b>Samsung Galaxy Note</b>). This is more
-than  enough  for  a moderate desktop pc that is not  used  for  heavy
-gaming, virtualization or video editing.</p>
+architecture  Android device <b>Samsung Galaxy Note</b>).
 
-<p>So  in this article, I'm not interested in audio/video input/output
-or  phone/s-pen/sensor/camera  use.  Furthermore, most  of  the
-networking is handled using Unix commands using the Android shell.</p>
+<p>This is more than enough for a moderate desktop pc that is not used
+for  heavy  gaming, virtualization or video editing. In this  article,
+I'm     not     interested    in    audio/video    input/output     or
+phone/s-pen/sensor/camera  use.</p>
 
 <p><b>I/O options</b> include</p>
 <ul>
-<li>OTG USB Port permits to connect a) the Note to the PC (adb, access to 
-    the Note's FAT user filesystems) or b) some external USB hardware
+<li>the OTG USB Port, which permits to connect
+<ul>
+<li> the Note to the PC (adb, access to 
+    the Note's FAT user filesystems) or
+<li> some external USB hardware
     to the Note (Mouse/Keyboard/Memory stick, etc, as long an in-kernel
     driver is available)
-<li>HDMI Connection cable (reuses the OTG port)
-<li>able to be both a WLAN-client or a WLAN Access Point
-<li>able to use networking over USB
-<li>S-pen - a real wacom-style stylus offering pressure-sensitivity
+<li>HDMI Connection cable (as it reuses the physical OTG port :))
+</ul>
+<li>acting as either a WLAN-client or a WLAN Access Point
+<li>networking over USB
+<li>the S-pen - a real wacom-style stylus offering pressure-sensitivity
     and high resolution (not one of those useless iphone-style capacitive 
     finger-tip-replacements; better quality tablet-pc pens work
     on the Note offering both eraser and stylus)
