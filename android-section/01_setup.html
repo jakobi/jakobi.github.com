@@ -291,7 +291,7 @@ that restoring 300 user apps takes a whee bit of time.
 recovery, as you'd restore the previous state and fully or partially undo
 a successful flashing. Though it's perfect to undo a bad flashing or to go back
 from testing another ROM.
-<li>consider turning off OTA updates (Settings -&lt; About Phone -&lt; 
+<li>consider turning off OTA updates (Settings -&gt; About Phone -&gt; 
 Software updates). While still pretty rare, Samsung is one of the select
 few Android makers that actually publish ROM updates.
 </ul>
@@ -304,26 +304,28 @@ few Android makers that actually publish ROM updates.
 <li>check /data/system/uiderrors.txt (chown/chgrp as required as root or try CFROOT's
     fix permissions from the recovery shell; uninstalling all affected apps is another
     option via market or <i>pm uninstall</i> in the shell)
-<li>optional: copy the backups from the pc back to the note
+<li>optional: copy the backups from the PC back to the Note
 <li>(selective) restore of applications (and possibly data) using <i>titanium backup</i>.
 <li>use <i>zdbox</i> to move any apps on sdcard back to the phone (there are preference
     settings, but some apps get still always installed to sdcard)
 <li>skim through the Android's settings menu:
 <ul>
 <li>fix language settings, reenable keyboards(?)
-<li>application -&lt; usb debugging still enabled (<i>adb shell</i> command from PC still working?)
-<li>power settings?
+<li>application -&gt; usb debugging still enabled (<i>adb shell</i> command from PC still working?)
+<li>power settings
+<li>phone: disable OTA software updates
 <li>...
 </ul>
-<li>restore your widgets (<i>quick agenda</i>, floatmemo, coolapps)
+<li>restore your widgets (<i>quick agenda</i>, <i>floatmemo</i>, <i>coolapps</i>)
 <li>check apps that should run on boot / have active schedules (<i>titanium backup</i>, <i>tasker</i>, 
     <i>lookout</i>, <i>LBE privacy guard</i>, <i>ring guard</i>, <i>smart task switcher</i>)
 <li>check <i>terminal ide</i> and root access
-<li>from the PC, check <i>adb shell</i>  and ssh access via <i>sshdroid</i>
-<li>check logcat (is there a need to run insmod /lib/modules/logger.ko or similar?)
+<li>from the PC, check the SDK's <i>adb shell</i> access as well as ssh access via <i>sshdroid</i>
+<li>check logcat in the shell (is there a need to run insmod /lib/modules/logger.ko or similar?)
 <li>rerun sl4a installers (perl apk file is e.g. the installer/uninstaller for perl)
 <li>fix your ring and notification tones
-<li>check apps (e.g. by titanium or by ls /system/app) for applications to disable again (titanium backup: freeze)
+<li>check apps (e.g. by <i>titanium backup</i> or by ls /system/app) for applications to 
+    disable (<i>titanium backup</i>: freeze)
 <li>optional: restore your own modifications to the Android shell and to 
     the <i>terminal ide</i> environment (run INSTALL from part two to recover Android shell 
     modifications, scripts, binaries and symlinks; if lost, do recover the root account 
