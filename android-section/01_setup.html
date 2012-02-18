@@ -344,6 +344,7 @@ few Android makers that actually publish ROM updates.
 
 <p>Finally</p>
 <ul>
+<li>restore /etc/openvpn from the backup (for now, this is intentioanally skipped by INSTALL)
 <li>check /data/system/uiderrors.txt again
 <li>make  a new backup and copy that to the PC (not  replacing your old one from pre-flash)
 </ul>
@@ -553,6 +554,8 @@ package (all 3 on market).</p>
 
 <h4>Treasure Trove Terminal IDE</h4>
 
+<p>(there's no need to use java and the ide to really profit from installing and using <i>terminal ide</i>)</p>
+
 <p><i>terminal  ide</i>  aims to attempt to make standard  Unix  setup
 available  to permit working with vim and java, thus the <i>IDE in the
 terminal</i>  name. This provides the best working environment for the
@@ -565,75 +568,159 @@ android shell outside of a chroot. It offers e.g.</p>
 <li>mc   (this lacks subshell support, consider running the 
    system/xbin/mc binary from the example files or the chroot's <i>x mc -a</i>.
 <li>tmux (screen-style terminal multiplexer, configured to use CTRL-a as command key)
-<li>vim (_the_ editor)
+<li>vim (_the_ editor; way better than vi, and much better than the busybox vi subset)
 </ul>
 
 <p>With  some  coaxing in the form of custom profiles and  the  script
-TERMIDE  (often aliased to t), the environment is also usable  outside
-the    app,    e.g.    from    ssh   or    for    root.    See    both
+TERMIDE  (I  usually  alias it to t), the environment is  also  usable
+outside   the   app,   e.g.   from  ssh  or   for   root.   See   both
 data/data/com.spartacusrex.spartacuside/files/root                 and
-data/data/com.spartacusrex.spartacuside/files.  The example will  also
-clone   two   bash  files  from  the  chroot's   root   account   into
+data/data/com.spartacusrex.spartacuside/files.  The  example  profiles
+will  also  clone two bash files from the chroot's root  account  into
 data/data/com.spartacusrex.spartacuside/files/root   to   maintain   a
 single  environment  inside  and  outside of the  chroot,  inside  the
 <i>terminal  ide</i> app and outside, for both the <i>terminal ide</i>
-user account or for root. Running  the app is not required.</p>
+user account or for root. Running the app is not required.</p>
 
-<p>Note  that  an <i>terminal ide</i> bash may block attempts  to  run
-<i>mount  -oro,remount /system</i>. /s/INSTALL reliably triggers  that
-issue.</p>
-
-
-
-
-<h4>Advanced Networking</h4>
-
-<-- -------------------------^^^ clean \/\/\/ borked ---------------------------------------------------------------- -->
-
-<p>VPN example</p>
-
-<p>Proxies, ssh</p>
-
-<p>VNC</p>
-
-<p>remote files -> later on SSHFS</p>
-
-<p>tethering: just modprobe usbnet and use usb0.
-alternately use the ap mode and wlan
-proxies: sshtunnel, ORBOT.
-</p>
+<p>Notes</p>
+<ul>
+<li>a <i>terminal ide</i> bash may block attempts  to  run
+    <i>mount  -oro,remount /system</i>. /s/INSTALL reliably triggers  that issue.
+<li>injecting root profiles into files of another Android app in /data/data
+    isn't the sanest thing to do. But it works, and the the 
+    normal <i>terminal ide</i> user accounts needs similar settings anyway. Take
+    a look in case of restoring with titanium backup, but other than mc 
+    creating a new profile, nothing should happen. Wrt security, the Android
+    setup is single-user in the first place, abusing id's for the purpose
+    of isolating apps against each other. Given that we need to
+    run <i>terminal ide</i> binaries as root anyway, there's no additional risk to consider.
+<li>a fully configured vim with syntax highlighting might hang for when
+    the sdcard is busy with heavy writing. For tiny edits,
+    just ssh on the machine and use the busybox version.
+</ul>
 
 
-<p><i>proxydroid</i> and <i>sshtunnel</i> - iptables-based forwarding
-of requests to a server-based based socks daemon. If you want to setup
-your own socks daemon, take a look at the hpsockd.conf in the examples
-(as tested once on Ubuntu 10.4).</p>
+
+
+<h4>Networking</h4>
+
+<p>Browsing:  some  providers  like to mangle httml pages  or  provide
+different  resolution  images and embed extra javascript in pages.  In
+case  of the German Telekom, most of this nonsense can be disabled  by
+<a href"http://speed.telekom.de/laptop_confirmation.php?u=">http://speed.telekom.de/laptop_confirmation.php?u=</a>.
+This  behaviour  was questionable when it started and with  increasing
+network  speed  and display sizes, it doesn't get more  reasonable  at
+all.</p>
+
+<p>Using   ssh:   Ssh-client  and  scp  can  be  found  as   part   of
+<i>sshdroid</i> including sftp server and scp. Another copy is offered
+by   <i>terminal   ide</i>.   A  real  openssh  build   is   part   of
+<i>sshtunnel</i>,  also  named  sshtunnel. As  android  app,  consider
+<i>connectbot</i>.  Note  that I was unable to trivially port  an  old
+ssh-based  tunnel trick of mine, as some ssh options are not supported
+by any of these.</p>
+
+<p>Using   sshd:  As  ssh-server  I  use  dropbear  as   provided   by
+<i>sshdroid</i> (<i>terminal ide</i> again provides a second copy) and
+only  rarely run a second sshd -p <portnumber> on an alternate port in
+the         chroot.         See         the         profile         in
+data/data/berserker.android.apps.sshdroid.  Adding  keys with the  GUI
+didn't  always  work,  so place them in  home/.ssh/authorized_keys  in
+above directory.</p>
+
+<p>Using  socks:  <i>proxydroid</i>,  <i>sshtunnel</i>  and   <i>orbot
+(TOR)</i>-  iptables-based  forwarding  of http/https  requests  to  a
+server-based  based socks daemon. If you want to setup your own  socks
+daemon,  take  a look at the hpsockd.conf in the examples  (as  tested
+once on Ubuntu 10.4).</p>
 
 <p><b>ERRATA: add hpsockd.conf to examples</b></p>
-
-<p>Ssh-client  and  scp  can  be  found  as  part  of  <i>sshdroid</i>
-including  sftp server and scp. Another copy is offered by <i>terminal
-ide</i>.  A real openssh build is part of <i>sshtunnel</i>, also named
-sshtunnel. As android app, consider <i>connectbot</i>. As ssh-server I
-use dropbear as provided by <i>sshdroid</i> (<i>terminal ide</i> again
-provides  a  second  copy)  and  only rarely  run  a  second  sshd  -p
-<portnumber> on an alternate port in the chroot.</p>
 
 <p>Iptables  is  hopefully part of your custom ROM. Iptables  is  also
 part  of <i>proxydroid</i>, <i>sshtunnel</i> and <i>orbot</i> packages
 from  market. <i>lbe privacy guard</i> or any of the personal firewall
 tools should also contain or offer to install a copy iptables.</p>
 
-<p>Interesting apps</p>
+<p>Rsync:  I've  stumbled  upon  a static  compile  (included  in  the
+examples)   which  is  as  simple  to  use  as  <i>rsync  -a  --delete
+root@note:/DIR  /HOSTDIR</i>.  For  a  backup  solution,  check   e.g.
+rsync-backup.  Some  of  the  rsync-related market  apps  should  also
+provide suitable rsync binaries.</p>
+
+<p  class=anno>I  think  that  for now I will want to  fall  short  of
+providing  the  promised  automated nightly backup  solution  (if  you
+silently  add  a  'simple'  in there). In the meantime,  the  files  I
+actually  use  in my backup are part of the example files.  My  backup
+setup  is  bit  older  than  rsync-backup  and  centers  on  filtering
+filelists.  As  invoked for the Note, it uses also rsync for copy  and
+cleanup  of removed files, and it also keeps numbered daily/weekly/...
+snapshots.              Execution             starts              with
+home/jakobi/bin/xfer_backup.wrapper.anuurn.local,  which is invoked by
+a nightly root cron job.</p>
+
+<p>Using  a  VPN: OpenVPN and tun.ko is hopefully already part of  the
+custom  ROM (or in case of tun.ko optionally also a part of the kernel
+- otherwise add a insmod /lib/modules/tun.ko or similar; there also is
+a  <i>tun.ko  installer</i>  on the market as well  as  an  <i>openvpn
+installer</i>).  The  example  files  show  a  working   shared-secret
+openvpn-pair example:
+
 <ul>
+<li>system/xbin/VPN* (with VPN to start the VPN, VPN-ALL to tunnel all
+    traffic over the VPN including internet traffic and VPN-NONE for the
+    opposite. To end the session, run VPN-NONE and maybe pkill openvpn).
+<li>the etc/openvpn files for both the Linux host and the Note (/etc/vpn is NOT handled by INSTALL)
+<li>see also the settings menu, which offers additional VPN options.
 </ul>
 
 
-Script examples:
-<ul>
-<li>VPN
-<li>FW
-</ul>
+<p><b>ERRATA: w/o jump</b></p>
+
+<p>Some  graphical apps using VNC/RDP to view remote computers:  there
+are  various  VNC  apps available, including  <i>vnc  viewer</i>,  and
+<i>Pocketcloud</i>.  For  the  opposite direction, to  view  the  Note
+desktop   using   VNC,   consider  <i>androidVNC</i>.</p>
+
+<p  class=anno>(the Note's resolution is great, but my eye isn't  upto
+to  the  Note's  300dpi,  so vnc use requires  zooming.  There's  also
+multi-head  issue: no vnc app was up to deal with a multihead  display
+of  two different sized monitors -&gt; run a a (smaller) vncserver  on
+the remote host)</p>
+
+<p>There's  also <i>Xvnc</i> which combines a vnc viewer hardwired  to
+connect  to  a  locally running vnc server which acts  as  X11  server
+(armel  binaries  included). If you've space issues when creating  the
+chroot  in part 4, Xvnc is very convenient to skip installing most  of
+X11  inside  the  chroot  -  merely  run  <i>aptitude  install   xterm
+icewm</i>.</p>
+
+<p>As  we install a chroot soon, I'm not covering graphical apps  that
+access  remote  files  or offer access to remote files.  As  for  NFS,
+without  kernel support, you cannot neither access NFS files nor offer
+them.</p>
+
+<p>Unless  you have access to a Linux box elsewhere and run fuse sshfs
+in  the direction you want to. The Linux box can then either offer the
+Note's  files  per NFS or forward contents of NFS mounts to  the  Note
+(chroot  required  for this direction). See the example  SSHFS  script
+later on.</p>
+
+<p>For connecting to a WLAN and AP mode (WLAN tethering), just use the
+settings  menu on the Note and e.g. network manager on the Linux  box.
+For  tethering via USB, connect the Note and select USB tethering.  On
+the  Linux box run <i>modprobe usbnet</i>, maybe also  <i>dhclient</i>
+and  have a look at usb0. I didn't test inverse tethering (making  the
+Note use the Linux Box's connection to the internet), but even a short
+search returned 11 pretty dissimilar sketches from using ppp or ssh or
+adb with portforwarding to bridging.</p>
+
+<p>Personal firewalls</p>
+
+<p>Antivirus</p>
+
+<p>A real inbound firewall / classical packet filtering firewall: See the FW script.</p>
+
+
 
 
 
@@ -642,6 +729,9 @@ Script examples:
 <hr><a href="#toc">(table of contents)</a><hr>
 <a name=chroot></a>
 <H3>CHROOT and Turning the Android into a First Class LAN Citizen</H3>
+
+
+<-- -------------------------^^^ clean \/\/\/ borked ---------------------------------------------------------------- -->
 
 <pre>
 
