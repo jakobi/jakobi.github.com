@@ -444,11 +444,50 @@ host.note/mnt/sdcard/COMPACT/setup/INSTALL.</p>
 
 
 <p>Now that we've taken care of the basics and have access to a rooted
-Note,  let's get to the more interesting parts of this article.  First
-of  all,  enable proper use of the network using the Note,  both  from
-shell as well as graphically.</p>
+Note,  let's get to the more interesting parts of this article.</p>
 
 <-- -------------------------^^^ clean \/\/\/ borked ---------------------------------------------------------------- -->
+
+<p>Differences  from  a normal Unix system: libc and its most  visible
+problem: Google reinvented an embedded small libc clone by the name of
+bionic,  with together with the Android framework implements DNS in  a
+non-standard  way. This leads to some confusion in porting as  whether
+to  look  at  the  output  of  setprop  and  make  quite  a  few  code
+modifications  or  just  look  at  the files in  /etc  and  hope  that
+something  (the  user...)  keeps  them in sync  with  the  framework's
+properties (setprop/getprop shell command). For busybox, the stericson
+version  you installed into /system/xbin does use DNS properly,  while
+the  versions  from <i>sshdroid</i> and <i>terminal ide</i> do not.  I
+defined an alias iresolver to reorder PATH to enable DNS-related shell
+commands.</p>
+
+<p>Google   also   reinvented  the  wheel  with  logcat.  Again   with
+interesting  effects:  they didn't mangle all parts of the kernel,  so
+many  kernel messages never make it to logcat at all. Worse, there  is
+no  syslog/klog,  and  messages at best can be seen for a  very  short
+period  in a much too noise dmesg output. The lost messages include so
+uninteresting topics such as logged packets from user-created iptables
+rules.   However,  messages  about  filesystem  data  corruption   are
+similarly mistreated. Which just happens to be a <b>severe reliability
+issue</b>.</p>
+
+<p>Other   things  that  may  be  unavailable:  Shared  memory.  Again
+improperly removed/unconfigured, leading to crashes and the X11 shared
+memory  workaround  reported later on. NFS client or  server  support.
+The ability to use swap space or swap to file.</p>
+
+<p>The  low power portions of the Google patches neglects to  properly
+fix   sleep.   So   without   active  wake_locks   to   avoid   system
+suspend-to-ram,  even a one second sleep is completely unreliable  and
+may  have  a duration of a few minutes. Large sleeps are affected  way
+worse:  Sleeps  aren't ended when the system activates again  and  the
+real  time  is  after the intended end of sleep. Thus  a  chroot  cron
+becomes  pretty  much unusable without constantly  maintaining  active
+wakelocks. See the example system/xbin/WAKELOCK to set/clear/list wake
+locks.</p>
+
+
+
 
 <p>ssh / connectbot</p>
 <pre># openssh5.8p2 (what was my issue here???)
@@ -478,18 +517,16 @@ alternately use the ap mode and wlan
 proxies: sshtunnel, ORBOT.
 </p>
 
+<p>Example files not yet mentioned:</p>
+<ul>
+<li>WAKELOCK
+<li>
+<li>
+<li>
+</ul>
+
 Things to consider or to avoid:
 <ul>
-<li>Google reinvented an embedded small libc clone by the name of bionic.
-    Furthermore, DNS resolving isn't implemented as in the standard way.
-    This leads to some confusion in porting on whether to look at the 
-    output of setprop and make quite a few modifications or just look at
-    the files in /etc and hope that something (the user...) keeps them
-    in sync with the framework's properties (setprop/getprop shell command).
-    For busybox, the stericson version you installed into /system/xbin
-    does use DNS properly, while the versions from <i>sshdroid</i> and 
-    <i>terminal ide</i> do not. I defined an alias iresolver to reorder
-    PATH to enable DNS-related shell commands.
 <li>/system/bin/sh is toolbox, not busybox; in CHROOT.run I've run into
     a number of toolbox bugs. If sh or /system/bin/sh strangely misbehaves, try
     /system/xbin/sh instead.
