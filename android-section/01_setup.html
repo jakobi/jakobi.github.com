@@ -405,15 +405,15 @@ installer))</p>
 <a name=shell></a>
 <H3>Adding Unix Standards to the Android Shell</H3>
 
-<p>Do run and setup each of busybox installer, sshdroid, terminal ide,
-titanium  backup and superuser (probably already activated in custom ROMs). From now on, I assume
+<p>Do run and setup each of <i>busybox installer</i>, <i>sshdroid</i>, <i>terminal ide</i>,
+<i>titanium  backup</i> and <i>superuser</i> (probably already activated in custom ROMs). From now on, I assume
 that</p>
 
 <ul>
 <li>grep, sh, etc is available in /system/xbin (<i>stericson busybox installer</i>)
 <li>running su, then id in <i>terminal ide</i> show either root or the numerical id 0 (otherwise 
     verify <i>superuser</i>; note that this su is not the real Linux su)
-<li>you can run shh root@note to start an android shell using the dropbear daemon (check <i>sshdroid</i>; 
+<li>you can run shh root@&lt;WLAN IP of your device&gt; to start an android shell using the dropbear daemon (check <i>sshdroid</i>; 
     your public key goes to /data/data/berserker.android.apps.sshdroid/.ssh/authorized_keys)
 </ul>
 
