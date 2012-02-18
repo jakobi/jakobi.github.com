@@ -232,10 +232,15 @@ still lack blobs for camera and accelerated display.</p>
 <li>create and validate a backup suitable to recover ALL of your device from a 
     barebones custom rom install.
 <ul>
+   <li>ensure that you have a copy of the /efs contents somewhere (imei, etc)
    <li>consider backups of /mnt/sdcard and /mnt/external_sd.
-   <li>consider a backup of /data, even if only tar cf /sdcard/data.tar /data
+   <li>consider a backup of /data, even if only <i>tar cf /sdcard/data0.tar /data</i>
    <li>consider using titanium backup to backup user/system apps and data.
    <li>validate your backup!
+   <li>consider using cfroot/cwm to do a backup from the recovery rom:
+       way faster than titanium to recover the previous state, but not
+       that useful on restoring user data into a new custom ROM, as it
+       is easy to restore "too much".
    <li>consider copying the backup to your PC! If that happens 
        automatically as part of a nightly backup run, do manually check that copy!
 </ul>
@@ -304,10 +309,13 @@ few Android makers that actually publish ROM updates.
 <li>check /data/system/uiderrors.txt (chown/chgrp as required as root or try CFROOT's
     fix permissions from the recovery shell; uninstalling all affected apps is another
     option via market or <i>pm uninstall</i> in the shell)
+<li>optional: consider doing an immediate fresh-custom-ROM-install backup, maybe 
+    as simple as <i>tar cf /sdcard/data1.tar /data</i>, but don't overwrite any of your backups.
 <li>optional: copy the backups from the PC back to the Note
 <li>(selective) restore of applications (and possibly data) using <i>titanium backup</i>.
 <li>use <i>zdbox</i> to move any apps on sdcard back to the phone (there are preference
     settings, but some apps get still always installed to sdcard)
+<li>check /data/system/uiderrors.txt again
 <li>skim through the Android's settings menu:
 <ul>
 <li>fix language settings, reenable keyboards(?)
@@ -330,11 +338,11 @@ few Android makers that actually publish ROM updates.
     the <i>terminal ide</i> environment (run INSTALL from part two to recover Android shell 
     modifications, scripts, binaries and symlinks; if lost, do recover the root account 
     for <i>terminal ide</i> from backup)
-<li>optional: if already installed: check that mc, bash, vi/vim still works in the Android shell and in <i>terminal ide</i>
+<li>optional: if already installed: check mc, bash, vi/vim in the shell and in <i>terminal ide</i>
 <li>optional: check the availability and functionality of the chroot setup
 </ul>
 
-<p>Final steps are</p>
+<p>Finally</p>
 <ul>
 <li>check /data/system/uiderrors.txt again
 <li>make  a new backup and copy that to the PC (not  replacing your old one from pre-flash)
