@@ -303,7 +303,7 @@ few Android makers that actually publish ROM updates.
 
 
 
-<h4>Post Flashing Checklist</H4>
+<h4>Post-Flashing Checklist</H4>
 
 <ul>
 <li>check /data/system/uiderrors.txt (chown/chgrp as required as root or try CFROOT's
@@ -325,7 +325,7 @@ few Android makers that actually publish ROM updates.
 <li>...
 </ul>
 <li>restore your widgets (<i>quick agenda</i>, <i>floatmemo</i>, <i>coolapps</i>)
-<li>check apps that should run on boot / have active schedules (<i>titanium backup</i>, <i>tasker</i>, 
+<li>check apps that should run on boot / have active schedules (in my case: <i>titanium backup</i>, <i>tasker</i>, 
     <i>lookout</i>, <i>LBE privacy guard</i>, <i>ring guard</i>, <i>smart task switcher</i>)
 <li>check <i>terminal ide</i> and root access
 <li>from the PC, check the SDK's <i>adb shell</i> access as well as ssh access via <i>sshdroid</i>
@@ -406,18 +406,16 @@ installer))</p>
 <H3>Adding Unix Standards to the Android Shell</H3>
 
 <p>Do run and setup each of busybox installer, sshdroid, terminal ide,
-titanium  backup and superuser (probably already activated in custom ROMs). 
+titanium  backup and superuser (probably already activated in custom ROMs). From now on, I assume
+that</p>
 
 <ul>
 <li>grep, sh, etc is available in /system/xbin (<i>stericson busybox installer</i>)
 <li>running su, then id in <i>terminal ide</i> show either root or the numerical id 0 (otherwise 
     verify <i>superuser</i>; note that this su is not the real Linux su)
-<li>you can run shh root@note to start an android shell using the dropbear daemon (check <i>sshdroid</i>)
+<li>you can run shh root@note to start an android shell using the dropbear daemon (check <i>sshdroid</i>; 
+    your public key goes to /data/data/berserker.android.apps.sshdroid/.ssh/authorized_keys)
 </ul>
-
-
-APG placement
-sshdroid and key placement
 
 <p>Now  that  we've  taken care of the basics, let's get to  the  more
 interesting parts of this article.</p>
