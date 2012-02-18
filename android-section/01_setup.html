@@ -88,23 +88,24 @@ License: CC-BY-SA.
 
 <p>This  article  sketches  a sane setup of GNU/Linux on  an  ordinary
 <B>1-GB-RAM   DUAL-CORE  PC</B>  (henceforth  to  called   the   armel
-architecture  Android device <b>Samsung Galaxy Note</b>).
+architecture  Android device <b>Samsung Galaxy Note</b> GT-N7000).
 
 <p>This is more than enough for a moderate desktop pc that is not used
 for  heavy  gaming, virtualization or video editing. In this  article,
 I'm     not     interested    in    audio/video    input/output     or
 phone/s-pen/sensor/camera  use.</p>
 
+
 <p><b>I/O options</b> include</p>
 <ul>
-<li>the OTG USB Port, which permits to connect
+<li>the OTG USB port, which permits to connect
 <ul>
 <li> the Note to the PC (adb, access to 
     the Note's FAT user filesystems) or
 <li> some external USB hardware
     to the Note (Mouse/Keyboard/Memory stick, etc, as long an in-kernel
     driver is available)
-<li>HDMI Connection cable (as it reuses the physical OTG port :))
+<li>the HDMI connection cable (reuses the physical OTG port)
 </ul>
 <li>acting as either a WLAN-client or a WLAN Access Point
 <li>networking over USB
@@ -115,25 +116,25 @@ phone/s-pen/sensor/camera  use.</p>
 <li>...
 </ul>
 
-<p><b>Flash  considerations</b>:  Choose a quality sdhc microsd flash, 16  or
-32GB.</p>
 
-<p>  After  bad experiences with both Class 10 Transcent and  Lexar,
-I've  now settled on a reliable Sandisk class 4 16GB microsd flash. As
-Sandisk  chooses  labels  according to the minimum write rate,  it  is
-nearly  as fast as the others. One advantage is that I no longer  find
-the  chroot remounted read-only, as this means to shutdown/restart the
-chroot and running fsck (no loss of data though). When switching I had
-a  look  at  the external sdcard's FAT filesystem and my titanium backup: Massive  data
-corruption.
+<p><b>Flash  considerations</b>:  Choose a <i>quality</i> sdhc microsd
+flash, 16  or 32GB.</p>
+
+<p  class=anno>After bad experiences with both Class 10 Transcend  and
+Lexar,  I've  now settled on a reliable Sandisk class 4  16GB  microsd
+flash.  As Sandisk chooses labels according to the minimum write rate,
+it  is nearly as fast as the others. One advantage is that I no longer
+find the chroot remounted read-only, as this means to shutdown/restart
+the chroot and running fsck (no loss of data though). When switching I
+had  a  look at the external sdcard's FAT filesystem and  my  titanium
+backup:  Massive  data corruption. Flash problems may well  have  been
+worsened  by  whatever timeout changes, etc, Google patched  into  the
+kernel.</p>
 
 <p>Read speeds for the internal flash are 50+ MB/s and 18MB/s
 for  Sandisk (20MB/s also happens to be the maximum to expect with any
 USB 2.0 card reader).</p>
 
-<p><i>Do  update and validate titanium backups (doubly so on  external
-sdcards) before flashing new firmware. Copy the backups to
-your PC (e.g. as port of a nightly backup schedule).</i>.</p>
 
 <p><b>Power  considerations</b>:  Enable automatic battery savings  in
 Settings. Turn off WLAN and GPS - the location by cell towers is still
@@ -142,12 +143,14 @@ some of the more annoying apps in your firmware (kies, socialhub).</p>
 
 <p><b>Things to avoid</b>:</p>
 <ul>
-<li>voice assistance / voice input (ICS should improve things).
+<li>bad flash (in all possible senses of the word :)
+<li>kies (connectivity suite / flashing windows software provided by Samsung)
 <li>use of app2sd: do move all apps to the phone (/data) - the core of
     the Android framework has <B>MAJOR PROBLEMS</B> with apps on sdcards,
     upto and including hanging in a boot-loop (recover by full wipe or
     by adb shell from the PC and removing any packages on the sdcards;
     access by ssh with sshdroid is not possible).
+<li>voice assistance / voice input (ICS should improve things).
 </ul>
 
 
@@ -169,8 +172,8 @@ to Provider to OTA distribution, rooting enables more options for
 </ul>
 
 Depending  on how you root the device, the flash counter may  increase
-(the                                                                <a href="http://forum.xda-developers.com/showthread.php?t=1354888">301K
-resistor  fieldtesting jig</a> might help). But in case of mailing  in
+(though that <a href="http://forum.xda-developers.com/showthread.php?t=1354888">301K
+resistor  field testing jig</a> may help). But in case of mailing  in
 the  device, you need to reflash a stock firmware anyway. In  summary:
 so what.
 
@@ -189,6 +192,10 @@ so what.
 
 <h4>Pre-Flashing Checklist</h4>
 
+
+<p><i>Do  update and validate titanium backups (doubly so on  external
+sdcards) before flashing new firmware. Copy the backups to
+your PC (e.g. as port of a nightly backup schedule).</i>.</p>
 
 
 
