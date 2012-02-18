@@ -107,9 +107,9 @@ phone/s-pen/sensor/camera  use.</p>
 <ul>
 <li>the OTG USB port, which permits to connect
 <ul>
-<li> the Note to the PC (adb, access to 
+<li>the Note to the PC (adb, access to 
     the Note's FAT user filesystems) or
-<li> some external USB hardware
+<li>some external USB hardware
     to the Note (Mouse/Keyboard/Memory stick, etc, as long an in-kernel
     driver is available)
 <li>the HDMI connection cable (reuses the physical OTG port)
@@ -135,7 +135,7 @@ it  is nearly as fast as the others. One advantage is that I no longer
 find the chroot remounted read-only, as this means to shutdown/restart
 the chroot and running fsck (no loss of data though). When switching I
 had  a  look at the external sdcard's FAT filesystem and  my  titanium
-backup:  Massive  data corruption. Flash problems may well  have  been
+backup files:  Massive  data corruption. Flash problems may well  have  been
 worsened  by  whatever timeout changes, etc, Google patched  into  the
 kernel.</p>
 
@@ -152,13 +152,13 @@ some of the more annoying and power hungry apps in your firmware (kies, socialhu
 
 <p>Known pitfalls to avoid:</p>
 <ul>
-<li>adb and using symlinks in Android-side paths - silent failure.
+<li><i>adb</i> and using symlinks in Android-side paths - silent failure.
 <li>bad flash (in all possible senses of the word :)
-<li>kies (connectivity suite / flashing windows software provided by Samsung)
+<li><i>kies</i> (connectivity suite / flashing windows software provided by Samsung)
 <li>use of app2sd: do move all apps to the phone (/data) - the core of
     the Android framework has <B>MAJOR PROBLEMS</B> with apps on sdcards,
     upto and including hanging in a boot-loop (recover by full wipe or
-    by adb shell from the PC and removing any packages on the sdcards;
+    by <i>adb shell</i> from the PC and removing any packages on the sdcards;
     access by ssh with sshdroid is not possible).
 </ul>
 
@@ -232,6 +232,7 @@ still lack blobs for camera and accelerated display.</p>
 <li>create and validate a backup suitable to recover ALL of your device from a 
     barebones custom rom install.
 <ul>
+   <li>if not yet installed, do install <i>titanium backup</i> from market.
    <li>ensure that you have a copy of the /efs contents somewhere (imei, etc)
    <li>consider backups of /mnt/sdcard and /mnt/external_sd.
    <li>consider a backup of /data, even if only <i>tar cf /sdcard/data0.tar /data</i>
@@ -354,20 +355,21 @@ few Android makers that actually publish ROM updates.
 
 <p>1. Nice to have market apps to improve on Android graphical offerings:</p>
 <ul>
-<li>apg (an Android frontend for pgp/gpg encrypted files)
-<li>aspotcat, lookout, lbe privacy guard (security, permissions, receivers, intents)
-<li>clipper, clip ninja, floatmemo (without a window system, we need help to transfer data between apps)
-<li>clocksync (to keep your clock in sync with NTP)
-<li>coolapps (system load widget and much more)
-<li>jota (nice text editor)
-<li>k9 (nice mailer)
-<li>mobile odin (custom ROM flasher, see also the cwm app, that should be part of of the custom ROM)
-<li>printbot, scanthing (printing and scanning, with OCR via update to google docs)
-<li>ringguard (don't accidentally change ring tone loudness)
-<li>smart taskswitcher, task manager
-<li>tasker (programmable android event handling, can substitute for cron, can turn on/off WLAN depending on location, etc)
-<li>terminal emulator
-<li>zdbox (task killing, moving apps from sdcard to phone)
+<li><i>apg</i> (an Android frontend for pgp/gpg encrypted files)
+<li><i>aspotcat</i>, <i>lookout</i> or <i>avast</i>, <i>lbe privacy guard</i> (security, permissions, receivers, intents)
+<li><i>clipper</i>, <i>clip ninja</i>, <i>floatmemo</i> (without a window system, we need help to transfer data between apps)
+<li><i>clocksync</i> (to keep your clock in sync with NTP)
+<li><i>coolapps</i> (system load widget and much more)
+<li><i>jota</i> (nice text editor)
+<li><i>k9</i> (nice mailer)
+<li><i>mobile odin</i> (custom ROM flasher, see also the cwm app, that should be part of of the custom ROM)
+<li><i>printbot</i>, <i>scanthing</i> (printing and scanning, with OCR via update to google docs; also consider adding some
+    office suite app.
+<li><i>ringguard</i> (don't accidentally change ring tone loudness)
+<li><i>smart taskswitcher</i>, <i>task manager</i>
+<li><i>tasker</i> (programmable android event handling, can substitute for cron, can turn on/off WLAN depending on location, etc)
+<li><i>terminal emulator</i>
+<li><i>zdbox</i> (task killing, moving apps from sdcard to phone)
 </ul>
 
 <p  class=anno>(voice recognition and more than word-level handwriting
@@ -376,14 +378,14 @@ recognition aren't quite there yet in gingerbread)</p>
 
 <p>2. Required market apps for the rest of this article:</p>
 <ul>
-<li>busybox installer (stericson, use /system/xbin as installation path)
-<li>connectbot (use ssh to connect to remote systems)
-<li>file expert or any other filemanager capable of accessing non-sdcard directories
-<li>sshdroid (permit incoming ssh connections, dropbear-based)
-<li>superuser (usually part of the custom firmware we install)
-<li>terminal ide (a pretty complete unix user space for the Android shell)
-<li>titanium backup (backup and restore apps, also offers dealing with offending (firmware) apps)
-<li>xvnc or vnc viewer
+<li><i>busybox installer</i> (stericson, use /system/xbin as installation path)
+<li><i>connectbot</i> (use ssh to connect to remote systems)
+<li><i>file expert</i> or any other filemanager capable of accessing non-sdcard directories
+<li><i>sshdroid</i> (permit incoming ssh connections, dropbear-based)
+<li><i>superuser</i> (usually part of the custom firmware we install)
+<li><i>terminal ide</i> (a pretty complete unix user space for the Android shell)
+<li><i>titanium backup</i> (backup and restore apps, also offers dealing with offending (firmware) apps)
+<li><i>xvnc</i> or <i>vnc viewer</i>
 <li>mostly optional: <a href="http://code.google.com/p/android-scripting/">sl4a and perl</a> (perl/python/lua wrapper
     examples are availble for use of the languages in the Android shell; some of my scripts may require perl)
 </ul>
@@ -395,7 +397,7 @@ installer))</p>
 
 <p>3. PC-side applications</p>
 <ul>
-<li>adb (in the <a href="http://developer.android.com/sdk">Android SDK</a>, tools directory)
+<li><i>adb</i> (in the <a href="http://developer.android.com/sdk">Android SDK</a>, tools directory)
 </ul>
 
 
@@ -789,6 +791,12 @@ encounter  (ssh, file serving and filesystem mounting).
 </pre>
 
 
+<p><b>Summary:</b>  By  now we have a DEBIAN chroot and can access  it
+from   the   Android  shell  interactively  or  as  part  of  a   pipe
+(system/xbin/CHROOT.run  aka  x). You are also able to  access  remote
+files  using  everything  but  NFS (see the  abin/SSHFS  example).  We
+extended the remote automation with limited email checking, monitoring
+and folder synchronization.</p>
 
 <!-- ------------------------------------------------------------------------------------- -->
 <hr><a href="#toc">(table of contents)</a><hr>
@@ -831,6 +839,17 @@ the frequent firmware updates of quality vendors for all early ssd shows the sev
 
 
 </pre>
+
+<p><b>Summary:</b> This concludes the series and by now you can use an
+arbitrary  PC's  vncviewer or putty/ssh setup to connect to your  NOTE
+and work locally on your Note in addition to using the Note to copy or
+serve  files  to  the  PC. Excluding the size of  the  display,  we've
+implemented most of the capabilities of newer tablets as well as those
+of laptops on the Note.</p>
+
+<p>As  you  no longer lug around your heavy laptop all the time,  it's
+time to consider taking up some more joyful sports.</p>
+
 
 
 
