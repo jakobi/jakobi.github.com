@@ -116,14 +116,18 @@ phone/s-pen/sensor/camera  use.</p>
 </ul>
 
 <p><b>Flash  considerations</b>:  Choose a quality sdhc microsd flash, 16  or
-32GB.  After  bad experiences with both Class 10 Transcent and  Lexar,
+32GB.</p>
+
+<p>  After  bad experiences with both Class 10 Transcent and  Lexar,
 I've  now settled on a reliable Sandisk class 4 16GB microsd flash. As
 Sandisk  chooses  labels  according to the minimum write rate,  it  is
 nearly  as fast as the others. One advantage is that I no longer  find
 the  chroot remounted read-only, as this means to shutdown/restart the
 chroot and running fsck (no loss of data though). When switching I had
-a  look  at  the FAT and it's titanium backup and found  massive  data
-corruption. Read speeds for the internal flash are 50+ MB/s and 18MB/s
+a  look  at  the external sdcard's FAT filesystem and my titanium backup: Massive  data
+corruption.
+
+<p>Read speeds for the internal flash are 50+ MB/s and 18MB/s
 for  Sandisk (20MB/s also happens to be the maximum to expect with any
 USB 2.0 card reader).</p>
 
