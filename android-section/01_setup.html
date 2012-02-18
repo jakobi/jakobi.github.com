@@ -228,39 +228,38 @@ still lack blobs for camera and accelerated display.</p>
 <h4>Pre-Flashing Checklist</h4>
 
 
-<p><i>Do  update and validate titanium backups (doubly so on  external
-sdcards) before flashing new firmware. Copy the backups to
-your PC (e.g. as port of a nightly backup schedule).</i>.</p>
-
-<pre>
-keep a backup of /efs (imei!)
-
-odin: http://droidangel.blogspot.com/2011/05/odin-multi-downloader-flasher-program.html
-      we need odin3 v183 or 185
-
-for simpler cases, mobile odin / cfroot cwm should suffice
-
-see the support threads of the chosen kernel
-
-
-</pre>
+<ul>
+<li>create and validate a backup suitable to recover ALL of your device from a 
+    barebones custom rom install.
+<ul>
+   <li>consider backups of /mnt/sdcard and /mnt/external_sd.
+   <li>consider a backup of /data, even if only tar cf /sdcard/data.tar /data
+   <li>consider using titanium backup to backup user/system apps and data.
+   <li>validate your backup!
+   <li>consider copying the backup to your PC! If that happens 
+       automatically as part of a nightly backup run, do manually check that copy!
+</ul>
+<li>ensure that USB-debugging is enabled and adb shell still works
+<li>ensure a high battery level
+</ul>
 
 
-
-<h4>The Way of Rooting (Tourist Travel Sketch, with dogeared threads)</h4>
+<h4>The Way of Rooting (Tourist Travel Sketch, with dog-eared threads)</h4>
 
 <p>At the end of the research phase, you should have selected a target
 custom  rom, and maybe one or more intermediate steps if you start out
-with  a  stock rom. In my case the sequence led from stock to  a  full
-install  of the older KJ1 with CFROOT/CWM, and then forward to Chris_X
-4lph4 roms offering KL8 using the AbyssNote 2.6.35 Kernel.</p>
+with  a stock rom. In my case the sequence led from stock back in time
+to  a full install of the older KJ1 with CFROOT/CWM, and then  forward
+again  to  Chris_X 4lph4 ROMs offering KL8 using the AbyssNote  2.6.35
+kernel.</p>
 
 <p><i>Stock to Chainfire KJ1 including the modified factoryfs</i> (see
 <a href="http://forum.xda-developers.com/showthread.php?t=1331784">posting
 1+2</a>).  If  your  rom doesn't offer CFROOT/CWM, you first  need  to
 install  a version of ODIN on Windows that lists the Note as supported
 (v3  version 1.83 or 1.85 was the one I found - there doesn't seem  to
-be  any official home page or author, nor any sane version numbering).
+be any official home page or author, nor any sane version numbering; a
+list        if       provided       e.g.       in       this        <a href="http://droidangel.blogspot.com/2011/05/odin-multi-downloader-flasher-program.html">overview</a>).
 For  Linux,  Heimdall  might  work (untested). To set  the  Note  into
 download  mode,  use lower-vol + home + power and connect to USB.  For
 more detail, check the XDA threads for your selected ROM.</p>
@@ -272,25 +271,29 @@ Chris,  currently  the v1.0.5 from early January which is very  stable
 (excluding  Google's  carefully  prepared pitfalls  concerning  shared
 memory  and  system_server  vs app2sd). 
 
-<p  class=anno>As of mid February, Chris is at v1.7. I will follow him
-irregularly  until ICS is available as a CFROOT/CWM supported rom.  In
-the long run, I'll expect to end up with CM9 or newer.</p>
+<p  class=anno>As of mid February, Chris is at v1.7.</p>
+
+<p  class=anno>I  will  likely  follow him irregularly  until  ICS  is
+available  as a CFROOT/CWM supported rom. In the long run, I'll expect
+to end up with CM9 or newer.</p>
 
 <p>Notes:</p>
 <ul>
-<li>Ensure a high battery level first.
-<li>Entering recovery: CWM application or upper vol + home + power
-<li>Using CWM to delete the contents of the cache partition and dalvik
+<li>entering recovery: CWM application or upper vol + home + power
+<li>using CWM to delete the contents of the cache partition and dalvik
 cache  is  a  good  idea (the last adds about  15min  to  the  initial
 boot).
-<li>You may need to be selective in restoring titanium backups: browser 
+<li>you may need to be selective in restoring titanium backups: browser 
 and market may have different versions, so restoring user data may lead to force crashes.
 This fragility is why Chris strongly requires full wipes as part of the install. Note
 that restoring 300 user apps takes a whee bit of time.
-<li>If you made a CWM Backup before flashing, do not use it as-is from CWM
+<li>if you made a CWM Backup before flashing, do not use it as-is from CWM
 recovery, as you'd restore the previous state and fully or partially undo
 a successful flashing. Though it's perfect to undo a bad flashing or to go back
 from testing another ROM.
+<li>consider turning off OTA updates (Settings -&lt; About Phone -&lt; 
+Software updates). While still pretty rare, Samsung is one of the select
+few Android makers that actually publish ROM updates.
 </ul>
 
 
@@ -342,7 +345,7 @@ recognition aren't quite there yet in gingerbread)</p>
 <ul>
 <li>busybox installer (stericson, use /system/xbin as installation path)
 <li>connectbot (use ssh to connect to remote systems)
-<li>fileexpert or any other filemanager capable of accessing non-sdcard directories
+<li>file expert or any other filemanager capable of accessing non-sdcard directories
 <li>sshdroid (permit incoming ssh connections, dropbear-based)
 <li>superuser (usually part of the custom firmware we install)
 <li>terminal ide (a pretty complete unix user space for the Android shell)
@@ -370,6 +373,19 @@ installer))</p>
 <a name=shell></a>
 <H3>Adding Unix Standards to the Android Shell</H3>
 
+<p>Do run and setup each of busybox installer, sshdroid, terminal ide,
+titanium  backup and superuser (probably already activated in custom ROMs). 
+
+<ul>
+<li>grep, sh, etc is available in /system/xbin (<i>stericson busybox installer</i>)
+<li>running su, then id in <i>terminal ide</i> show either root or the numerical id 0 (otherwise 
+    verify <i>superuser</i>; note that this su is not the real Linux su)
+<li>you can run shh root@note to start an android shell using the dropbear daemon (check <i>sshdroid</i>)
+</ul>
+
+
+<p>Now  that  we've  taken care of the basics, let's get to  the  more
+interesting parts of this article.</p>
 
 <-- -------------------------^^^ clean \/\/\/ borked ---------------------------------------------------------------- -->
 
