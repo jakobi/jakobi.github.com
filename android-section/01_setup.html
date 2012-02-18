@@ -300,35 +300,57 @@ few Android makers that actually publish ROM updates.
 
 <h4>Post Flashing Checklist</H4>
 
-<pre>
-only apk:
-- cleaning data/dalvik-cache and /cache adds about 12min to initial bootup instead of 30+
-  -> dalvik kind of precompiles or rather indexes positions inside the apk bundle
-  (apk: jars and c++ system libs to be used from within the file by the dalvik engine,
-   the c++ stuff either on the fly or pre-extracted and installed into /system or /data(?);
-   however, for apk installed on sdcard/apps2sd we strangely use a loopmount claiming 
-   apk to be fat per application, thus possibly avoiding the libs in /system or /data,
-   but then again, this still does leave some MB per app in the system/data flash partitions :( )
-- system and twlaunch kind of app-launch dalvik children to run apps, but some of
-  the two system/twlaunch keep a lot of pipes, to fwd e.g. input or android events I think?
-- NEVER OVERWRITE BUSYBOXES IN */bin (kills cfroot); at most IF REQUIRED put them into some xbin 
-- /data/local/zImage ist auf dem Handy. zImage Verzeichnis InitialCFRootFlasher on PC. 
-- frosting / defrost system: adb shell: pm list packages, pm enable <package>, titanium backup
-  /data/system/packages.xml  -> set enabled="true" here
-</pre>
+<ul>
+<li>check /data/system/uiderrors.txt (chown/chgrp as required as root or try CFROOT's
+    fix permissions from the recovery shell; uninstalling all affected apps is another
+    option via market or <i>pm uninstall</i> in the shell)
+<li>optional: copy the backups from the pc back to the note
+<li>(selective) restore of applications (and possibly data) using <i>titanium backup</i>.
+<li>use <i>zdbox</i> to move any apps on sdcard back to the phone (there are preference
+    settings, but some apps get still always installed to sdcard)
+<li>skim through the Android's settings menu:
+<ul>
+<li>fix language settings, reenable keyboards(?)
+<li>application -&lt; usb debugging still enabled (<i>adb shell</i> command from PC still working?)
+<li>power settings?
+<li>...
+</ul>
+<li>restore your widgets (<i>quick agenda</i>, floatmemo, coolapps)
+<li>check apps that should run on boot / have active schedules (<i>titanium backup</i>, <i>tasker</i>, 
+    <i>lookout</i>, <i>LBE privacy guard</i>, <i>ring guard</i>, <i>smart task switcher</i>)
+<li>check <i>terminal ide</i> and root access
+<li>from the PC, check <i>adb shell</i>  and ssh access via <i>sshdroid</i>
+<li>check logcat (is there a need to run insmod /lib/modules/logger.ko or similar?)
+<li>rerun sl4a installers (perl apk file is e.g. the installer/uninstaller for perl)
+<li>fix your ring and notification tones
+<li>check apps (e.g. by titanium or by ls /system/app) for applications to disable again (titanium backup: freeze)
+<li>optional: restore your own modifications to the Android shell and to 
+    the <i>terminal ide</i> environment (run INSTALL from part two to recover Android shell 
+    modifications, scripts, binaries and symlinks; if lost, do recover the root account 
+    for <i>terminal ide</i> from backup)
+<li>optional: if already installed: check that mc, bash, vi/vim still works in the Android shell and in <i>terminal ide</i>
+<li>optional: check the availability and functionality of the chroot setup
+</ul>
 
+<p>Final steps are</p>
+<ul>
+<li>check /data/system/uiderrors.txt again
+<li>make  a new backup and copy that to the PC (not  replacing your old one from pre-flash)
+</ul>
 
 
 <h4>Software</h4>
 
 <p>1. Nice to have market apps to improve on Android graphical offerings:</p>
 <ul>
+<li>apg (an Android frontend for pgp/gpg encrypted files)
 <li>aspotcat, lookout, lbe privacy guard (security, permissions, receivers, intents)
 <li>clipper, clip ninja, floatmemo (without a window system, we need help to transfer data between apps)
 <li>clocksync (to keep your clock in sync with NTP)
 <li>coolapps (system load widget and much more)
 <li>jota (nice text editor)
-<li>mobile odin
+<li>k9 (nice mailer)
+<li>mobile odin (custom ROM flasher, see also the cwm app, that should be part of of the custom ROM)
 <li>printbot, scanthing (printing and scanning, with OCR via update to google docs)
 <li>ringguard (don't accidentally change ring tone loudness)
 <li>smart taskswitcher, task manager
@@ -383,6 +405,9 @@ titanium  backup and superuser (probably already activated in custom ROMs).
 <li>you can run shh root@note to start an android shell using the dropbear daemon (check <i>sshdroid</i>)
 </ul>
 
+
+APG placement
+sshdroid and key placement
 
 <p>Now  that  we've  taken care of the basics, let's get to  the  more
 interesting parts of this article.</p>
