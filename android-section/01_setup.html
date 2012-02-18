@@ -770,8 +770,25 @@ Linux networking setup and access to a real classic inbound firewall (FW).</p>
 <H3>CHROOT and Turning the Android into a First Class LAN Citizen</H3>
 
 
+<p>First let me start by pointing back to the warning against bad flash.</p>
 
-<H4>Overview of Services</h4>
+
+
+<h4>Setting up the filesystems</h4>
+
+
+
+<h4>Debootstrap Stage 1</h4>
+
+
+
+
+<h4>Injecting Stage 1 and Running Stage 2<h4>
+
+
+
+
+<H4>Overview of Services and an Automation Example</h4>
 
 <p>Basic  cron  services  are  problematic, as  sleep  is  unreliable.
 abin/CRON* offers an example setup to to cope with this situation. The
@@ -781,7 +798,8 @@ when  delayed.  All  you  need to do is  invoking  x  /abin/CRON.15min
 remotely  or with <i>tasker</i> or from multiple invocation sources at
 once  (the  jobs  maintain suitable locking). This  example  might  be
 extended  with anacron and more of the actual cron jobs configured  in
-/etc.</p>
+/etc.  The abin/CRON.15min script is currently run by remote root cron
+every 15 minutes.</p>
 
 <p>In  my  case  I've instead added a repeated short  period  WAKELOCK
 invocation  to  the root cronjob on my Linux box. Thus  sleep  becomes
@@ -792,13 +810,22 @@ do a quick automatic suspend-to-RAM.</p>
 
 <p>Monitoring:  the  example  abin/CHECK  offers  a  basic  monitoring
 script,  which can be run by ssh and evaluated remotely (see the  root
-cronjob and watch_delta).</p>
+cronjob and watch_delta; run every 15 minutes).</p>
 
 <p>Mail  notification  and forwarding: Without out setup exim4  places
 all  email  in  the  /var/mail/mail  spool  file.  abin/CHECK  reports
 available  mail, as should TOP. Again have a look at the root  cronjob
 file  for  an example to forward this mail to accounts on  the  remote
-Linux box. </p>
+Linux box (run every 15 minutes). </p>
+
+<p>For   backup   and  synchronization,  revisit  the   example   file
+xfer_backup.wrapper.anuurn.local and the nightly backup job invoked by
+remote  root cron. Besides running the list-based rsync, it also  runs
+home/jakobi/bin/ct_note.update-copies                              and
+home/jakobi/bin/ct_note.update-unison.  The  first clones a subset  of
+the  my  home  directory onto Note, the second synchronizes  a  folder
+tree,  with one layer also following symlinks, both only run when  the
+chroot is mounted.</p>
 
 <p>Using  sshd:  I'm  still using <i>sshdroid</i>'s  dropbear  as  the
 primary  ssh daemon, dealing with backup traffic, and everything.  The
