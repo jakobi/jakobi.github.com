@@ -418,7 +418,7 @@ that</p>
     your public key goes to /data/data/berserker.android.apps.sshdroid/.ssh/authorized_keys)
 </ul>
 
-Further assumptions and settings of my setup (please check in case of errors):
+Further assumptions and settings of my setup (please also check in case of errors):
 <ul>
 <li>run <i>mount -orw,remount /system</i> as necessary in case of errors 
     (note that active bash/<i>terminal ide</i> processes may block mount -oro,remount /system)
@@ -431,16 +431,19 @@ Further assumptions and settings of my setup (please check in case of errors):
 <p>Please unpack a copy of the <a href="https://github.com/jakobi/script-archive/blob/master/android/android-setup-example-files.tgz?raw=true">example files</a> somewhere (though <b>not in / on your Note</b>). You can check the  <a href="http://github.com/jakobi/script-archive/tree/master/android">Android directory</a> for updated versions, as I will only very infrequently update the tarball.</p>
 
 <p>If you intend to use my INSTALL script to modify your Android shell
-setup,  anything  below  /s  (or /mnt/sdcard/COMPACT/setup)  will  be
+setup,  only  files  below /s (or /mnt/sdcard/COMPACT/setup)  will  be
 considered  by INSTALL, so please start with empty /s/data, /s/system,
 and  /s/root-tarballs directories and simply add scripts, tarballs and
 configuration, as you proceed through the article.</p>
 
+<p>Check  the  example  host.anuurn/home/jakobi/bin/shell/android.func
+for  an  idea for some aliases to use on the Linux box to  access  the
+Note.</p>
 
-<p>ERRATA: rebuild tarball and update INSTALL: old PATH</p>
+<p><b>ERRATA: rebuild tarball and update INSTALL: old PATH</b></p>
 
-<p>Now  that  we've  taken care of the basics, let's get to  the  more
-interesting parts of this article.</p>
+<p>Now that we've taken care of the basics and have access to a rooted
+Note, let's get to the more interesting parts of this article.</p>
 
 <-- -------------------------^^^ clean \/\/\/ borked ---------------------------------------------------------------- -->
 
