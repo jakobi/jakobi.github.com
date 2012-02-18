@@ -446,7 +446,7 @@ host.note/mnt/sdcard/COMPACT/setup/INSTALL.</p>
 <p>Now that we've taken care of the basics and have access to a rooted
 Note,  let's get to the more interesting parts of this article.</p>
 
-<-- -------------------------^^^ clean \/\/\/ borked ---------------------------------------------------------------- -->
+
 
 <h4>Differences  from  a real Linux system</h4>
 
@@ -533,7 +533,7 @@ to  the captured output. Maybe also of interest/possibly working as  a
 "host":  <i>tasker</i>  and  <i>taskbomb</i> with its  script  support
 package (all 3 on market).</p>
 
-Script examples:
+<p>Script examples:</p>
 <ul>
 <li>CHROOT.run (often aliased to x); starts a shell in the chroot or
     run chroot commands as part of a pipe. But more on this will
@@ -556,17 +556,30 @@ Script examples:
 
 <h4>Treasure Trove Terminal IDE</h4>
 
-<p>terminal ide</p>
+<p><i>terminal  ide</i>  aims to attempt to make standard  Unix  setup
+available  to permit working with vim and java, thus the <i>IDE in the
+terminal</i>  name. This provides the best working environment for the
+android shell outside of a chroot. It offers e.g.</p>
 
+<ul>
+<li>bash (this lacks subshell/jobs support)
+<li>busybox (though lacking DNS-resolving; see the iresolver function or
+    temporarily prepend /system/xbin to the PATH)
+<li>mc   (this lacks subshell support, consider running the 
+   system/xbin/mc binary from the example files or the chroot's <i>x mc -a</i>.
+<li>tmux (screen-style terminal multiplexer, configured to use CTRL-a as command key)
+<li>vim (_the_ editor)
+</ul>
 
-Note that an active bash /
-<i>terminal  ide</i>  process  may  block  attempts  to  run  <i>mount
--oro,remount  /system</i>. 
+<p>Note  that  an <i>terminal ide</i> bash may block attempts  to  run
+<i>mount  -oro,remount /system</i>. /s/INSTALL reliably triggers  that
+issue.</p>
 
 
 
 <h4>Advanced Networking</h4>
 
+<-- -------------------------^^^ clean \/\/\/ borked ---------------------------------------------------------------- -->
 
 <p>VPN example</p>
 
@@ -581,17 +594,29 @@ alternately use the ap mode and wlan
 proxies: sshtunnel, ORBOT.
 </p>
 
-<p>Ssh-client and scp can be found as part of <i>sshdroid</i>. Another
-copy  is offered by <i>terminal ide</i>. A real openssh build is  part
-of  <i>sshtunnel</i>,  also named sshtunnel. As android app,  consider
-<i>connectbot</i>.  As  ssh-server  I  use  dropbear  as  provided  by
-<i>sshdroid</i>. Add your the host key and your personal public key to
-/data/data/berserker.android.apps.sshdroid/.ssh/authorized_keys.</p>
+
+<p><i>proxydroid</i> and <i>sshtunnel</i> - iptables-based forwarding
+of requests to a server-based based socks daemon. If you want to setup
+your own socks daemon, take a look at the hpsockd.conf in the examples
+(as tested once on Ubuntu 10.4).</p>
+
+<p><b>ERRATA: add hpsockd.conf to examples</b></p>
+
+<p>Ssh-client  and  scp  can  be  found  as  part  of  <i>sshdroid</i>
+including  sftp server and scp. Another copy is offered by <i>terminal
+ide</i>.  A real openssh build is part of <i>sshtunnel</i>, also named
+sshtunnel. As android app, consider <i>connectbot</i>. As ssh-server I
+use  dropbear  as  provided by <i>sshdroid</i> and only rarely  run  a
+second sshd -p <portnumber> in the chroot.</p>
 
 <p>Iptables  is  hopefully part of your custom ROM. Iptables  is  also
 part  of <i>proxydroid</i>, <i>sshtunnel</i> and <i>orbot</i> packages
 from  market. <i>lbe privacy guard</i> or any of the personal firewall
 tools should also contain or offer to install a copy iptables.</p>
+
+<p>Interesting apps</p>
+<ul>
+</ul>
 
 
 Script examples:
