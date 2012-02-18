@@ -410,12 +410,25 @@ installer))</p>
 that</p>
 
 <ul>
+<li>you've a Linux PC available (if you want to look at the automation examples incl. nightly backup and monitoring)
+<li>you've unpacked a copy of the <a href="https://github.com/jakobi/script-archive/blob/master/android/android-setup-example-files.tgz?raw=true">example files</a> somewhere (though <b>not in / on your Note</b>). You can check the  <a href="http://github.com/jakobi/script-archive/tree/master/android">Android directory</a> for updated versions, as I will only very infrequently update the tarball.
 <li>grep, sh, etc is available in /system/xbin (<i>stericson busybox installer</i>)
 <li>running su, then id in <i>terminal ide</i> show either root or the numerical id 0 (otherwise 
     verify <i>superuser</i>; note that this su is not the real Linux su)
-<li>you can run shh root@&lt;WLAN IP of your device&gt; to start an android shell using the dropbear daemon (check <i>sshdroid</i>; 
+<li>you can run <i>shh root@&lt;WLAN IP of your device&gt;</i> to start an android shell using the dropbear daemon (check <i>sshdroid</i>; 
     your public key goes to /data/data/berserker.android.apps.sshdroid/.ssh/authorized_keys)
 </ul>
+
+Further assumptions and settings of my setup (please check in case of errors):
+<ul>
+<li>run <i>mount -orw,remount /system</i> as necessary in case of errors 
+    (note that active bash/<i>terminal ide</i> processes may block mount -oro,remount /system)
+<li>hostname of the Note is note: <i>hostname note; echo "127.0.0.1 note.compact note "$(getprop net.hostname)" localhost" >> /etc/hosts</i>
+<li>DNS lookup is provider-independent: <i>(echo nameserver 8.8.8.8; echo nameserver 8.8.4.4) > /etc/resolv.conf</i>, see also the setprop statements in VPN.
+<li>If you see a hardcoded WLAN IP of 192.168.2.114, please replace it with your own Note's WLAN IP. 
+</ul>
+
+
 
 <p>Now  that  we've  taken care of the basics, let's get to  the  more
 interesting parts of this article.</p>
