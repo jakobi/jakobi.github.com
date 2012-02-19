@@ -878,6 +878,8 @@ ln -s data/local/root .
 mkdir ./-p ../-p
 chmod 444 ./-p ../-p
 #
+# mirror the outside files required to run commands (sys, dev, ...)
+# as well as make sdcards, system and data accessible from within the chroot
 mkdir -p proc sys acct system data dev efs cache mnt 
 mkdir -p mnt/.lfs mnt/sdcard mnt/usb mnt/obb mnt/asec mnt/app-cache
 # I will skip some of the mounts here (asec, etc)
@@ -1002,7 +1004,7 @@ aptitude purge mono-runtime libmono-system4.0-cil</i>
     removals from the previously automatically installed packages. Keep what you
     still use (e.g. press i/m) and continue to remove the rest.
 <li>to add checksums of installed files (though not verifying permissions), install debsums
-    and run debsums_init.
+    and run debsums_init; this helps in checking for overwritten or corrupted package files.
 </ul>
 
 
@@ -1012,7 +1014,47 @@ aptitude purge mono-runtime libmono-system4.0-cil</i>
 <-- -------------------------^^^ clean \/\/\/ borked ---------------------------------------------------------------- -->
 
 
-<p>CHROOT scripts - the uglyness of CHROOT.umount</p>
+<p>While the scripts in system/xbin are for the outside Android shell,
+the  abin  directory in the chroot in the example files contains  some
+in-chroot  glue.  So  we  there are the  chroot  starting  scripts  in
+system/xbin  which  often call scripts by the same name in  abin  once
+inside  the  chroot.  The abin directory in the chroot  also  contains
+other  glue scripts, like e.g. CHECK (monitoring), SSHFS (remote  file
+access) and the CRON* files (enable some basic cron-style scripts that
+schedule  somewhat sanely despite unreliable sleep in Android kernels.
+The CHROOT scripts in detail:</p>
+
+
+<ul>
+<li>CHROOT.available prints the mount state of the chroot
+<li>CHROOT.fsck is a mere example on how to fsck the chroot from
+    within, as the note doesn't contain an external fsck for ext4,
+    despite using ext4 filesystems for the Android data.
+<li>CHROOT.mount mounts all filesystems for the chroot (basically it
+    runs the mount statements you already saw above when using the chroot
+    for the first time)
+<li>CHROOT.run either starts a shell in the chroot or runs a command
+    and returns the command's return code. It can be used transparently 
+    as part of a pipe, and it will try hard to properly deal with outside
+    full or partial filenames (mounts if necessary)
+<li>CHROOT.start starts cron, dbus and a second sshd (mounts if necessary)
+<li>CHROOT.startx calls CHROOT.start, otherwise reserved, as I currently
+    to aliases like ivnc to start X11 (mounts if necessary)
+<li>CHROOT.stop only stops the services started by CHROOT.start.
+<li>CHROOT.umount first calls abin/CHROOT.umount to umount remote 
+    filesystems and to stop dbus/cron. The script then tries to
+    umount all filesystems of the chroot. Using the -k option 
+    attempts a second umount after trying to kill processes 
+    using the mountpoint. Ugly, brutal and unreliable. Invoked multiple
+    times with -k however, it will succeed.
+<li>CHROOTED tests if a process is already running in the chroot.
+</ul>
+
+<p  class=anno>(I  still  hold  some  hope  of  never  having  to  fix
+CHROOT.umount due to never using it again :))</p>
+
+
+
 
 <p> root profiles</p>
 
@@ -1044,8 +1086,6 @@ android_network:x:3003:YOUR_LOGNAME (and possibly all network-using daemon accou
 
 <p>ssh-agent > ~/.ssh/env.note</p>
 
-<p>mutt and the outside world</p>
-
 <p>umlauts and locale</p>
 # umlauts: within TERMIDE app: I don't care about them
 # ssh and dropbear: OK, however deleting them requires deleting the char + once more a mangled one
@@ -1056,8 +1096,6 @@ android_network:x:3003:YOUR_LOGNAME (and possibly all network-using daemon accou
 
 
 
-stupid ram tricks - page cache, sysctl -w vm.min_free_kbytes=131072
-/sbin/sysctl vm.drop_caches=3
 
 <p>lxc: unsupported (maybe just too old; but this also requires Android side bridging, which may be unsupported)</p>
 
@@ -1070,11 +1108,11 @@ apt-get -t unstable install <package> # prefer unstable for resolution
 
 
 
-
-
 <H4>Overview of Services and an Automation Example</h4>
 
-<p>Some applications require a running dbus: <i>/etc/init.d/dbus start</i></p>
+<p>Some  applications  require  a  running  dbus:  <i>/etc/init.d/dbus
+start</i>. For me, I collect the usual low-weight services to start in
+abin/CHROOT.start, but I rarely use it.</p>
 
 <p>Terminal  multiplexing:  screen  is  broken and  hangs  on  detach,
 however tmux is working properly. See /root/.tmux.conf for setting
@@ -1105,11 +1143,22 @@ do a quick automatic suspend-to-RAM.</p>
 script,  which can be run by ssh and evaluated remotely (see the  root
 cronjob and watch_delta; run every 15 minutes).</p>
 
-<p>Mail  notification  and forwarding: Without out setup exim4  places
-all  email  in  the  /var/mail/mail  spool  file.  abin/CHECK  reports
-available  mail, as should TOP. Again have a look at the root  cronjob
-file  for  an example to forward this mail to accounts on  the  remote
-Linux box (run every 15 minutes). </p>
+<p>Mail  notification and forwarding: The sendmail service is provided
+by  exim4.  Without  a  setup, exim4 places all  local  email  in  the
+/var/mail/mail  spool  file.  abin/CHECK reports  available  mail,  as
+should  TOP. Again have a look at the root cronjob file for an example
+to  forward  this chroot-local mail to my account on the remote  Linux
+box  (run every 15 minutes). As I don't want a real mail configuration
+in a chroot, that's good enough for me.</p>
+
+<p>Sending and receiving mail can still be done inside the chroot with
+e.g.  mutt by going directly to the remote imap/pop/sendmail  servers,
+without  relying  on  a local sendmail. The example  files  contain  a
+cut-down  mutt  setup as part of my normal user account in the  chroot
+(host.note/x/home/jakobi/.mutt).  There's  also a wrapper in  bin/mutt
+that  I use to switch profiles and sender account according to  folder
+contents,  which you can ignore as long as you use only a single  mail
+account or define macros to switch accounts.</p>
 
 <p>For   backup   and  synchronization,  revisit  the   example   file
 xfer_backup.wrapper.anuurn.local and the nightly backup job invoked by
@@ -1145,7 +1194,9 @@ not yet tested.</p>
 any  Linux  box. Don't forget to edit and rerun FW on if you  need  to
 open ports in the firewall.</p>
 
-<p>Notes</p>
+
+<h4>Notes</h4>
+
 <ul>
 <li>in  the  long  run, this  chroot  setup  is  still  not
 comparable  to a native install, that can replace and update the Linux
@@ -1241,6 +1292,10 @@ in autocutsel???
 
 notes:
 
+<li>if you want to increase the free ram reserved, consider e.g. 
+<i>sysctl -w vm.min_free_kbytes=32768</i> or consider dropping most
+cached pages <i>sync;sleep 2; /sbin/sysctl vm.drop_caches=3</i>.
+Not necessary...
 
 
 </pre>
