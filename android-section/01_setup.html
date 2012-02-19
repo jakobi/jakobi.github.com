@@ -100,7 +100,6 @@ not  used  for heavy gaming, virtualization or video editing. In  this
 article,   I'm   not  interested  in  audio/video   input/output   nor
 phone/s-pen/sensor/camera use.</p>
 
-
 <p>Web Resources of interest:</p>
 <ul>
 <li><a href="http://www.androidnz.net/2011/12/samsung-galaxy-note-complete-review.html">AndroidNZ review with some app suggestions</a>
@@ -548,19 +547,29 @@ package (all 3 on market).</p>
 
 <p>Script examples:</p>
 <ul>
-<li>CHROOT.run (often aliased to x); starts a shell in the chroot or
+<li><i>CHROOT.run</i> (often aliased to x); starts a shell in the chroot or
     run chroot commands as part of a pipe. But more on this will
     have to wait until part 3.
-<li>psg is a <i>ps -ef|grep</i> style alias. It also offers to list
+<li><i>/s/INSTALL</i> (Android shell customization script: install and update 
+    apps in /system/xbin, create links like /i and /e for the scards,
+    /s, /t, ..., 
+    add scripts to the Android boot process. The master copy of
+    tarballs and scripts/configuration is also maintained in the
+    subdirectories of /s)
+<li><i>psg</i> is a <i>ps -ef|grep</i> style alias. It also offers to list
     non-standard jobs of interest, or to classify processes as kernel / Android 
     framework/Java / shell or chroot. As busybox doesn't implement ps -ef,
     the script uses busybox top as base.
-<li>TOP augments to output of TOP with various Android specific information
+<li><i>TOP</i> augments to output of TOP with various Android specific information
     from watching df, checking that interesting filesystems are still read-write,
     to battery status and cpu frequencies. No interactive top command keys possible.
-<li>WAKELOCK is a convenient wrapper used to setup/discard and list wake locks, 
+<li><i>VPN*</i> are the openvpn setup scripts, see below.
+<li><i>WAKELOCK</i> is a convenient wrapper used to setup/discard and list wake locks, 
     and used in many of the other scripts.
 </ul>
+
+
+<p><b>Errata: TOP / psg -m output</b></p>
 
 
 
@@ -619,6 +628,7 @@ user account or for root. Running the app is not required.</p>
 
 
 
+<p><b>Errata: Terminal IDE screenshot?</b></p>
 
 <h4>Networking</h4>
 
@@ -1004,6 +1014,11 @@ libmono-addins0.2-cil libmono-i18n-west4.0-cil libmono-i18n4.0-cil libmono-posix
  libmono-sharpzip4.84-cil libmono-system-configuration4.0-cil libmono-system-core4.0-cil
  libmono-system-drawing4.0-cil libmono-system4.0-cil mono-gac mono-runtime; 
 aptitude purge mono-runtime libmono-system4.0-cil</i>
+<li>other things to remove: wicd (wireless connection manager) and bluetooth
+    (I've not tested to run bluez &amp; friends from the chroot; for now I do
+    the network management outside of the chroot excluding just ip route or iptables,
+    which I occasionally also call from within; note that I even use things like
+    <i>openvpn</i> outside of the chroot in the Android shell)
 <li>on removing apps, run deborphan and consider uninstalling the listed files,
     then start aptitude and press 'g' and look if aptitude suggests additional
     removals from the previously automatically installed packages. Keep what you
@@ -1238,7 +1253,7 @@ transaction logs being the most harmless use of all).
 <a href="http://wiki.debian.org/ArmHardFloatChroot">wiki.debian.org/ArmHardFloatChroot</a>
 suggests the standard repositories for non-source packages, using 'sid' and 'unreleased'. If FPU support
 is indeed the only change, after the final backup and before removing the contents of the chroot, it is
-tempting to just change the architecture in the apt/sources-list and check what happens. Maybe with first
+tempting to just change the architecture in the apt/sources.list and check what happens. Maybe with first
 repeating the debootstrap steps, and then restoring the old /var and most of /etc. 
 Do check the release notes first, there might even be a supported armel to armhf upgrading path for installations :))
  </p>
@@ -1293,7 +1308,7 @@ didn't check for server components usable in a chroot.</p>
 <ul>
 <li><i>xvnc</i> - the vncserver component is accessible to localhost,
     so use <i>vncviewer localhost:0 -via root@note</i> or establish a 
-    port forwarding ssh tunnel and then connect using localhost
+    port forwarding ssh tunnel and then connect using localhost:
     <i>ssh -L 5909:localhost:5900 -N -f root@note; vncviewer :9</i>.
     For more information, see <a href="http://theqvd.com/trac/wiki/AndroidX11Server">theqvd.com/trac/wiki/AndroidX11Server</a> (the vnc password cannot be changed yet in the Android viewer).
 <li><i>tightvncserver</i> - the default vncserver inside the chroot.
@@ -1316,9 +1331,16 @@ Google  somehow messed up in crippling or deconfiguring shared memory.
 As  workaround, I can only offer to actually also enforce zero  values
 for  all  shared  memory  settings. This hack is part of  the  ivnc  /
 ivncapp  functions  in  the root bash setup included  in  the  example
-files.</p>
+files. Applications that normally use but don't rely on shared memory,
+will  run  a bit slower. Applications like chromium-browser will  fail
+when using this trick.</p>
 
 <pre>
+# test if you crash or if you can get by without
+# this ugly trick, in which case don't forget to
+# remove it from the ivnc* functions in 
+# /root/.bash_aliases.pj
+
 for i in /proc/sys/kernel/shm*;
 do
    echo 0 | sudo tee -a $i > /dev/null;
@@ -1404,59 +1426,82 @@ sleep 2; xsetroot -solid black; xterm &amp;
 /etc/X11/Xsession
 </pre>
 
+<p>A  final problem concerns pasting between vncviewer and X11 apps on
+the  Linux  box when running Ubuntu 10.4, Gnome and urxvt. The  normal
+suggestion  in  case  of  problems  is  to  run  <i>autocutsel</i>  to
+synchronize  clipboards,  cutbuffers  and selections. My  terminal  of
+choice  urxvt  however  is even more oldfashioned and  selective  than
+xterm in accepting input for paste. Now something from Gnome - which I
+couldn't  track  down  - does partially mangle the  primary  selection
+within  the  first  .5s after autocutsel does its work,  resulting  in
+urxvt  to be unable to paste. Work-around: grep the autocutsel source,
+and  add  a  system()  after copying to the buffer,  invoking  only  a
+'useless use of cat', a sleepy one at that: <i>sleep 0.6;xsel -op|xsel
+-ip</i>.</p>
+
 
 
 <h4>DEBIAN X11 Applications</h4>
 
+<p>Successfully tested applications</p>
+<ul>
+<li>twm, icewm, openbox, lxsession (window managers and graphical environments; 
+   I selected a naked icewm as the most usable of the bunch)
+<li>firefox aka iceweasel (browser; from stable, version 3.5)
+<li>midori, uzbl, (browsers; also kazehakase, galeon, epiphany-browser)
+<li>konqueror, rekonq
+<li>gvim, kwrite, LibreOffice aka OpenOffice
+<li>xterm
+</ul>
 
+<p>Fails: These applications either require shared memory or some daemons
+which I did not start or cannot easily start (hald or udevd)</p>
+<ul>
+<li>gnome-session, start-kde
+<li>firefox aka iceweasel (from testing/sid; but this might also be a porting issue)
+</ul>
 
+<p>The  described setup with a small window manager like icewm permits
+normal  LibreOffice  text  editing,  programming  or  some  light  web
+browsing,   even   without  swap:  I've  usually  beyond  350MB   free
+(free+buffers+cache)  before starting X, which is enough for X11, some
+xterms, firefox and LibreOffice.</p>
 
+<p>The speed with the current kernel/gingerbread is sufficient even if
+only  ever using a single CPU. Speed however suffers and I  experience
+short  hangs  during  heavy  writes  to  flash.  Especially  a   fully
+configured  vim  with syntax highlighting will hang a bit,  while  the
+simple busybox vi outside the chroot is unaffected. Even running huge
+resolutions like <i>vncserver -geometry 1920x1600</i> did work without
+issues, albeit slowly due the generated network traffic over ssh.</p>
 
+<p>When encountering the firefox problem, I switched the chroot from a
+pure  testing aka wheezy setup to a mixed setup with apt pinning,  see
+etc/apt/sources.list   and   etc/apt/preferences.d/personal   in   the
+examples. To install a package in the mixed setup:</p>
+ 
+<pre>
+apt-get install <package>/unstable    # prefer testing for resolution  
+apt-get -t unstable install <package> # use unstable for resolution
+# afterwards consider pinning the package to a specific release in 
+# /etc/apt/preferences.d/*
+</pre>
 
-
-The  final  step is running a local X11 Desktop on the Note,  using
-the  chroot's vncserver or Xvnc (market: Xvnc). To access, either  use
-the local display of the Note or any PC with a vncviewer.
-
-This  setup  is  enough  for  normal  LibreOffice  text
-editing,   programming  or  some  light  web  browsing  (firefox9  and
-chromium-browser  fail,  iceweasel/firefox  3.5 and  the  webkit/gecko
-based  browsers  work), even without swap: I've usually  beyond  350MB
-free  (free+buffers+cache) before starting X, which is enough for X11,
-some xterms, firefox and LibreOffice.
-
-wm and gnome/kde/...
-browsers incl firefox  (only 3.5)
-libreoffice
-
-fails: firefox>3.5, chromium-browser (shared-memory)
-
-pasting urxvt/ ubuntu issue to require adding xsel -op|xsel -ip about 0.6 seconds after the copying to buffer
-in autocutsel???
-
-
-
-
-notes:
-
-apt-pinning mixed mode as seen with firefox - see etc/apt/sources-list from examples.
-apt-get install <package>/unstable    
-apt-get -t unstable install <package> # prefer unstable for resolution
-
-
-
+<p><b>ERRATA: check availability of sources.list and preferences?</b></p>
 
 
 
 <p><b>Summary:</b> This concludes the series and by now you can use an
 arbitrary  PC's  vncviewer or putty/ssh setup to connect to your  NOTE
 and work locally on your Note in addition to using the Note to copy or
-serve  files  to  the  PC. Excluding the size of  the  display,  we've
-implemented most of the capabilities of newer tablets as well as those
-of laptops on the Note.</p>
+serve  files  to the PC. The 1GB memory size of the Note permits  also
+use   of  X11  apps  including  Firefox   or   LibreOffice/OpenOffice.
+<p>Excluding  only the size of the display, we've implemented most  of
+the  capabilities of newer tablets as well as those of laptops on  the
+Note.</p>
 
-<p>As  you  no longer lug around your heavy laptop all the time,  it's
-time to consider taking up some more joyful sports.</p>
+<p>As  you no longer do weightlifting and lug around your heavy laptop
+all the time, it's time to consider taking up some other sports.</p>
 
 
 
