@@ -776,14 +776,54 @@ Linux networking setup and access to a real classic inbound firewall (FW).</p>
 
 <h4>Setting up the filesystems</h4>
 
+<p>Let  us  create  a  SSD-style 4MB-aligned  partitioning  scheme  by
+starting  the first partition at 8192 and have all partitions start at
+sector  numbers  divisible by 8192. For a basic desktop  install  plus
+build-essentials install and some file serving, you need about 3.5GB +
+2GB  to install. A rule of thumb might be to clean /var, /tmp and  run
+aptitude  clean,  and double that size to add some reserve  to  permit
+upgrades,  that is for me at least 7GB. Without any desktop task, you
+should  still  comfortably  fit in in a  slightly  less-than-4GB  file
+container  on  either  the internal or external  sdcard,  however  the
+required  loop  mount adds some overhead and I already had  some  data
+loss  on  the  old  external sdcard, so I'd argue for  a  direct  ext4
+setup.</p>
+
+<pre>
+$ fdisk /dev/sdd
+...
+Units = sectors of 1 * 512 = 512 bytes
+...
+  Device Boot      Start         End      Blocks   Id  System
+/dev/sdd1            8192     8880127     4435968   83  Linux       # type c aka fat32
+Partition 1 does not end on cylinder boundary.                      # &lt;--- ignore this
+/dev/sdd2         8880128    27754495     9437184   83  Linux       # chroot partition
+/dev/sdd3        27754496    29433855      839680   83  Linux       # reserved home/var
+/dev/sdd4        29433856    31116287      841216   83  Linux       # reserved, maybe also swap
+
+$ mkfs.vfat -n note2 /dev/sdd1 
+$ mke2fs -t ext4 -O extents -F -j -i 16384 -L ARMDEBCHROOT    -m 2 /dev/sdd2 # 600K inodes, 2% root reserve
+$ mke2fs -t ext4 -O extents -F -j -i 8192  -L ARMDEBCHROOT_R1 -m 5 /dev/sdd3 # reserved for /var and/or /home
+$ mke2fs -t ext4 -O extents -F -j -i 8192  -L ARMDEBCHROOT_R2 -m 5 /dev/sdd4 # reserved for swap
+$ tune2fs -c 20 -i 2m -e remount-ro /dev/sdd2 # set fsck requirements nobody will honor
+$ tune2fs -c 20 -i 2m -e remount-ro /dev/sdd3 # and set the behaviour on errors
+$ tune2fs -c 20 -i 2m -e remount-ro /dev/sdd4
+</pre>
+
+<p  class=anno>(maybe consider to increase the journal size to  better
+spread  writes; this works in case the journal is rolling and doesn't reset
+to a fixed start of journal; not checked).</p>
 
 
-<h4>Debootstrap Stage 1</h4>
 
+<h4>Debootstrap</h4>
 
+<p>To start, run stage 1 on the Linux Box: <i>debootstrap --arch armel
+--foreign                  testing                  /chroots/sid-armel
+http://ftp.us.debian.org/debian</i>.  On finish, copy the results from
+/chroots/sid-armel  to the prepared chroot directory on the Note:  /x.
+Run <i>/debootstrap/debootstrap --secondstage</i>.
 
-
-<h4>Injecting Stage 1 and Running Stage 2<h4>
 
 
 
@@ -870,6 +910,17 @@ in the medium term. When it's ready, just replace <i>armel</i> with
 possible to just change architectures in sources-list on an uptodate 
 armel setup and reinstall (all) DEBIAN packages for use of armhf without
 starting over with debootstrap and an empty directory).
+<li>swap would be a good idea to add with a suitable swappiness  setting
+to reserve swap as a last resort, as a notifier-by-pain to delay the 
+ out-of-memory-killer (though I  didn't meet oom during any tests 
+including X11 and LibreOffice).  I'd advise to change swappiness to
+make the kernel prefer RAM to swap as long as possible: cheap flash may
+also have a questionable flash translation layer (if at all), and swap with
+randomly distributed write hotspots is the worst possible load to balance, 
+way worse than FAT (one hotspot at the beginning), ext4 with an ordinary 
+Linux install (with or without journal) or database files, with database
+transaction logs being the most harmless use of all).</p>
+
 </ul>
 
 <p><b>Summary:</b>  By  now we have a DEBIAN chroot and can access  it
