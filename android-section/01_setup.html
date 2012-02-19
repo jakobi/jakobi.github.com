@@ -609,6 +609,12 @@ user account or for root. Running the app is not required.</p>
 <li>a fully configured vim with syntax highlighting might hang for when
     the sdcard is busy with heavy writing. For tiny edits,
     just ssh on the machine and use the busybox version.
+<li>the app also offeres two full keyboard layout modes. However 
+    e.g. CTRL isn't accepted by other apps (including all vnc apps).
+    There is also a bug that only affects search and the default
+    browser, which don't accept return key as 'Go' - mobile firefox
+    and the other apps work fine (work-around: temporarily switch back
+    to the Samsung keyboard).
 </ul>
 
 
@@ -795,6 +801,10 @@ external  sdcard, so I'd argue for a direct ext4 setup.</p>
 umount any automatically mounted filesystems from the sdcard. Then run
 fdisk and create the filesystems.</p>
 
+<p class=anno>(the commands are pasted from my notes, I shouldn't have
+changed much afterwards; any interesting changes should be part of the 
+CHROOT.mount script)</p>
+
 <pre>
 # avoid problems on Ubuntu 10.4 with recent kernels
 echo 0    &gt; /sys/block/sdd/queue/rotational
@@ -846,7 +856,8 @@ mount | grep ...
 </pre>
 
 <p>Umount  and remove the sdcard from the card reader and reinsert  it
-in the Note. Boot the Note. And further prepare the chroot.</p>
+in the Note. Boot the Note. And further prepare the chroot, which will
+be mounted at /x.</p>
 
 <pre>
 umask 022 # (I had an umask of 011 from dropbear!?)
@@ -922,6 +933,7 @@ rm hosts; ln -s /a/etc/hosts .
 # shall we also use the android side passwd and groups? Not for now.
 
 cd /
+# permit using the /x prefix also within the chroot
 ln -s / x
 # some apps may honor this and do not startup during installation
 mv /x/usr/sbin/policy-rc.d /x/usr/sbin/policy-rc.d.ORIG # does not exist
@@ -997,6 +1009,9 @@ aptitude purge mono-runtime libmono-system4.0-cil</i>
 
 <-- -------------------------^^^ clean \/\/\/ borked ---------------------------------------------------------------- -->
 
+
+<p>CHROOT scripts - the uglyness of CHROOT.umount</p>
+
 <p> root profiles</p>
 
 <p>ssh dial back</p>
@@ -1048,6 +1063,7 @@ stupid ram tricks - page cache, sysctl -w vm.min_free_kbytes=131072
 apt-pinning mixed mode as seen with firefox - see etc/apt/sources-list from examples.
 apt-get install <package>/unstable    
 apt-get -t unstable install <package> # prefer unstable for resolution
+
 
 
 
