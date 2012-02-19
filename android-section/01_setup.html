@@ -514,7 +514,7 @@ upstream into the Linux kernel sources)</p>
 <p>Editing  text:  a  simple vi clone is part of busybox, and  can  be
 found  in /system/xbin, and as part of <i>sshdroid</i> and <i>terminal
 ide</i>.  A real port of vim is available with <i>terminal ide</i>. On
-the graphical side, consider <i>jota</i></p>
+the graphical side, consider <i>jota</i>.</p>
 
 <p>I  found  a few working static armel binaries for bash, mc,  rsync,
 strace,  tcpdump, and wget. They are included in the example files  in
@@ -569,7 +569,55 @@ package (all 3 on market).</p>
 </ul>
 
 
-<p><b>Errata: TOP / psg -m output</b></p>
+<p><b>ERRATA update copy of /s</b></p>
+
+<pre>
+# 1. output from TOP; the FLAGS are be M  (mail), FS! (fs remounted-ro), and
+#                                      U! (errors in /data/system/uiderrors.txt)
+
+BAT: 90(disc)  CPU: 0(0.1)                &lt;FLAGS&gt;  192.168.2.114 20120219-16:30:27
+Mem: 762928K used, 48176K free, 0K shrd, 40272K buff, 165484K cached
+CPU:  0.0% usr 10.0% sys  0.0% nic 90.0% idle  0.0% io  0.0% irq  0.0% sirq
+Load average: 1.80 1.31 1.26 2/732 5270
+
+  PID  PPID USER     STAT   VSZ %VSZ CPU %CPU COMMAND
+ 3459  2590 1000     S     407m 51.2   0  0.0 system_server
+ 8207  2590 10072    S     270m 34.0   1  0.0 {d.process.media} android.process.
+27066  2590 10015    S     254m 32.0   0  0.0 {.app.twlauncher} com.sec.android.
+16765  2590 10092    S     251m 31.6   0  0.0 {app.emailwidget} com.sec.android.
+
+
+/dev/block/mmcblk0p9    858752    802860     55892  93% /system
+                       2064208   1408044    656164  68% /data
+                      11613376   2002848   9610528  17% /mnt/sdcard
+                       4427304    576092   3851212  13% /mnt/sdcard/external_sd
+/dev/block/mmcblk1p2   9289080   3410268   5690072  37% /
+
+
+# 2. output from psg 2&gt;&amp;1 | cut -b-120
+# the first block lists open shells on STDERR, the second programs of interest
+# : is a normal shell command, R is running in the chroot, 
+# A is Android/Java,           K is kernel
+: pts/2     6641  6636 root     S      800  0.1   0  0.0 -sh
+: pts/2     6715  6712 root     S     1800  0.2   0  0.0 /data/data/com.spartacusrex.spartacuside/files/system/bin/bash
+: pts/0    16898 16889 root     S      800  0.1   0  0.0 -sh
+R pts/0    16914 16898 root     S     4880  0.6   0  0.0 /bin/bash
+R pts/2    24103  6715 root     S     4940  0.6   0  0.0 /bin/bash
+R -        26190 26162 root     S     4864  0.6   0  0.0 bash
+
+: pts/2     6712  6641 root     S      800  0.1   0  0.0 {t} /system/bin/sh /data/data/berserker.android.apps.sshdroid/d
+: -        23920     1 10122    S    15772  1.9   0  0.0 /data/data/com.theqvd.android.x/usr/X11R6/bin/Xvnc :0 -br -loca
+R -        26143     1 root     S    15388  1.8   0  0.0 icewm
+R -        26162     1 root     S     9356  1.1   0  0.0 xterm
+R -        26202     1 root     S     3528  0.4   0  0.0 /usr/bin/dbus-launch --exit-with-session x-session-manager
+R -        26203     1 root     S     2892  0.3   0  0.0 /usr/bin/dbus-daemon --fork --print-pid 5 --print-address 7 --s
+
+# 3. short output of psg -m dropbear | grep 6636 | cut -b-120
+: -         6636 root       0:01 /data/data/berserker.android.apps.sshdroid/dropbear/dropbear -H /data/data/berserker.an
+
+# 4. long output of psg -l -m dropbear | grep 6636 | cut -b-120
+: -         6636 11159 root     S     1084  0.1   0  0.0 /data/data/berserker.android.apps.sshdroid/dropbear/dropbear -H
+</pre>
 
 
 
