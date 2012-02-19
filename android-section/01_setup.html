@@ -778,57 +778,236 @@ Linux networking setup and access to a real classic inbound firewall (FW).</p>
 
 <p>Let  us  create  a  SSD-style 4MB-aligned  partitioning  scheme  by
 starting  the first partition at 8192 and have all partitions start at
-sector  numbers  divisible by 8192. For a basic desktop  install  plus
-build-essentials install and some file serving, you need about 3.5GB +
-2GB  to install. A rule of thumb might be to clean /var, /tmp and  run
-aptitude  clean,  and double that size to add some reserve  to  permit
-upgrades,  that is for me at least 7GB. Without any desktop task, you
-should  still  comfortably  fit in in a  slightly  less-than-4GB  file
-container  on  either  the internal or external  sdcard,  however  the
-required  loop  mount adds some overhead and I already had  some  data
-loss  on  the  old  external sdcard, so I'd argue for  a  direct  ext4
-setup.</p>
+sector   numbers  divisible  by  8192  (that  might  offer  a   slight
+improvement  also with sdcard; optional).</p>
+
+<p>Sizing:  For a basic desktop install plus build-essentials  install
+and  some file serving, you need about 3.5GB + 2GB to install. A  rule
+of  thumb  might  be to clean /var, /tmp and run aptitude  clean,  and
+double  that size to add some reserve to permit upgrades, that is  for
+me   at  least  7GB.  Without  any  desktop  task,  you  should  still
+comfortably  fit  in  in a slightly less-than-4GB  file  container  on
+either  the  internal  or external sdcard, however the  required  loop
+mount  adds some overhead and I already had some data loss on the  old
+external  sdcard, so I'd argue for a direct ext4 setup.</p>
+
+<p>Put  the  sdcard to use in a card reader on your  Linux  box  and
+umount any automatically mounted filesystems from the sdcard. Then run
+fdisk and create the filesystems.</p>
 
 <pre>
-$ fdisk /dev/sdd
-...
-Units = sectors of 1 * 512 = 512 bytes
-...
-  Device Boot      Start         End      Blocks   Id  System
-/dev/sdd1            8192     8880127     4435968   83  Linux       # type c aka fat32
-Partition 1 does not end on cylinder boundary.                      # &lt;--- ignore this
-/dev/sdd2         8880128    27754495     9437184   83  Linux       # chroot partition
-/dev/sdd3        27754496    29433855      839680   83  Linux       # reserved home/var
-/dev/sdd4        29433856    31116287      841216   83  Linux       # reserved, maybe also swap
+# avoid problems on Ubuntu 10.4 with recent kernels
+echo 0    &gt; /sys/block/sdd/queue/rotational
+echo noop &gt; /sys/block/sdd/queue/scheduler
 
-$ mkfs.vfat -n note2 /dev/sdd1 
-$ mke2fs -t ext4 -O extents -F -j -i 16384 -L ARMDEBCHROOT    -m 2 /dev/sdd2 # 600K inodes, 2% root reserve
-$ mke2fs -t ext4 -O extents -F -j -i 8192  -L ARMDEBCHROOT_R1 -m 5 /dev/sdd3 # reserved for /var and/or /home
-$ mke2fs -t ext4 -O extents -F -j -i 8192  -L ARMDEBCHROOT_R2 -m 5 /dev/sdd4 # reserved for swap
-$ tune2fs -c 20 -i 2m -e remount-ro /dev/sdd2 # set fsck requirements nobody will honor
-$ tune2fs -c 20 -i 2m -e remount-ro /dev/sdd3 # and set the behaviour on errors
-$ tune2fs -c 20 -i 2m -e remount-ro /dev/sdd4
+fdisk DEVICE                                                      # /dev/sdd for me
+# press c and u, and define partitions that look like these
+
+#...
+#Units = sectors of 1 * 512 = 512 bytes
+#...
+#  Device Boot      Start         End      Blocks   Id  System
+#/dev/sdd1            8192     8880127     4435968   83  Linux       # type c aka fat32
+#Partition 1 does not end on cylinder boundary.                      # &lt;--- ignore this
+#/dev/sdd2         8880128    27754495     9437184   83  Linux       # chroot partition
+#/dev/sdd3        27754496    29433855      839680   83  Linux       # reserved home/var
+#/dev/sdd4        29433856    31116287      841216   83  Linux       # reserved, maybe also swap
+
+# type p to print and check; type w if everything is ok to write/quit fdisk.
+
+mkfs.vfat -n note2 /dev/sdd1 
+mke2fs -t ext4 -O extents -F -j -i 16384 -L ARMDEBCHROOT    -m 2 /dev/sdd2 # 600K inodes, 2% root reserve
+mke2fs -t ext4 -O extents -F -j -i 8192  -L ARMDEBCHROOT_R1 -m 5 /dev/sdd3 # reserved for /var and/or /home
+mke2fs -t ext4 -O extents -F -j -i 8192  -L ARMDEBCHROOT_R2 -m 5 /dev/sdd4 # reserved for swap
+tune2fs -c 20 -i 2m -e remount-ro /dev/sdd2 # set fsck requirements nobody will honor
+tune2fs -c 20 -i 2m -e remount-ro /dev/sdd3 # and set the behaviour on errors
+tune2fs -c 20 -i 2m -e remount-ro /dev/sdd4
+
+mkdir /mnt1; mount /dev/sdd2 /mnt1
 </pre>
 
 <p  class=anno>(maybe consider to increase the journal size to  better
 spread  writes; this works in case the journal is rolling and doesn't reset
-to a fixed start of journal; not checked).</p>
+to a fixed start of journal; not checked)</p>
 
 
 
 <h4>Debootstrap</h4>
 
-<p>To start, run stage 1 on the Linux Box: <i>debootstrap --arch armel
---foreign                  testing                  /chroots/sid-armel
-http://ftp.us.debian.org/debian</i>.  On finish, copy the results from
-/chroots/sid-armel  to the prepared chroot directory on the Note:  /x.
-Run <i>/debootstrap/debootstrap --secondstage</i>.
+<p>Run  stage  1  still on the Linux Box and copy the results  to  the
+chroot  filesystem.  Both  stable (squeeze) and testing  (wheezy)  are
+suitable for use as chroot.</p>
+
+<pre>
+debootstrap --arch armel --foreign testing /chroots/sid-armel http://ftp.us.debian.org/debian
+(cd /chroots/sid-armel &amp;&amp; cpio -pmdu /mnt1)
+sync; sleep 2; umount /mnt1
+mount | grep ...
+</pre>
+
+<p>Umount  and remove the sdcard from the card reader and reinsert  it
+in the Note. Boot the Note. And further prepare the chroot.</p>
+
+<pre>
+umask 022 # (I had an umask of 011 from dropbear!?)
+cd /
+mkdir /x
+mount /dev/block/mmcblk1p2 /x
+mkdir /x/a
+cd /x/a
+ln -s mnt/sdcard i
+ln -s mnt/sdcard sdcard
+ln -s mnt/sdcard/external_sd e
+ln -s data/local/tmp t
+ln -s data/local/setup s
+ln -s system/etc .
+ln -s sys/kernel/debug d
+ln -s data/local/root .
+mkdir ./-p ../-p
+chmod 444 ./-p ../-p
+#
+mkdir -p proc sys acct system data dev efs cache mnt 
+mkdir -p mnt/.lfs mnt/sdcard mnt/usb mnt/obb mnt/asec mnt/app-cache
+# I will skip some of the mounts here (asec, etc)
+mkdir -p mnt/secure/asec
+mount -orbind /sys sys
+mount -obind /acct acct
+mount -obind /data data
+mount -obind /system system
+mount -obind /cache cache
+mount -orbind /mnt/sdcard mnt/sdcard
+mount -orbind /dev dev
+mount -orbind /app-cache app-cache
+# we cannot bind anything rootfs
+mkdir COPIED
+( cd /; find bin config customkernel dbdata default.prop lib res sbin usr vendor | cpio -pmdu /x/a/COPIED )
+ln -s COPIED/* .
+#
+cd /x
+mv dev dev.old
+ln -s a/* . 2&gt;/dev/null
+# proc must be real and not a symlink
+mkdir proc
+mount -t proc proc proc  
+</pre>
+
+<p>With  the mounts and directories in place, enter the chroot for the
+first time, run the second stage of debootstrap to install the initial
+system,   and  update  the  system  to  the  current  version  in  the
+repositories.</p>
+
+<pre>
+cd /x 
+chroot /x
+
+export PATH=/usr/bin:/usr/sbin:/bin:$PATH
+export TERM=linux
+export HOME=/root
+export USER=root
+
+# this requires a few minutes
+/debootstrap/debootstrap --second-stage 
+
+# undo the damage done by debootstrap, and restore some of the symlinks
+cd /
+rmdir sys 
+rm -r dev.old; mv dev dev.old
+ln -s a/* .
+cd /etc
+rm mtab;  ln -s /proc/mounts mtab
+# android has no sane fstab, just vold.fstab
+# shall we combine resolv.conf?
+rm resolv.conf; ln -s /a/etc/resolv.conf .
+rm hosts; ln -s /a/etc/hosts .
+# shall we also use the android side passwd and groups? Not for now.
+
+cd /
+ln -s / x
+# some apps may honor this and do not startup during installation
+mv /x/usr/sbin/policy-rc.d /x/usr/sbin/policy-rc.d.ORIG # does not exist
+echo "echo 'All rc.d operations denied by policy; >&amp;2; exit 101" &gt; /x/usr/sbin/policy-rc.d
+mv /x/etc/apt/sources.list /x/etc/apt/sources.list.ORIG # debootstrap version is invalid
+echo "deb     http://ftp.de.debian.org/debian testing main contrib non-free" &gt;&gt; /x/etc/apt/sources.list
+echo "deb-src http://ftp.de.debian.org/debian testing main contrib non-free" &gt;&gt; /x/etc/apt/sources.list
+
+apt-get update
+apt-get install debian-ports-archive-keyring
+apt-get update
+apt-get install build-essential
+apt-get tightvncserver xtightvncviewer icewm xterm
+apt-get mc tmux vim vim-scripts m4 rsync sshfs elinks mutt
+apt-get lsb-languages lsb-languages-armel lsb-languages-noarch lsb-core
 
 
+# a first backup of the initial chroot
+cd /
+find . -xdev | sort &gt; FIND.chroot
+cat FIND.chroot | cpio -o -H crc &gt; /i/chroot-initial.cpio
+
+# you may wish to install software for basic tasks like desktop or file serving
+tasksel
+
+dpkg-reconfigure tzdata
+
+
+# all package lines should start with ii (properly installed)
+dpkg -l | grep -v '^ii'
+aptitude clean
+</pre>
+
+
+
+
+<p>Notes</p>
+<ul>
+<li>run mount and check the mount options for the chroot filesystem: it
+should be something along the lines of rw,noatime,barrier=1,data=ordered; otherwise 
+change CHROOT.mount or use tune2fs to add default mount options.
+<li>Android doesn't supply a working fsck for ext4, see system/xbin/CHROOT.fsck for an example work-around.
+<li>if the bluez packages is still broken and insists on a running udevd, just remove 
+   /var/lib/dpkg/info/bluez.postinst and run dpkg --configure --all.
+<li>mono is not needed, furthermore there were some packaging errors. Uninstall with some effort: 
+<i>aptitude install gnote; 
+dpkg -i /var/cache/apt/archives/libglib2.0-cil_2.12.10-3_armel.deb;
+dpkg -i /var/cache/apt/archives/libgtk2.0-cil_2.12.10-3_armel.deb;
+aptitude purge libdbus-glib1.0-cil libdbus1.0-cil libgconf2.0-cil
+ libglib2.0-cil libgmime2.4-cil libgtk2.0-cil tomboy libmono-addins-gui0.2-cil 
+libmono-addins0.2-cil libmono-i18n-west4.0-cil libmono-i18n4.0-cil libmono-posix4.0-cil
+ libmono-sharpzip4.84-cil libmono-system-configuration4.0-cil libmono-system-core4.0-cil
+ libmono-system-drawing4.0-cil libmono-system4.0-cil mono-gac mono-runtime; 
+aptitude purge mono-runtime libmono-system4.0-cil</i>
+<li>on removing apps, run deborphan and consider uninstalling the listed files,
+    then start aptitude and press 'g' and look if aptitude suggests additional
+    removals from the previously automatically installed packages. Remove what you
+    still use and continue.
+<li>to add checksums of installed files (though not verifying permissions), install debsums
+    and run debsums_init.
+</ul>
+
+<p>here or below:</p>
+
+<p>ssh</p>
+
+<p>mutt</p>
+
+<p>umlauts and locale</p>
+
+<p>adduser and 3003<p>
+
+stupid ram tricks - page cache, sysctl -w vm.min_free_kbytes=131072
+/sbin/sysctl vm.drop_caches=3
+
+<p>lxc: unsupported (maybe just too old; but this also requires Android side bridging, which may be unsupported)</p>
 
 
 
 <H4>Overview of Services and an Automation Example</h4>
+
+<p>Some applications require a running dbus: <i>/etc/init.d/dbus start</i></p>
+
+<p>Terminal  multiplexing:  screen  is  broken and  hangs  on  detach,
+however tmux is working properly. See /root/.tmux.conf for setting
+the command key to CTRL-a like with screen.</p>
 
 <p>Basic  cron  services  are  problematic, as  sleep  is  unreliable.
 abin/CRON* offers an example setup to to cope with this situation. The
@@ -865,7 +1044,10 @@ home/jakobi/bin/ct_note.update-copies                              and
 home/jakobi/bin/ct_note.update-unison.  The  first clones a subset  of
 the  my  home  directory onto Note, the second synchronizes  a  folder
 tree,  with one layer also following symlinks, both only run when  the
-chroot is mounted.</p>
+chroot  is  mounted.  As the Ubuntu 10.4 version was  too  ancient,  I
+installed  a  new  build in /usr/local/bin on the  Linux  box.  Remote
+invocation  is  as  simple as <i>DISPLAY= unison  /data/unison  -batch
+-auto -servercmd "x unison" ssh://note//data/unison</i></p>
 
 <p>Using  sshd:  I'm  still using <i>sshdroid</i>'s  dropbear  as  the
 primary  ssh daemon, dealing with backup traffic, and everything.  The
@@ -919,8 +1101,7 @@ also have a questionable flash translation layer (if at all), and swap with
 randomly distributed write hotspots is the worst possible load to balance, 
 way worse than FAT (one hotspot at the beginning), ext4 with an ordinary 
 Linux install (with or without journal) or database files, with database
-transaction logs being the most harmless use of all).</p>
-
+transaction logs being the most harmless use of all).
 </ul>
 
 <p><b>Summary:</b>  By  now we have a DEBIAN chroot and can access  it
@@ -969,6 +1150,23 @@ external sdcard, and only activate it when required.
 
 
 the frequent firmware updates of quality vendors for all early ssd shows the severity of the issues wrt Flash.
+
+wm and gnome/kde/...
+browsers incl firefox  (only 3.5)
+libreoffice
+
+fails: firefox>3.5, chromium-browser (shared-memory)
+
+pasting urxvt/ ubuntu issue to require adding xsel -op|xsel -ip about 0.6 seconds after the copying to buffer
+in autocutsel???
+
+apt-pinning mixed mode as seen with firefox - see etc/apt/sources-list from examples.
+apt-get install <package>/unstable    
+apt-get -t unstable install <package> # prefer unstable for resolution
+
+
+notes:
+
 
 
 </pre>
