@@ -416,6 +416,11 @@ search for linux installer on the market; usually either Ubuntu or DEBIAN)</p>
 </ul>
 
 
+<p>The    <a href="02_twlaunch.html">second   article   looks    at
+twlauncher</a>  in  more detail and includes some more categories  and
+app  suggestions sorted into those categories - if you want to call my
+personal app collection by that lofty title.</p>
+
 <p><b>Summary:</b>  By now you've a rooted Android device, seen a  few
 XDA support threads as well as some checklists for use when reflashing
 the ROM.</p>
@@ -465,7 +470,7 @@ Further assumptions and settings of my setup (please also check in case of error
 </ul>
 
 <hr><center><p  style="background-color:#ffddcc"><i>Please    unpack    a    copy    of    the    <a href="https://github.com/jakobi/script-archive/blob/master/android/android-setup-example-files.tgz?raw=true">example
-files</a>  somewhere (though</i> <b>not in / on your Note</b><i>). You
+files</a>  somewhere (though</i> <b>not in / on your Android</b><i>). You
 can                   check                   the                   <a href="http://github.com/jakobi/script-archive/tree/master/android">Android
 directory</a>  for updated versions, as I will only very  infrequently
 update  the  tarball. ./host.note is an extract of the  Note's  files,
@@ -477,7 +482,7 @@ setup,  only  files  below /s (or /mnt/sdcard/COMPACT/setup)  will  be
 considered  by INSTALL, so please start with empty /s/data, /s/system,
 and  /s/root-tarballs  directories and simply modify and add  scripts,
 tarballs  and  configuration, as you proceed through the  article  and
-find interesting tidbits. In the example files, the location should be
+find interesting tidbits. In the example files, the location is
 host.note/mnt/sdcard/COMPACT/setup/INSTALL.</p>
 
 
@@ -491,23 +496,24 @@ Note,  let's get to the more interesting parts of this article.</p>
 
 <h4>Differences  from  a real Linux system</h4>
 
-<p>libc and its most visible problem: Google reinvented an embedded small
-libc  clone  by  the name of bionic, with together  with  the  Android
-framework  implements  DNS in a non-standard way. This leads  to  some
-confusion  in porting as whether to look at the output of setprop  and
-make  quite a few code modifications or just look at the files in /etc
-and  hope  that  something (the user...) keeps them in sync  with  the
-framework's  properties (setprop/getprop shell command). For  busybox,
-the  stericson  version you installed into /system/xbin does  use  DNS
-properly,  while  the  versions from <i>sshdroid</i>  and  <i>terminal
-ide</i>  do  not and only permit raw IP addresses. I defined an  alias
-iresolver to reorder PATH to enable DNS-related shell commands.</p>
+<p>libc  and  the most visible problem: Google reinvented an  embedded
+small  libc  clone  by  the name of bionic, which  together  with  the
+Android  framework  implements DNS access in a non-standard way.  This
+leads to some confusion in porting as whether to look at the output of
+setprop  and  make quite a few code modifications or just look at  the
+files in /etc and hope that something (the user...) keeps them in sync
+with  the framework's properties (setprop/getprop shell command).  For
+<i>busybox</i>,  the stericson version you installed into /system/xbin
+can  access DNS properly, while the versions from <i>sshdroid</i>  and
+<i>terminal ide</i> currently do not and only permit raw IP addresses.
+In  my  setup,  I have defined an alias iresolver to reorder  PATH  to
+enable DNS-related shell commands.</p>
 
 <p>Google   also   reinvented  the  wheel  with  logcat.  Again   with
 interesting  effects:  they didn't mangle all parts of the kernel,  so
 many  kernel messages never make it to logcat at all. Worse, there  is
 no  syslog/klog,  and  messages at best can be seen for a  very  short
-period  in a much too noise dmesg output. The lost messages include so
+period  in a much too noisy <i>dmesg</i> output. The lost messages include
 uninteresting topics such as logged packets from user-created iptables
 rules.   However,  messages  about  filesystem  data  corruption   are
 similarly mistreated. Which just happens to be a <b>severe reliability
@@ -516,24 +522,29 @@ this problem.</p>
 
 <p class=anno>(logcat use may require insmod /lib/modules/logger.ko)</p>
 
-<p>Other   things  that  may  be  unavailable:  Shared  memory.  Again
-improperly removed/unconfigured, leading to crashes and the X11 shared
-memory  workaround  reported later on. NFS client or  server  support.
-The ability to use swap space or swap to file.</p>
+<p>Other things that are onavailable on my Note:</p> 
+<ul>
+<li>shared  memory.  Again improperly  removed/unconfigured,  leading to crashes and  the  shared
+memory  workaround  reported later on, when we deal with X11 apps,  as
+these  are most likely to take advantage of shared memory
+<li>NFS  client and server support
+<li>swap space and swap to file
+</ul>
 
-<p>The  low power portions of the Google patches neglects to  properly
+
+<p>The  low  power portions of the Google patches neglect to  properly
 fix   sleep.   So   without   active  wake_locks   to   avoid   system
 suspend-to-ram,  even a one second sleep is completely unreliable  and
 may  have  a duration of a few minutes. Large sleeps are affected  way
 worse:  Sleeps  aren't ended when the system activates again  and  the
-real  time  is  after the intended end of sleep. Thus  a  chroot  cron
-becomes  pretty  much unusable without constantly  maintaining  active
-wakelocks.    See    the   example   <i>system/xbin/WAKELOCK</i>    to
+real  time  advanced beyond the intended end of sleep. Thus  a  chroot
+cron  becomes  pretty  much unusable  without  constantly  maintaining
+active  wakelocks.  See  the  example  <i>system/xbin/WAKELOCK</i>  to
 set/clear/list wake locks.</p>
 
-<p  class=anno>(see e.g. <a href="http://lwn.net/Articles/318611/">LWN:
+<p  class=anno>(see also <a href="http://lwn.net/Articles/318611/">LWN:
 Wakelocks and the embedded problem</a> - inconsiderate patches such as
-these  with  heavy collaterate damage do have a hard time to  make  it
+these  with  heavy collateral damage do have a hard time to  make  it
 upstream into the Linux kernel sources)</p>
 
 
@@ -542,24 +553,25 @@ upstream into the Linux kernel sources)</p>
 
 <p>Editing  text:  a  simple vi clone is part of busybox, and  can  be
 found  in /system/xbin, and as part of <i>sshdroid</i> and <i>terminal
-ide</i>.  A real port of vim is available with <i>terminal ide</i>. On
-the graphical side, consider <i>jota</i>.</p>
+ide</i>  copies  of  busybox.  A real port of <i>vim</i>  is  available  with
+<i>terminal   ide</i>.   On   the  graphical   side,   consider   e.g.
+<i>jota</i>.</p>
 
-<p>I  found  a few working static armel binaries for bash, mc,  rsync,
-strace,  tcpdump, and wget. They are included in the example files  in
+<p>I  found  a few working static armel binaries for <i>bash, mc,  rsync,
+strace,  tcpdump,</i> and <i>wget</i>. They are included in the example files  in
 system/xbin.  Bash and mc are also included with <i>terminal  ide</i>,
-but  the terminal-ide mc version lacks sub-shell support. A simplified
+but  the mc version lacks sub-shell support. A simplified
 wget is also part of busybox.</p>
 
-<p>The shell: sh is part of both busybox and toolbox. As I've run into
-a  slew of toolbox bugs, I'd suggest to use /system/xbin/sh. Or  bash,
+<p>The shell: <i>sh</i> is part of both busybox and toolbox. As I've run into
+a  slew of toolbox bugs, I'd suggest to use /system/xbin/sh. Or  <i>bash</i>,
 as mentioned in the previous paragraph. (consider a symlink /bin/bash,
 but it's probably better to avoid /bin/sh). Don't mix GNU programs and
 busybox  programs within a single pipe hosted by busybox sh  (spurious
 output write errors between pipe stages).</p>
 
-<p>To  use  Perl  in the shell, see the system/xbin/perl  example  and
-install      sl4a      and      the     perl     apk      from      <a href="http://code.google.com/p/android-scripting/">Scripting Languages
+<p>To  use  <i>perl</i>  in the shell, see the system/xbin/perl  example  and
+install      <i>sl4a</i>      and      the     perl     apk      from      <a href="http://code.google.com/p/android-scripting/">Scripting Languages
 for  Android</a>.  Python  and lua wrappers are also included,  but  I
 don't  really use them. In case of <i>sl4a</i> crashes, uninstall  and
 reinstall  the  crashing  language.  Consider  creating  the   symlink
@@ -572,33 +584,33 @@ the  shell  in <i>sl4a</i> and redirect the output of set to  a  file.
 Keep open <i>sl4a</i> and set suitable environment variables according
 to  the captured output. Maybe also of interest/possibly working as  a
 "host":  <i>tasker</i>  and  <i>taskbomb</i> with its  script  support
-package (all 3 on market).</p>
+(all 3 available on market).</p>
 
-<p class=anno>(in case you do not want sl4a: at the end of part 3, you
+<p class=anno>(in case you do not want <i>sl4a</i>: at the end of part 3, you
 will  also  be able to alias <i>perl</i> to <i>x perl</i> and use  the
 chroot's perl installation)</p>
 
 <p>Script examples:</p>
 <ul>
-<li><i>CHROOT.run</i> (often aliased to x); starts a shell in the chroot or
+<li><i>CHROOT.run</i> (aliased to x); starts a shell in the chroot or
     run chroot commands as part of a pipe. But more on this will
     have to wait until part 3.
 <li><i>/s/INSTALL</i> (Android shell customization script: install and update 
     apps in /system/xbin, create links like /i and /e for the scards,
     /s, /t, ..., 
     add scripts to the Android boot process. The master copy of
-    tarballs and scripts/configuration is also maintained in the
+    tarballs and scripts/configuration is also contained in the
     subdirectories of /s)
-<li><i>psg</i> is a <i>ps -ef|grep</i> style alias. It also offers to list
+<li><i>psg</i> is a <i>ps -ef|grep</i> style script. It also offers to list
     non-standard jobs of interest, or to classify processes as kernel / Android 
-    framework/Java / shell or chroot. As busybox doesn't implement ps -ef,
+    framework+Java / shell or chroot. As busybox doesn't implement <i>ps -ef</i>,
     the script uses busybox top as base.
-<li><i>TOP</i> augments to output of TOP with various Android specific information
+<li><i>TOP</i> augments to output of <i>busybox top</i> with various Android specific information
     from watching df, checking that interesting filesystems are still read-write,
-    to battery status and cpu frequencies. No interactive top command keys possible.
-<li><i>VPN*</i> are the openvpn setup scripts, see below.
+    to battery status and cpu frequencies. No interactive top command keys.
+<li><i>VPN*</i> are the openvpn setup scripts, see the section on networking below.
 <li><i>WAKELOCK</i> is a convenient wrapper used to setup/discard and list wake locks, 
-    and used in many of the other scripts.
+    and used in many of the other scripts or remote cronjobs.
 </ul>
 
 
@@ -658,53 +670,55 @@ R -        26203     1 root     S     2892  0.3   0  0.0 /usr/bin/dbus-daemon --
 
 <p>(there's no need to use java and the ide to really profit from installing and using <i>terminal ide</i>)</p>
 
-<p><i>terminal  ide</i>  aims to attempt to make standard  Unix  setup
+<p><i>terminal  ide</i>  aims to make standard  Unix commands
 available  to permit working with vim and java, thus the <i>IDE in the
 terminal</i>  name. This provides the best working environment for the
-Android shell outside of a chroot. It offers e.g.</p>
+Android shell outside of a chroot, and it doesn't even require root. It offers e.g.</p>
 
 <ul>
-<li>bash (this lacks subshell/jobs support)
-<li>busybox (though lacking DNS-resolving; see the iresolver function or
-    temporarily prepend /system/xbin to the PATH)
-<li>mc   (this lacks subshell support, consider running the 
+<li>use of 4 terminal sessions when used as a graphical frontend
+<li><i>bash</i> (this lacks subshell/jobs support)
+<li><i>busybox</i> (though lacking DNS-resolving; see the iresolver function or
+    temporarily prepend /system/xbin to the $PATH)
+<li><i>mc</i>   (this lacks subshell support, consider running the 
    system/xbin/mc binary from the example files or the chroot's <i>x mc -a</i>.
-<li>tmux (screen-style terminal multiplexer, configured to use CTRL-a as command key)
-<li>vim (_the_ editor; way better than vi, and much better than the busybox vi subset)
+<li><i>tmux</i> (screen-style terminal multiplexer, configured to use CTRL-a as command key)
+<li><i>vim</i> (_the_ editor; way better than vi, and much better than the busybox vi subset)
+<li>...
 </ul>
 
 <p>With  some  coaxing in the form of custom profiles and  the  script
-TERMIDE  (I  usually  alias it to t), the environment is  also  usable
-outside   the   app,   e.g.   from  ssh  or   for   root.   See   both
-data/data/com.spartacusrex.spartacuside/files/root                 and
-data/data/com.spartacusrex.spartacuside/files.  The  example  profiles
+system/xbin/TERMIDE  (aliased  to t), the environment is also usable  outside  of the
+app,     e.g.     from     ssh    or    for     root.     See     both of
+data/data/com.spartacusrex.spartacuside/files/{root/,}.
+The  example  profiles
 will  also  clone two bash files from the chroot's root  account  into
 data/data/com.spartacusrex.spartacuside/files/root   to   maintain   a
 single  environment  inside  and  outside of the  chroot,  inside  the
 <i>terminal  ide</i> app and outside, for both the <i>terminal ide</i>
-user account or for root. Running the app is not required.</p>
+user account or for root. Running the app is not required for this.</p>
 
 <p>Notes</p>
 <ul>
 <li>a <i>terminal ide</i> bash may block attempts  to  run
-    <i>mount  -oro,remount /system</i>. /s/INSTALL reliably triggers  that issue.
+    <i>mount  -oro,remount /system</i>. <i>/s/INSTALL</i> reliably triggers  that issue.
 <li>injecting root profiles into files of another Android app in /data/data
-    isn't the sanest thing to do. But it works, and the the 
-    normal <i>terminal ide</i> user accounts needs similar settings anyway. Take
+    isn't the sanest thing to do. But it works, and the 
+    normal <i>terminal ide</i> user account needs similar settings anyway. Take
     a look in case of restoring with titanium backup, but other than mc 
-    creating a new profile, nothing should happen. Wrt security, the Android
-    setup is single-user in the first place, abusing id's for the purpose
+    creating a new profile, nothing should happen. Wrt. security, the Android
+    setup is single-user in the first place, abusing IDs for the purpose
     of isolating apps against each other. Given that we need to
     run <i>terminal ide</i> binaries as root anyway, there's no additional risk to consider.
-<li>a fully configured vim with syntax highlighting might hang for when
+<li>a fully configured <i>vim</i> with syntax highlighting might hang for when
     the sdcard is busy with heavy writing. For tiny edits,
     just ssh on the machine and use the busybox version.
-<li>the app also offeres two full keyboard layout modes. However 
-    e.g. CTRL isn't accepted by other apps (including all vnc apps).
-    There is also a bug that only affects search and the default
-    browser, which don't accept return key as 'Go' - mobile firefox
-    and the other apps work fine (work-around: temporarily switch back
-    to the Samsung keyboard).
+<li>the app also offeres two <i>full keyboard layouts</i>. However 
+    e.g. CTRL isn't accepted by other apps, including all vnc apps!
+    There is also a bug that only affects the <i>Google search widget</i> and the 
+    <i>default Android browser</i>, which don't accept the return key as 'Go' -
+    mobile firefox and the other apps don't have this problem. Work-around: temporarily switch back
+    to the Samsung keyboard.
 </ul>
 
 
@@ -713,44 +727,49 @@ user account or for root. Running the app is not required.</p>
 
 <h4>Networking</h4>
 
-<p>Browsing:  some  providers  like to mangle httml pages  or  provide
-different  resolution  images and embed extra javascript in pages.  In
-case  of the German Telekom, most of this nonsense can be disabled  by
-<a href="http://speed.telekom.de/laptop_confirmation.php?u=">speed.telekom.de/laptop_confirmation.php?u=</a>.
+<p>Browsing:  some  providers  like to mangle HTML pages  and  provide
+different  resolution images or even embed extra javascript in  pages.
+In  case of the German Telekom, most of this nonsense can be  disabled
+by                                                                  <a href="http://speed.telekom.de/laptop_confirmation.php?u=">speed.telekom.de/laptop_confirmation.php?u=</a>.
 This  behaviour  was questionable when it started and with  increasing
-network  speed  and display sizes, it doesn't get more  reasonable  at
-all.</p>
+network  speed  and display sizes, it doesn't get more  reasonable or acceptable.</p>
 
-<p>Using   ssh:   Ssh-client  and  scp  can  be  found  as   part   of
+<p>Using   ssh: An ssh-client can  be  found  as   part   of
 <i>sshdroid</i> including sftp server and scp. Another copy is offered
 by   <i>terminal   ide</i>.   A  real  openssh  build   is   part   of
-<i>sshtunnel</i>,  also  named  sshtunnel. As  Android  app,  consider
-<i>connectbot</i>.  Note  that I was unable to trivially port  an  old
-ssh-based  tunnel trick of mine, as some ssh options are not supported
-by any of these.</p>
+<i>sshtunnel</i>, also called the same name. For a graphical client,  consider
+<i>connectbot</i>.
 
-<p>Using   sshd:  As  ssh-server  I  use  dropbear  as   provided   by
+<p  class=anno>(note  that  I  was  unable to  trivially  port  an  old
+ssh-based  tunnel trick of mine, as some ssh options are not supported
+by  any  of these. Work-around: use the <i>openvpn  installer</i>  and
+then run <i>openvpn</i> in the Android shell. See system/xbin/VPN*)
+</p>
+
+<p>Using   sshd:  As  ssh-server  I  use  <i>dropbear</i>  as   provided   by
 <i>sshdroid</i> (<i>terminal ide</i> again provides a second copy) and
-only  rarely run a second sshd -p <portnumber> on an alternate port in
+only  rarely run a second <i>sshd -p &lt;PORT&gt;</i> on an alternate port in
 the         chroot.         See         the         profile         in
 data/data/berserker.android.apps.sshdroid.  Adding  keys with the  GUI
-didn't  always  work,  so place them in  home/.ssh/authorized_keys  in
+didn't  always  work,  so I just copied them into home/.ssh/authorized_keys  in the
 above directory.</p>
 
 <p>Using  socks:  <i>proxydroid</i>,  <i>sshtunnel</i>  and   <i>orbot
-(TOR)</i>-  iptables-based  forwarding  of http/https  requests  to  a
+(TOR)</i>  use  iptables-based forwarding of http/https requests to  a
 server-based  based socks daemon. If you want to setup your own  socks
 daemon,  take  a look at the hpsockd.conf in the examples  (as  tested
-once on Ubuntu 10.4).</p>
+once  on  Ubuntu  10.4; do not use the default port of 1080,  as  some
+broken  botnet  seems  to  love attempting email  submission  on  that
+port).</p>
 
 <p><b>ERRATA: add hpsockd.conf to examples</b></p>
 
-<p>Iptables  is  hopefully part of your custom ROM. Iptables  is  also
-part  of <i>proxydroid</i>, <i>sshtunnel</i> and <i>orbot</i> packages
-from  market. <i>lbe privacy guard</i> or any of the personal firewall
-tools should also contain or offer to install a copy iptables.</p>
+<p>the  <i>iptables</i> command is hopefully part of your custom  ROM.
+It  is  also available as part of <i>proxydroid</i>,  <i>sshtunnel</i>
+and  <i>orbot</i>.  <i>lbe  privacy guard</i> or any of  the  personal
+firewall  tools  should  also  contain  or offer  to  install  a  copy.</p>
 
-<p>Rsync:  I've  stumbled  upon  a static  compile  (included  in  the
+<p><i>rsync</i>:  I  stumbled upon a static compile (included  in  the
 examples)   which  is  as  simple  to  use  as  <i>rsync  -a  --delete
 root@note:/DIR  /HOSTDIR</i>.  For  a  backup  solution,  check   e.g.
 rsync-backup.  Some  of  the  rsync-related market  apps  should  also
@@ -761,71 +780,72 @@ providing  the  promised  automated nightly backup  solution  (if  you
 silently  add  a  'simple'  in there). In the meantime,  the  files  I
 actually  use  in my backup are part of the example files.  My  backup
 setup  is  bit  older  than  rsync-backup  and  centers  on  filtering
-filelists.  As  invoked for the Note, it uses also rsync for copy  and
+filelists.  As  invoked for the Note, it also uses rsync for copy  and
 cleanup  of removed files, and it also keeps numbered daily/weekly/...
 snapshots.              Execution             starts              with
 home/jakobi/bin/xfer_backup.wrapper.anuurn.local,  which is invoked by
 a  nightly  root cron job (ensure that <i>titanium backup</i>  on  the
 Note  is finished first). Furthermore check the copied titanium backup
-location  on  the  host  after  the  first  run  -  I  initially  used
-/mnt/sdcard/external_sd/BAK,   however   a  directory  like   BAK   is
+location  on  the backup target  after  the  first  run  -  I  initially  used
+/mnt/sdcard/external_sd/BAK,   however /BAK$   is
 automatically excluded in my setup...</p>
 
 <p>Using  a  VPN: OpenVPN and tun.ko is hopefully already part of  the
 custom  ROM (or in case of tun.ko optionally also a part of the kernel
-- otherwise add a insmod /lib/modules/tun.ko or similar; there also is
-a  <i>tun.ko  installer</i>  on the market as well  as  an  <i>openvpn
-installer</i>).  The  example  files  show  a  working   shared-secret
-openvpn-pair example:
+-  otherwise run <i>insmod /lib/modules/tun.ko</i> or similar; there also is a <i>tun.ko
+installer</i>  on the market as well as an <i>openvpn  installer</i>).
+The example files contain a shared-secret openvpn-pair example sans the secret:
 
 <ul>
-<li>system/xbin/VPN* (with VPN to start the VPN, VPN-ALL to tunnel all
-    traffic over the VPN including internet traffic and VPN-NONE for the
-    opposite. To end the session, run VPN-NONE and maybe pkill openvpn).
-<li>the etc/openvpn files for both the Linux host and the Note (/etc/vpn is NOT handled by INSTALL)
+<li><i>system/xbin/VPN*</i> (with <i>VPN</i> to start the VPN, <i>VPN-ALL</i> to tunnel all
+    traffic over the VPN including internet traffic and <i>VPN-NONE</i> for the
+    opposite. To end the session, run <i>VPN-NONE</i> and maybe <i>pkill openvpn</i>).
+<li>the etc/openvpn files for both the Linux box and the Note (/etc/vpn is NOT handled by INSTALL)
 <li>see also the settings menu, which offers additional VPN options.
 </ul>
 
 
 <p><b>ERRATA: w/o jump</b></p>
 
-<p>Some  graphical apps using VNC/RDP to view remote computers:  there
-are  various  VNC  apps available, including  <i>vnc  viewer</i>,  and
-<i>Pocketcloud</i>.  For  the  opposite direction, to  view  the  Note
-desktop   using   VNC,   consider  <i>androidVNC</i>.</p>
+<p>Graphical apps using VNC (or RDP) to view remote computers:  there
+are  various  VNC viewing apps available, including  <i>vncviewer</i>,  and
+<i>pocketcloud</i>.  For  the  opposite direction, to  view  the  Note's
+display   using   VNC and to remote control Android,   consider  <i>androidVNC</i>.</p>
 
 <p  class=anno>(the Note's resolution is great, but my eye isn't  upto
-to  the  Note's  300dpi,  so vnc use requires  zooming.  There's  also
-a multihead  issue: no vnc app was up to deal with a multihead  display
-of  two different sized monitors -&gt; run a a (smaller) vncserver  on
+to  the  Note's  300dpi,  so VNC use requires  zooming.  There's  also
+a multi-head  issue: no vnc app was up to deal with a multi-head  display
+of  two different sized monitors -&gt; run a (smaller) vncserver  on
 the remote host)</p>
 
-<p>There's  also <i>Xvnc</i> which combines a vnc viewer hardwired  to
-connect  to  a  locally running vnc server which acts  as  X11  server
-(armel  binaries  included). If you've space issues when creating  the
-chroot  in part 4, Xvnc is very convenient to skip installing most  of
-X11  inside  the  chroot  -  merely  run  <i>aptitude  install   xterm
-icewm</i>.</p>
+<p>There is also <i>Xvnc</i>, which combines a VNC viewer hardwired to
+connect  to  a locally running VNC server, which in turn acts  as  X11
+server (armel binaries included with Xvnc). If you have space issues when creating
+the  chroot in part 4, Xvnc is very convenient to skip installing most
+of  X11  inside  the  chroot - merely run  <i>aptitude  install  xterm
+icewm</i> to install the client-side minimum of X11.</p>
 
-<p>As  we install a chroot soon, I'm not covering graphical apps  that
-access  remote  files  or offer access to remote files.  As  for  NFS,
-without  kernel support, you cannot neither access NFS files nor offer
-them.</p>
+<p>As we install a chroot in the next part, I'm not covering graphical
+apps  that access remote files or offer access to remote files.</p>
 
-<p  class=anno>Unless you have access to a Linux box elsewhere and run
+<p>As  for NFS, without kernel support, you cannot neither access  NFS
+files nor offer them.</p>
+
+<p  class=anno>(unless you have access to a Linux box elsewhere and run
 fuse sshfs in the direction you want to: The Linux box can then either
 offer  the  Note's files per NFS or forward contents of NFS mounts  to
-the  Note  (chroot  required  for  this  direction;  see  the  example
-abin/SSHFS script later on).</p>
+the  Note. Chroot is required  for  this  direction;  see  the  example
+abin/SSHFS script later on)</p>
 
-<p>For connecting to a WLAN and AP mode (WLAN tethering), just use the
-settings  menu on the Note and e.g. network manager on the Linux  box.
-For  tethering via USB, connect the Note and select USB tethering.  On
-the  Linux box run <i>modprobe usbnet</i>, maybe also  <i>dhclient</i>
-and  have a look at usb0. I didn't test inverse tethering (making  the
-Note  use the Linux Box's connection to the internet), but on a  short
-search  I found 11 pretty dissimilar sketches from using ppp or ssh or
-adb with portforwarding to bridging.</p>
+<p>To  connect  to  a  WLAN  and or use the  Note  in  AP  mode  (WLAN
+<b>tethering</b>),  just use the settings menu on the Note. To connect
+to  the  Note  in AP mode, use e.g. the Gnome network manager  on  the
+Linux  box.  For  tethering via USB, connect the Note and  select  USB
+tethering.  On  the Linux box run <i>modprobe usbnet</i>,  maybe  also
+<i>dhclient</i>  and  have  a  look at usb0.  I  didn't  test  inverse
+tethering  (making  the  Note use the Linux Box's  connection  to  the
+internet), but on a short search I found 11 pretty dissimilar sketches
+from using ppp or ssh or adb with portforwarding to bridging.</p>
 
 <p>Network security</p>
 <ul>
@@ -834,17 +854,17 @@ the graphical app side sound sane and add some device-location and anti-theft fe
 <li><i>Personal  firewalls</i> or rather <i>iptables-based outbound packet filters</i>
 control outbound packages and are used to augment (<i>LBE  privacy  guard</i>)  or 
 substitute  for  actual application  permission management.  Some  antivirus  apps
-also include  this  feature  when running on a rooted Note (<i>avast</i>). Note
-that this is only slightly more capable than your ordinary Windows personal firewall - 
+include  this  feature  when running on a rooted Note (<i>avast</i>). Note
+that the  "Android personal firewall" is only slightly more capable than your ordinary "Windows personal firewall" - 
 even something as basic as a mere DNS name lookup can leak arbitrary information to a
-selected target host. "Personal firewalls" are also not quite the right place 
-to block apps for ideas like battery saving.
+pre-selected target host. In the Android case, "personal firewalls" are also not
+quite the correct place to block apps for ideas such as saving battery.
 <li><i>system/xbin/FW</i>: I didn't find any <b>real firewall</b> that deals with inbound packages.
 There are some inbound call and sms blockers, but one of the real basics of
-network security doesn't seem to exist for Google and every Android developper.
-See system/xbin/FW for a script to create and destroy a firewall. It is loosely
-based on the rules as created by ufw on an Ubuntu box. Note that we cannot
-use syslog for logging, so for rule testing, you need to run <i>dmesg|grep ...</i>
+network security just doesn't seem to exist for Google and any Android developper on the market.<br>
+Work-around: See <i>system/xbin/FW</i> for a script to create and destroy a firewall. It is loosely
+based on the rules used by ufw on Ubuntu. Note that we cannot use syslog for logging,
+so for rule testing, you need to run <i>dmesg|grep ...</i>
 to see output for logged packets.
 </ul>
 
@@ -855,8 +875,8 @@ comfortable  Android  shell.  We  have basic  networking  commands  to
 connect  remote  servers and we we can run perl scripts.  An  external
 host  can  be used to run shell commands on the Note or run  rsync  to
 create  a  file  backup of the Note. We also have seen  an  automation
-example consisting of a remote triggered backup. You also have a real
-Linux networking setup and access to a real classic inbound firewall (FW).</p>
+example  consisting of a remote triggered backup, and we implemented a
+real inbound firewall (<i>system/xbin/FW</i>).</p>
 
 
 
@@ -867,35 +887,38 @@ Linux networking setup and access to a real classic inbound firewall (FW).</p>
 <H3>CHROOT and Turning the Android into a First Class LAN Citizen</H3>
 
 
-<p>First let me start by pointing back to the warning against bad flash.</p>
+<p>Let me start by pointing back to the warning against bad flash!</p>
 
 
 
 <h4>Setting up the filesystems</h4>
 
-<p>Let  us  create  a  SSD-style 4MB-aligned  partitioning  scheme  by
+<p>Let  us  create  an SSD-style 4MB-aligned  partitioning  scheme  by
 starting  the first partition at 8192 and have all partitions start at
-sector   numbers  divisible  by  8192  (that  might  offer  a   slight
-improvement  also with sdcard; optional).</p>
+sector   numbers  divisible  by  8192  (this  might  offer  a   slight
+improvement  also  for  sdcard flash(?); if you want to  simplify  the
+setup   further,   just   create  a  two   partition   setup   without
+alignment).</p>
 
-<p>Sizing:  For a basic desktop install plus build-essentials  install
-and  some file serving, you need about 3.5GB + 2GB to install. A  rule
-of  thumb  might  be to clean /var, /tmp and run aptitude  clean,  and
-double  that size to add some reserve to permit upgrades, that is  for
-me   at  least  7GB.  Without  any  desktop  task,  you  should  still
-comfortably  fit  in  in a slightly less-than-4GB  file  container  on
-either  the  internal  or external sdcard, however the  required  loop
-mount  adds some overhead and I already had some data loss on the  old
-external  sdcard, so I'd argue for a direct ext4 setup.</p>
+<p>Sizing:  For a basic desktop tasksel install plus  build-essentials
+and some file serving, you need about 3.5GB plus maybe 2GB extra space
+during  installation.  A  rule of thumb for a better guess may  be  to
+clean  /var, /tmp and run aptitude clean, and double that size to  add
+some reserve to permit upgrades. For me that results in using at least
+7GB.  Without any desktop task, you should still comfortably fit in  a
+4GB  partition  or  in  a  maximum-size  slightly-less-than-4GB   file
+container  on  either  the internal or external  sdcard.  However  the
+container  file setup requires a loop mount with some overhead, and  I
+already  had some data loss on the old external sdcards, so I strongly
+suggest to use a separate partition with ext4 for the chroot.</p>
 
-<p>Put  the  sdcard to use in a card reader on your  Linux  box  and
-umount any automatically mounted filesystems from the sdcard. Then run
-fdisk and create the filesystems.</p>
+<p>Put the sdcard to use in a card reader on your Linux box and umount
+any  automatically  mounted  sdcard filesystems. Then  run  fdisk  and
+create the filesystems.</p>
 
-<p class=anno>(the commands are pasted from my notes, I shouldn't have
-changed much afterwards; any interesting changes should be part of the
-CHROOT.mount  script,  which  mirrors  some  of  the  post-debootstrap
-preparations like the mount -obind commands below)</p>
+<p class=anno>(the commands are pasted from my notes; I shouldn't have
+changed  much  afterwards. Any interesting changes should  be  already
+reflected in the CHROOT.mount script)</p>
 
 <pre>
 # avoid problems on Ubuntu 10.4 with recent kernels
@@ -936,7 +959,7 @@ to a fixed start of journal; not checked)</p>
 
 <h4>Debootstrap</h4>
 
-<p>Run  stage  1  still on the Linux Box and copy the results  to  the
+<p>Run  stage  1  on the Linux Box and copy the results  to  the
 chroot  filesystem.  Both  stable (squeeze) and testing  (wheezy)  are
 suitable for use as chroot.</p>
 
@@ -968,13 +991,23 @@ ln -s sys/kernel/debug d
 ln -s data/local/root .
 mkdir ./-p ../-p
 chmod 444 ./-p ../-p
-#
+
 # mirror the outside files required to run commands (sys, dev, ...)
 # as well as make sdcards, system and data accessible from within the chroot
+#
+# (these commands are also the key part of system/xbin/CHROOT.mount and 
+#  required after each reboot of the Note to prepare the chroot for use)
+#
 mkdir -p proc sys acct system data dev efs cache mnt 
 mkdir -p mnt/.lfs mnt/sdcard mnt/usb mnt/obb mnt/asec mnt/app-cache
-# I will skip some of the mounts here (asec, etc)
 mkdir -p mnt/secure/asec
+#
+# I will skip some of the mounts like asec and lfs for now
+#
+# (it might be interesting to try to run app_launcher also within the 
+#  chroot to more directly interact with the Android framework. However 
+#  the chroot can also just run ssh localhost to reach the Android shell via sshdroid)
+#
 mount -orbind /sys sys
 mount -obind /acct acct
 mount -obind /data data
@@ -983,7 +1016,7 @@ mount -obind /cache cache
 mount -orbind /mnt/sdcard mnt/sdcard
 mount -orbind /dev dev
 mount -orbind /app-cache app-cache
-# we cannot bind anything rootfs
+# we cannot bind anything from rootfs
 mkdir COPIED
 ( cd /; find bin config customkernel dbdata default.prop lib res sbin usr vendor | cpio -pmdu /x/a/COPIED )
 ln -s COPIED/* .
@@ -998,7 +1031,7 @@ mount -t proc proc proc
 
 <p>With  the mounts and directories in place, enter the chroot for the
 first time, run the second stage of debootstrap to install the initial
-system,   and  update  the  system  to  the  current  version  in  the
+system,   and  update  the  system  to  the  current package versions  in  the
 repositories.</p>
 
 <pre>
@@ -1057,7 +1090,7 @@ cat FIND.chroot | cpio -o -H crc &gt; /i/chroot-initial-debootstrap.cpio
 
 <p>Install  required  application  packages, then you  can  optionally
 install  one or more of the major meta-packages suggested by  tasksel.
-In January, the Deskop-selection contained issues with bluez and mono,
+In January, the Desktop-selection had issues with bluez and mono,
 as described in the notes below.</p>
 
 <pre>
@@ -1105,8 +1138,8 @@ cat FIND.chroot | cpio -o -H crc &gt; /i/chroot-initial-final.cpio
 should be something along the lines of rw,noatime,barrier=1,data=ordered; otherwise 
 change CHROOT.mount or use tune2fs to add default mount options.
 <li>Android doesn't supply a working fsck for ext4, see system/xbin/CHROOT.fsck for an example work-around.
-<li>if the bluez packages is still broken and insists on a running udevd, just remove 
-   /var/lib/dpkg/info/bluez.postinst and run dpkg --configure --all.
+<li>if the bluez package is still broken and hangs, just remove 
+   /var/lib/dpkg/info/bluez.postinst and run <i>dpkg --configure --all</i>.
 <li>mono is not needed, furthermore there were some packaging errors. Uninstall with some effort: 
 <i>aptitude install gnote; 
 dpkg -i /var/cache/apt/archives/libglib2.0-cil_2.12.10-3_armel.deb;
@@ -1118,15 +1151,16 @@ libmono-addins0.2-cil libmono-i18n-west4.0-cil libmono-i18n4.0-cil libmono-posix
  libmono-system-drawing4.0-cil libmono-system4.0-cil mono-gac mono-runtime; 
 aptitude purge mono-runtime libmono-system4.0-cil</i>
 <li>other candidates for removal: wicd (wireless connection manager) and bluetooth
-    (I've not tested to run bluez &amp; friends from the chroot; for now I do
-    the network management outside of the chroot excluding just ip route or iptables,
-    which I occasionally also call from within; note that I even use things like
-    <i>openvpn</i> outside of the chroot in the Android shell)
-<li>on removing apps, run deborphan and consider uninstalling the listed files,
-    then start aptitude and press 'g' and look if aptitude suggests additional
+    (I've not tested  bluez &amp; friends from within the chroot - the hang in postinstall
+    is probably related to some need for udevd or similar. Furthermore any hardware
+    access ought to be coordinated with the hardware accesses from the hosting kernel-plus-Android-framework.
+    Currently I even do all network management and <i>openvpn</i> use outside of the chroot, 
+    excluding just ip route and iptables, so this is uncharted territory)
+<li>when removing packages, also consider running <i>deborphan</i> and uninstalling the listed files,
+    afterwards run aptitude and press 'g' and look if aptitude suggests additional
     removals from the previously automatically installed packages. Keep what you
-    still use (e.g. press i/m) and continue to remove the rest.
-<li>to add checksums of installed files (though not verifying permissions), install debsums
+    still use (e.g. by pressing i or m) and continue to remove the rest.
+<li>to validate checksums of installed files (though not verifying permissions), you can install debsums
     and run debsums_init; this helps in checking for overwritten or corrupted package files.
 </ul>
 
@@ -1137,39 +1171,39 @@ aptitude purge mono-runtime libmono-system4.0-cil</i>
 
 
 <p>While the scripts in system/xbin are for the outside Android shell,
-the  abin  directory in the chroot in the example files contains  some
-in-chroot  glue.  So  we  there are the  chroot  starting  scripts  in
-system/xbin  which  often call scripts by the same name in  abin  once
-inside  the  chroot.  The abin directory in the chroot  also  contains
-other  glue scripts, like e.g. CHECK (monitoring), SSHFS (remote  file
-access) and the CRON* files (enable some basic cron-style scripts that
-schedule  somewhat sanely despite unreliable sleep in Android kernels.
-The CHROOT scripts in detail:</p>
+the  abin directory in the chroot is for in-chroot glue scripts.  Thus
+the  chroot-related scripts in system/xbin/CHROOT* often call  scripts
+by the same name in abin once inside the chroot. The abin directory in
+also  contains CHECK (monitoring), SSHFS (remote file access) and  the
+CRON*  files  (enable  some  basic cron-style  scripts  that  schedule
+somewhat  sanely despite the unreliable sleep in Android kernels). The
+CHROOT scripts in detail:</p>
 
 
 <ul>
-<li>CHROOT.available prints the mount state of the chroot
-<li>CHROOT.fsck is a mere example on how to fsck the chroot from
-    within, as the Note doesn't contain an external fsck for ext4,
+<li><i>CHROOT.available</i> prints the mount state of the chroot
+<li><i>CHROOT.fsck</i> is a mere example on how to fsck the chroot from
+    within, as the Note doesn't offer fsck.ext4 in the Android shell,
     despite using ext4 filesystems for the Android data.
-<li>CHROOT.mount mounts all filesystems for the chroot (basically it
+<li><i>CHROOT.mount</i> mounts all filesystems for the chroot (basically it
     runs the mount statements you already saw above when using the chroot
-    for the first time)
+    for the first time; note that is doesn't check the need to mount
+    for each single mountpoints (somewhat ugly/harmless)
 <li><b>CHROOT.run</b> either starts a shell in the chroot or runs a command
     and returns the command's return code. It can be used transparently 
-    as part of a pipe, and it will try hard to properly deal with outside
-    full or partial filenames (mounts if necessary)
-<li>CHROOT.start starts cron, dbus and a second sshd (mounts if necessary)
-<li>CHROOT.startx calls CHROOT.start, otherwise reserved, as I currently
+    as part of a pipe, and it will try hard to properly translate outside
+    full or partial filenames and the current working directory (it mounts the chroot if necessary)
+<li><i>CHROOT.start</i> starts cron, dbus and a second sshd (mounts if necessary)
+<li><i>CHROOT.startx</i> calls CHROOT.start, otherwise reserved, as I currently
     to aliases like ivnc to start X11 (mounts if necessary)
-<li>CHROOT.stop only stops the services started by CHROOT.start.
-<li>CHROOT.umount first calls abin/CHROOT.umount to umount remote 
+<li><i>CHROOT.stop</i> only stops the services started by CHROOT.start.
+<li><i>CHROOT.umount</i> first calls abin/CHROOT.umount to umount remote 
     filesystems and to stop dbus/cron. The script then tries to
     umount all filesystems of the chroot. Using the -k option 
     attempts a second umount after trying to kill processes 
     using the mountpoint. Ugly, brutal and unreliable. Invoked multiple
     times with -k however, it will succeed.
-<li>CHROOTED tests if a process is already running in the chroot.
+<li><i>CHROOTED</i> tests if a process is already running in the chroot.
 </ul>
 
 <p  class=anno>(I  still  hold  some  hope  of  never  having  to  fix
@@ -1180,30 +1214,35 @@ CHROOT.umount due to never using it again :))</p>
 <p>Root  account:  As  I  didn't want to maintain  umpteen  copies  of
 profiles,  I keep my own stuff in root/.bash{_aliases,rc}.pj and  just
 add  suitable sourcing or updating statements to the other files. That
-way,  user accounts and <i>terminal ide</i> share this master copy  to
-provide  their  own  environment. The profiles set a sane  prompt  and
+way, user accounts and <i>terminal ide</i> share this master copy when
+sourcing  their own environment. The profiles set a useful prompt  and
 window  title  providing  port/pty/user/directory  information,   plus
-return  code  in  case  of PS1. They also contain  aliases  to  shadow
-updatedb/locate  with a grep in the nightly generated filelists of the
-backup. Note that this requires a not that secure chmod 711 on /root -
-the  clean  way would have been to put the config files to share  into
-abin  and  just source them as everyone else does. Again you can  find
-copies of these files in the example tarball.</p>
+return  code  in  case of PS1. They also contain aliases  that  shadow
+updatedb/locate and use the nightly generated filelists of the backup.
+Note  that this abuse of /root requires a not-that-secure <i>chmod 711
+/root</i>  - the clean way would have been to put the config files  to
+share  into abin and just source them as everyone else does. As usual,
+you  can  find  copies of all relevant files in the  example
+tarball. </p>
 
 <p>In  setting  up non-system user accounts, you do not want  to  trip
-over  Android  ID's. I changed /etc/login.def to use 20000 instead  of
+over  Android  IDs. I changed /etc/login.def to use 20000  instead  of
 1000  for the values of UID_MIN, GID_MIN. In /etc/adduser.conf, change
-FIRST_UID and FISRT_GID similarly. Add android_network:x:3003:USERNAME
-to  /etc/group and fix gshadow accordingly. 3003 is the public  secret
-number  for  the  group permitting network access. A  possible  search
-keyword is ANDROID_PARANOID_NETWORK.</p>
+FIRST_UID        and        FISRT_GID        similarly.        <i>echo
+android_network:x:3003:USERNAME  >>  /etc/group</i> to /etc/group  and
+fix  the gshadow structure accordingly. The number 3003 is the  public
+secret   number  of  the  group  ID  permitting  network   access   to
+non-system(?)  users.  A  search keyword for more detail  on  this  is
+ANDROID_PARANOID_NETWORK.</p>
 
 <p>Escaping the chroot can be done by ssh to localhost, as shown below
-in  the example using the chroot's host key. If you use ssh-agent with
-other   passphrase-protected  keys,  invoke  it  as   <i>ssh-agent   >
+in  the example using the chroot's host key. If you use ssh-agent  and
+passphrase-protected    keys,    invoke   it   as    <i>ssh-agent    >
 ~/.ssh/env.$(hostname)</i>.</p>
 
 <pre>
+# The Great Escape (from chroot to Android shell)
+
 cd /root/.ssh
 ln -s /etc/ssh/ssh_host_rsa_key id_rsa
 ln -s /etc/ssh/ssh_host_rsa_key.pub id_rsa.pub
@@ -1213,109 +1252,113 @@ cd ../home/.ssh
 cat /root/.ssh/id_rsa.pub &gt;&gt; authorized_keys
 # check permission and owner
 ls -l authorized_keys
+
+# now you can run ssh localhost COMMAND from within the chroot
 </pre>
 
 <p>Umlauts  and  locale settings are a bit surprising, as  I  expected
-full  utf8 support everywhere on the Android by default. Umlauts  seem
-properly displayed, on delete however they're appear as multiple chars
-in the Android shell. I still need to really run DEBIAN as more than a
-server  system  to get a better grip on where and what packages  offer
-locales,  as  I didn't find e.g. en_US.UTF8. For the time  being,  the
-sanest  setting is LANG=C.UTF-8, plus a paranoid LC_COLLATE=C, as this
-repairs deletion on ssh logins to the chroot.</p>
+full  UTF8 support everywhere on the Android by default. Umlauts  seem
+properly displayed, on delete however they appear as multiple chars. I
+still  need to really run DEBIAN as more than a server system to get a
+better grip on where and what packages offer locales, as I didn't find
+e.g.   en_US.UTF8.  For  the  time  being,  the  sanest   setting   is
+<i>LANG=C.UTF-8</i>  (plus  a paranoid <i>LC_COLLATE=C</i>),  as  this
+repairs those deletion issue e.g. for ssh logins to the chroot.</p>
 
 
 
 <H4>Overview of Services and an Automation Example</h4>
 
 <p>Some  applications  require  a  running  dbus:  <i>/etc/init.d/dbus
-start</i>. For me, I collect the usual low-weight services to start in
-abin/CHROOT.start, but I rarely use it.</p>
+start</i>.  abin/CHROOT.start  is  intended  to  collect  the  startup
+commands for any lightweight daemon or service.</p>
 
-<p>Terminal  multiplexing:  screen  is  broken and  hangs  on  detach,
-however tmux is working properly. See /root/.tmux.conf for setting
-the command key to CTRL-a like with screen.</p>
+<p>Terminal  multiplexing:  the <i>screen</i> command is broken and hangs  on
+detach,  however  <i>tmux</i> is working properly. See  /root/.tmux.conf  for
+setting the command key to CTRL-a like with screen.</p>
 
-<p>Virtualization,  e.g. lxc: mostly unsupported (bridging might  also
+<p>Virtualization,  e.g. lxc: mostly unsupported (bridging may  also
 be unsupported, depending on the kernel).</p>
 
 <p>Basic  cron  services  are  problematic, as  sleep  is  unreliable.
-abin/CRON* offers an example setup to to cope with this situation. The
-15min  job  contains  code to catch missed runs of  the  slower  shell
-scripts  and  tries to resynchronize them with their  original  window
-when  delayed.  All  you  need to do is  invoking  x  /abin/CRON.15min
-remotely  or with <i>tasker</i> or from multiple invocation sources at
-once  (the  jobs  maintain suitable locking). This  example  might  be
-extended  with anacron and more of the actual cron jobs configured  in
-/etc.  The abin/CRON.15min script is currently run by remote root cron
-every 15 minutes.</p>
+<i>abin/CRON*</i>  offers  an  example  setup to  to  cope  with  this
+situation.  The 15min job contains code to catch missed runs of  other
+CRON*  scripts  and  tries to resynchronize them with  their  original
+window  if their execution was delayed. All you need to do is invoking
+<i>x  /abin/CRON.15min</i>  remotely  or with  <i>tasker</i>  or  from
+multiple  invocation  sources  at  once (the  jobs  maintain  suitable
+locking).  This example can be extended with anacron and more of the
+actual  cron  jobs configured in /etc/cron*. The <i>abin/CRON.15min</i>  script  is
+currently run by remote root cron in my home WLAN every 15 minutes.</p>
 
-<p>In  my  case  I've instead added a repeated short  period  WAKELOCK
+<p>Note  that  I've  also  added  a  repeated  short  period  WAKELOCK
 invocation  to  the root cronjob on my Linux box. Thus  sleep  becomes
 reliable  in  my home WLAN and the ordinary cron (if started) can  run
-normally  during  the night. However this also implies that not  using
-the CPU by sleeping now costs extra battery, as the Note can no longer
-do a quick automatic suspend-to-RAM.</p>
+normally  during the night. However not-using-the-CPU-by-sleeping  now
+costs extra battery, as the Note can no longer suspend to RAM.</p>
 
-<p>Monitoring:  the  example  abin/CHECK  offers  a  basic  monitoring
-script,  which can be run by ssh and evaluated remotely (see the  root
-cronjob and watch_delta; run every 15 minutes).</p>
+<p>Monitoring:  <i>abin/CHECK</i> offers a trivial monitoring  script,
+which  can be run by ssh and evaluated remotely (see the root  cronjob
+and watch_delta; run every 15 minutes).</p>
 
 <p>Mail  notification and forwarding: The sendmail service is provided
-by  exim4.  Without  a  setup, exim4 places all  local  email  in  the
-/var/mail/mail  spool  file.  abin/CHECK reports  available  mail,  as
-should  TOP. Again have a look at the root cronjob file for an example
-to  forward  this chroot-local mail to my account on the remote  Linux
-box  (run every 15 minutes). As I don't want a real mail configuration
-in a chroot, that's good enough for me.</p>
+by  the  <i>exim</i> package. Without a setup, exim places  all  local
+email  in  the  /var/mail/mail spool file.  <i>abin/CHECK</i>  reports
+available  mail, as does <i>system/xbin/TOP</i>. Again have a look  at
+the root cronjob file for an example to forward this chroot-local mail
+to  an account on the remote Linux box (again every 15 minutes). As  I
+don't  want a real mail configuration in a chroot, that's good  enough
+for now.</p>
 
 <p>Sending and receiving mail can still be done inside the chroot with
-e.g.  mutt by going directly to the remote imap/pop/sendmail  servers,
-without  relying  on  a local sendmail. The example  files  contain  a
-cut-down  mutt  setup as part of my normal user account in the  chroot
-(host.note/x/home/jakobi/.mutt).  There's  also a wrapper in  bin/mutt
-that  I use to switch profiles and sender account according to  folder
-contents,  which you can ignore as long as you use only a single  mail
-account or define macros to switch accounts.</p>
+mutt  by using the remote imap/pop/sendmail servers without relying on
+a  local sendmail. The example files contain a cut-down mutt setup  as
+part  of  my  normal user account in the  chroot  (home/jakobi/.mutt).
+There's  also a wrapper in bin/mutt that I use to switch profiles  and
+sender  account according to folder contents, which you can ignore  as
+long  as you use only a single mail account or define macros to switch
+accounts.</p>
 
 <p>Encryption:  For now I only use <i>apg</i> on the Android side  and
 gpg  in the chroot for a couple of files. This is more than enough  to
 use  vim  to  decrypt a file with some web forum  passwords.  I  would
 sugggest  to  only  edit  this  file  on  your  Linux  box  to   avoid
 synchronization  issues,  as  patch or unison aren't able  to  analyze
-changes within the file.</p>
+in-file differences between encrypted files.</p>
 
 <p><b>ERRATA: Demonstrate an encrypted loop mount?</b></p>
 
 <p>For   backup   and  synchronization,  revisit  the   example   file
-xfer_backup.wrapper.anuurn.local and the nightly backup job invoked by
-remote  root cron. Besides running the list-based rsync, it also  runs
-home/jakobi/bin/ct_note.update-copies                              and
-home/jakobi/bin/ct_note.update-unison.  The  first clones a subset  of
-the  my  home  directory onto Note, the second synchronizes  a  folder
-tree,  with one layer also following symlinks, both only run when  the
-chroot  is  mounted.  As the Ubuntu 10.4 version was  too  ancient,  I
-installed  a  new  build in /usr/local/bin on the  Linux  box.  Remote
-invocation  is  as  simple as <i>DISPLAY= unison  /data/unison  -batch
--auto -servercmd "x unison" ssh://note//data/unison</i></p>
+<i>xfer_backup.wrapper.anuurn.local</i>  and  the nightly  backup  job
+invoked by remote root cron. Besides running the filelist-based rsync,
+it        also       runs       <i>ct_note.update-copies</i>       and
+<i>ct_note.update-unison</i>    (all    on    the   Linux    box    in
+home/jakobi/bin).  The first clones a subset of the my home  directory
+to  the  Note, the second synchronizes a folder tree, with  one  layer
+also  following symlinks; both only run when the chroot is mounted  on
+the Note. As the Ubuntu 10.4 version of <i>unison</i> was too ancient,
+I  installed  a  new build in /usr/local/bin on the  Linux  box  (fast
+compile, no trouble at all with ocaml). Remote invocation is as simple
+as  <i>DISPLAY= unison /data/unison -batch -auto -servercmd "x unison"
+ssh://note//data/unison</i>.</p>
 
-<p>Using  sshd:  I'm  still using <i>sshdroid</i>'s  dropbear  as  the
-primary  ssh daemon, dealing with backup traffic, and everything.  The
-chroot  from  the Linux box by running <i>ssh root@note x  COMMAND</i>
-(e.g.  done  by  unison;  rsync dislikes the space  in  'remote  rsync
-command   names'   and  requires  the  chroot-rsync  dummy   file   in
-sshdroid/dropbear).   If   you  need  a  real  sshd  without   similar
-work-around,  just  run  <i>sshd  -p PORT  &amp;</i>  in  the  chroot,
-possibly also stopping sshdroid. If you really want to, you can add it
-to  system/etc/init.d/S99zz_compact_jobs  to  start  at  boot  of  the
+<p>Using    <i>sshd</i>:    I'm    still    using    <i>sshdroid</i>'s
+<i>dropbear</i>  as  the  primary  ssh  daemon,  dealing  with  backup
+traffic, and everything. The chroot can be accessed from the Linux box
+by  running  <i>ssh root@note x COMMAND</i> (e.g. as done  by  unison;
+rsync  dislikes the space and requires the chroot-rsync dummy file  in
+the  sshdroid/dropbear directory). If you need a real sshd within  the
+chroot,  just  run <i>sshd -p PORT &amp;</i> in the  chroot,  possibly
+stopping       <i>sshdroid</i>.      This      can      added       to
+<i>system/etc/init.d/S99zz_compact_jobs</i>  to  start at boot of  the
 Note.</p>
 
-<p>Accessing remote filesystems: Have a look at the example abin/SSHFS
-containing simple mount/umount commands to permit access to files on a
-remote Linux box. This requires the fuse sshfs package and even offers
-access  to anything mounted on the remote Linux box. SSHFS is intended
-to  also  deal with SMB, and NFS (if the kernel permits), but this  is
-not yet tested.</p>
+<p>Accessing   remote   filesystems:  Have  a  look  at  the   example
+<i>abin/SSHFS</i>  containing  simple mount/umount commands to  permit
+access  to  files  on remote computers. This requires the  fuse  sshfs
+package.  Sshfs  even offers access to anything mounted on the  remote
+side.  <i>SSHFS</i> is intended to also deal with SMB, and NFS (if the
+kernel permits), but this is untested.</p>
 
 <p>File serving: Use the usual culprits of ftp, apache and samba as on
 any  Linux  box. Don't forget to edit and rerun FW on if you  need  to
@@ -1325,47 +1368,38 @@ open ports in the firewall.</p>
 <h4>Notes</h4>
 
 <ul>
-<li>in  the  long  run, this  chroot  setup  is  still  not
+<li>in  the  long  run, an Android  chroot  setup  is  still  not
 comparable  to a native install, that can replace and update the Linux
 kernel  as  part of the normal package maintenance. We still  have  to
 rely  on  availability of stock kernels as part of the custom ROM,  as
-it's  unlikely that some of the device blobs will be availble with new
-kernels.  Furthermore,  vulnerabilities of the outside  Android  still
+it's  unlikely that the device blobs will be made available as part of the kernel or library sources.
+Furthermore,  vulnerabilities of the outside  Android environment cum kernel still
 apply  and  will  only get worse when the device is obsoleted  by  the
 maker  (at least Samsung doesn't do this before release to the market,
-like some other makers).
+unlike some other unmentionable manufacturers).
 <li>a newer architecture called <b>armhf</b> is being in the works at 
 DEBIAN and Ubuntu, which introduces support for more modern CPU features 
 and improves FPU support. However the suggested repositories for armhf failed
 already in stage one of debootstrap in early January. 
 This should prove interesting  in the medium term. When it's entered 'testing', 
 just  replace <i>armel</i> with <i>armhf</i> and recreate the chroot. 
-<li>swap would be a good idea to add with a suitable swappiness  setting
-to reserve swap as a last resort, as a notifier-by-pain to delay the 
- out-of-memory-killer (though I  didn't meet oom during any tests 
-including X11 and LibreOffice).  I'd advise to change swappiness to
-make the kernel prefer RAM to swap as long as possible: cheap flash may
-also have a questionable flash translation layer (if at all), and swap with
-randomly distributed write hotspots is the worst possible load to balance, 
-way worse than FAT (one hotspot at the beginning), ext4 with an ordinary 
-Linux install (with or without journal) or database files, with database
-transaction logs being the most harmless use of all).
 </ul>
 
-<p class=anno>(as of 20120214
+<p class=anno>(as of 20120214,
 <a href="http://wiki.debian.org/ArmHardFloatChroot">wiki.debian.org/ArmHardFloatChroot</a>
 suggests the standard repositories for non-source packages, using 'sid' and 'unreleased'. If FPU support
-is indeed the only change, after the final backup and before removing the contents of the chroot, it is
-tempting to just change the architecture in the apt/sources.list and check what happens. Maybe with first
+is indeed the only change, after the final backup and before removing the contents of the chroot to rebuild, it is
+tempting to just change the architecture in the apt/sources.list and see what happens. Maybe with first
 repeating the debootstrap steps, and then restoring the old /var and most of /etc. 
-Do check the release notes first, there might even be a supported armel to armhf upgrading path for installations :))
+Do check the release notes first, as I might not be the only one dreaming about an 
+armel to armhf migration path :))
  </p>
 
 <p><b>Summary:</b>  By  now we have a DEBIAN chroot and can access  it
 from   the   Android  shell  interactively  or  as  part  of  a   pipe
-(system/xbin/CHROOT.run  aka  x). You are also able to  access  remote
+(system/xbin/CHROOT.run  aka  x). We are able to  access  remote
 files  using  everything  but  NFS (see the  abin/SSHFS  example).  We
-extended the remote automation with limited email checking, monitoring
+also extended the remote automation with limited email checking, monitoring
 and folder synchronization.</p>
 
 <!-- ------------------------------------------------------------------------------------- -->
@@ -1379,35 +1413,36 @@ and folder synchronization.</p>
 
 <p>The  idea  of VNC is to split X11 into the server  component  (e.g.
 tightvncserver)  and  a  separate,  remote  display  component   (e.g.
-vncviewer),  which just exchanging compressed graphic data between the
+vncviewer),  with just exchanging compressed graphic data between the
 two  parts.  Comparing  local  VNC  to using  a  remote  X11  display,
 transmitting  graphic data is usually less efficient than other  types
-of  data, but eliminating remote call / round trips to the X11  server
-by  the client strips all remote call latency, which in itself already
-makes  vnc very interesting for non-LAN situations.</p>
+of  data, but eliminating remote call round trips to the X11  server
+removes all remote call latency, which in itself already
+makes  VNC very interesting for non-LAN and higher latency situations.</p>
 
-<p>For  the  chroot we ignore issues other than 2d display,  keyboard,
+<p>For  the  chroot  we ignore anything except 2d  display,  keyboard,
 mouse.  If you want audio, consider a network-capable audio setup like
-pulseaudio,  or have a look at sl4a, where your might send intents  to
+<i>pulseaudio</i>,  or have a look at <i>sl4a</i>, to send intents  to
 the  Android  framework. If device access isn't blocked by  something,
 you could also try accessing the device directly. I also ignore flash;
-if you need it w/o audio in the chroot, consider e.g. gnash. But adobe
-itself nowadays seems pretty ambivalent towards use of flash. The idea
-behind  RDP is similar, and some viewers support both protocols, but I
-didn't check for server components usable in a chroot.</p>
+if  you  need it w/o audio in the chroot, consider installing gnash  -
+but  even adobe itself nowadays seems pretty ambivalent towards use of
+flash. The idea behind RDP is similar to VNC, and some viewers support
+both  protocols, but I didn't check for server components usable in  a
+chroot.</p>
 
-<p>A selection of vnc viewer components</p>
+<p>A selection of VNC viewer components</p>
 <ul>
 <li><i>vncviewer</i> - Android app classic (there are multiple other viewers)
 <li><i>xvnc</i> - Android app, hardcoded to use its own vncserver
                   installed outside the chroot (useful to reduce the chroot size)
-<li>there is also tightvncviewer - the default vncviewer inside the chroot,
-    but I'd suggest use with only small remote vnc server displays, as
-    we'd need a local vncserver or a remote X11 display (if that actually
-    works)
+<li>there is also <i>tightvncviewer</i> - the default vncviewer inside the chroot,
+    but I'd suggest to use it with only small remote vnc server displays, as
+    we'd also need a local vncserver or a remote X11 display (if cascading
+    actually works, depending on how the vncviewer accesses the X11 display memory)
 </ul>
 
-<p>A selection of vnc server components</p>
+<p>A selection of VNC server components</p>
 <ul>
 <li><i>xvnc</i> - the vncserver component is accessible to localhost,
     so use <i>vncviewer localhost:0 -via root@note</i> or establish a 
@@ -1419,10 +1454,9 @@ didn't check for server components usable in a chroot.</p>
 
 <p  class=anno>(there are also some interesting ideas on VNC abuse for
 e.g.  remote  input devices, most of which seem to work fine at  least
-for  single head displays. E.g. Android as mouse-cum-touchpad or media
-remote.   There   is  also  in  opposite  direction  an   app   called
-<i>androidvnc</i>    that    exports   the   Android    display    to
-vncviewers.)</p>
+for  single head displays. Consider Android use as  mouse-cum-touchpad
+or media remote. There is also - in opposite direction - an app called
+<i>androidvnc</i> that exports the Android display to vncviewers.)</p>
 
 
 
@@ -1430,13 +1464,11 @@ vncviewers.)</p>
 
 <p>My current setup reliably "remove-battery"-crashes the Note as soon
 as  I use X. I think its a kernel issue, assuming that Google  somehow
-messed  up in crippling or deconfiguring shared memory. As workaround,
-I  can only offer to actually also enforce zero values for all  shared
-memory  settings. This hack is part of the ivnc / ivncapp functions in
-the  root bash setup included in the example files. Applications  that
-normally  use but don't rely on shared memory, will run a bit  slower.
-Applications   like  chromium-browser  will  fail  when   using   this
-trick.</p>
+messed up in crippling or deconfiguring shared memory. As workaround I
+can  only  offer to enforce zero shared memory values as shown  below.
+This  hack  is part of the ivnc / ivncapp functions in the  root  bash
+setup.  Applications that use shared memory only for speed-up will run
+a  bit slower. Applications like chromium-browser will fail.</p>
 
 <pre>
 # test if you crash or if you can get by without
@@ -1454,18 +1486,18 @@ done;
 cat  /proc/meminfo  nor strace indicated anything interesting. If  you
 run  into  a  real memory-issue, these are the values I  played  with:
 <i>sysctl   -w   vm.min_free_kbytes=80000</i>  or   <i>sync;sleep   2;
-/sbin/sysctl  vm.drop_caches=3</i>,  if you have swap,  also  consider
-swappiness  and as a last resort, you can play with  /proc/PID/oom_adj
-or  setting  up  limits  using  cgroups  (search  wrapcgroup  in   the
-script-archive).  Returning  to  my  memory suspicion,  I  have  about
-300-350M  free  before  X, which is enough for  a  vncserver,  xterms,
-firefox  3.5  and  LibreOffice with icewm, and still leaves  room  for
-buffers  and  caches.  In testing, I never had into  an  out-of-memory
-situation.</p>
+/sbin/sysctl  vm.drop_caches=3</i>.  If you have swap,  also  consider
+swappiness.  You can also modify /proc/PID/oom_adj or set up limits by
+using   cgroups  (search  <i>wrapcgroup</i>  in  my   script-archive).
+Returning to my memory suspicion, I have about 300-350M free before X,
+which  is enough for a vncserver, xterms, firefox 3.5 and  LibreOffice
+with  icewm,  and still leaves enough head room to run extra  commands
+and   for   buffers+caches.  In  testing,  I  never   encountered   an
+out-of-memory situation.</p>
 
 <p>Still,  being able to add swap space (the second reserved partition
-above;  or just a swap file) would be nice, but my current kernel does
-permit  swap. The fast internal flash would be tempting. But I'm a bit
+or  just a swap file) would be nice, but my current kernel does permit
+swap.  The  fast  internal  flash would be tempting.  But  I'm  a  bit
 sceptical  and  thus would only suggest to use the removable  external
 flash,  with a swappiness setting to make swap a real last resort  for
 the  kernel  just before invoking the out-of-memory-killer.  I  assume
@@ -1484,42 +1516,42 @@ flash FTL at all.</p>
 
 <h4>Testing X</h4>
 
-<p>For  starters, try running xterm on the Note and display the window
-on your Linux box: e.g. <i>DISPLAY=&lt;REMOTEDISPLAY&gt; xterm</i>. To
-work,  the  X-server must list to tcp and permit  connections  (Ubuntu
-doesn't  by  default). You may need to run xauth on the Linux box  and
-copy  the values of the current cookie to the chroot by running  xauth
-add  &lt;REMOTEDISPLAY&gt; MIT-MAGIC-COOKIE-1 &lt;COOKIE&gt;. For this
-quick  test  consider  to  temporarily turn off  the  firewall:  <i>FW
-off</i>  on  the Android and maybe add an exception on the  Linux  box
-(e.g.  man ufw on Ubuntu). Don't forget to reactivate both  host-based
-firewalls.</p>
+<p>For  starters, try running <i>xterm</i> on the Note and display the
+window   on  your  Linux  box:  e.g.  <i>DISPLAY=&lt;REMOTEDISPLAY&gt;
+xterm</i>.  To  work,  the  X-server must listen  to  tcp  and  permit
+connections  (Ubuntu's doesn't by default). You may need to run xauth on
+the  Linux box and copy the value of the current cookie to the chroot
+by   running   xauth  add   &lt;REMOTEDISPLAY&gt;   MIT-MAGIC-COOKIE-1
+&lt;COOKIE&gt;.  For this quick test consider to temporarily turn  off
+the  firewall: <i>FW off</i> on the Android and maybe add an exception
+on  the Linux box (e.g. man ufw on Ubuntu). Don't forget to reactivate
+both host-based firewalls when done.</p>
 
-<p>If  you've started a second sshd in the chroot (say port 1234), you
-can also run <i>ssh -p 1234 root@note -Y ...</i>, which should include
+<p>If  you've started a second sshd in the chroot (say port 0815), you
+can also run <i>ssh -p 0815 root@note -Y ...</i>, which should include
 the  xauth invocation (in contrast to -X) and shouldn't AFAIR  require
-the  X server to listen to tcp. Ssh tunneling also avoids the X issues
+the X server to listen to tcp. Ssh tunneling also avoids the FW issues
 from above.</p>
 
-<p>Now invoke vncserver inside the chroot by running the ivnc function
-as  provided in root/.bash_aliases.pj in the examples. Define some vnc
-password.  Run  <i>echo $DISPLAY</i>. Switch to the Linux Box and  run
-<i>vncviewer &lt;EXACT_VALUE_FROM_ECHO&gt; -via root@note</i>. If you
-don't have tightvncviewer, you need to use ssh with port forwarding.
-Assuming that the echo returned localhost:4, you'd say
-<i>ssh -L 5909:localhost:5904 -N -f root@note; vncviewer :9</i>.
-We do not collide with the firewall, as we are using ssh.</p>
+<p>Now  invoke vncserver inside the chroot by running the  <i>ivnc</i>
+function  as provided in <i>root/.bash_aliases.pj</i> in the examples.
+Define  some  VNC  password. Run <i>echo $DISPLAY</i>. Switch  to  the
+Linux  Box  and  run <i>vncviewer  &lt;DISPLAY_VALUE_FROM_ECHO&gt;  -via
+root@note</i>.  If you don't have the package <i>tightvncviewer</i>, you need to use  ssh
+with  port  forwarding. Assuming that the echo  returned  localhost:4,
+you'd  say  <i>ssh -L 5909:localhost:5904 -N -f  root@note;  vncviewer
+:9</i>. Both examples use ssh for their connection.</p>
 
 <p>As final test, run your vncviewer app on the Android and connect to
-the  vncserver  in  the  chroot. Using Xvnc is  identical,  but  skips
+the vncserver in the chroot. Using <i>xvnc</i> is identical, but skips
 configuring  the  connection in the app and explicitely  starting  the
-vncserver in the chroot. Use the ivncapp alias after starting X within
-Xvnc.</p>
+vncserver  in the chroot. For <i>xnvc</i> use the ivncapp function  in
+the chroot after starting X within <i>xvnc</i>.</p>
 
-<p>You  can  use  the file ~/.vnc/xstartup to run  commands  like  the
-window  manager  automatically on starting the vncserver. In  case  of
-troubles, chmod 755 ~/.vnc/xstartup might be required. A small example
-is the following:</p>
+<p>You  can use the file <i>~/.vnc/xstartup</i> to add commands to X startup,
+such  as  starting  the window manager automatically on  starting  the
+vncserver.  In  case of troubles, a <i>chmod  755  ~/.vnc/xstartup</i>
+might be required. A small example xstartup file:</p>
 
 <pre>
 #!/bin/sh
@@ -1529,18 +1561,14 @@ sleep 2; xsetroot -solid black; xterm &amp;
 /etc/X11/Xsession
 </pre>
 
-<p>A  final problem concerns pasting between vncviewer and X11 apps on
-the  Linux  box when running Ubuntu 10.4, Gnome and urxvt. The  normal
-suggestion  in  case  of  problems  is  to  run  <i>autocutsel</i>  to
-synchronize  clipboards,  cutbuffers  and selections. My  terminal  of
-choice  urxvt  however  is even more oldfashioned and  selective  than
-xterm in accepting input for paste. Now something from Gnome - which I
-couldn't  track  down  - does partially mangle the  primary  selection
-within  the  first  .5s after autocutsel does its work,  resulting  in
-urxvt  to be unable to paste. Work-around: grep the autocutsel source,
-and  add  a  system()  after copying to the buffer,  invoking  only  a
-'useless use of cat', a sleepy one at that: <i>sleep 0.6;xsel -op|xsel
--ip</i>.</p>
+<p>In  case  of  problems pasting between  host-environment  and  VNC,
+consider   running  <i>autocutsel</i>  to  synchronize  cutbuffer   0,
+selections  and clipboard. My case of Ubuntu 10.4, Gnome and urxvt was
+made  more difficult by something from Gnome partially messing up  the
+selection within half a second, and urxvt being more choosy than xterm
+doesn't   help.  Workaround  is  modifying  autocutsel  by  adding   a
+system(<i>sleep  0.6;xsel  -op|xsel  -ip</i>)  after  copying  to  the
+buffer. If you have an idea to find the culprit, drop me a line.</p>
 
 
 
@@ -1548,40 +1576,40 @@ and  add  a  system()  after copying to the buffer,  invoking  only  a
 
 <p>Successfully tested applications</p>
 <ul>
-<li>twm, icewm, openbox, lxsession (window managers and graphical environments; 
-   I selected a naked icewm as the most usable of the bunch)
-<li>firefox aka iceweasel (browser; from stable, version 3.5)
-<li>midori, uzbl, (browsers; also kazehakase, galeon, epiphany-browser)
-<li>konqueror, rekonq
-<li>gvim, kwrite, LibreOffice aka OpenOffice
-<li>xterm
+<li><i>twm, icewm, openbox, lxsession</i> (window managers and graphical environments; 
+   my selection is using just <i>icewm</i>)
+<li><i>firefox</i> aka <i>iceweasel</i> (browser; from stable, version 3.5)
+<li><i>midori, uzbl</i> (browsers; also <i>kazehakase, galeon, epiphany-browser</i>)
+<li><i>konqueror, rekonq</i>
+<li><i>kwrite, LibreOffice</i> aka <i>OpenOffice</i>
+<li><i>xterm</i>
 </ul>
 
 <p>Fails: These applications either require shared memory or some daemons
-which I did not start or cannot easily start (hald or udevd)</p>
+which I did not start or cannot easily start (hald/udevd/...)</p>
 <ul>
-<li>gnome-session, start-kde
-<li>firefox aka iceweasel (from testing/sid; but this might also be a porting issue)
+<li><i>gnome-session, start-kde</i>
+<li><i>firefox</i> aka <i>iceweasel</i> (from testing/sid; but this may also be a porting issue)
 </ul>
 
-<p>The  described setup with a small window manager like icewm permits
-normal  LibreOffice  text  editing,  programming  or  some  light  web
+<p>The  described setup with a small window manager like <i>icewm</i> permits
+normal  <i>LibreOffice</i>  text  editing,  programming  or  some  light  web
 browsing,   even   without  swap:  I've  usually  beyond  350MB   free
 (free+buffers+cache)  before starting X, which is enough for X11, some
-xterms, firefox and LibreOffice.</p>
+<i>xterm</i>s, <i>firefox</i> and <i>LibreOffice</i>.</p>
 
 <p>The speed with the current kernel/gingerbread is sufficient even if
-only  ever using a single CPU. Speed however suffers and I  experience
-short  hangs  during  heavy  writes  to  flash.  Especially  a   fully
-configured  vim  with syntax highlighting will hang a bit,  while  the
-simple busybox vi outside the chroot is unaffected. Even running huge
-resolutions like <i>vncserver -geometry 1920x1600</i> did work without
-issues, albeit slowly due the generated network traffic over ssh.</p>
+I  only used a single CPU during tests. During heavy writes to  flash,
+speed  will  suffer  and  I saw short hangs,  especially  in  a  fully
+configured  vim with syntax highlighting, while the simple busybox  vi
+outside  the  chroot  is  unaffected. Running  huge  resolutions  like
+<i>vncserver  -geometry  1920x1600</i>  is  slow  but  works   without
+issue.</p>
 
 <p>When encountering the firefox problem, I switched the chroot from a
-pure  testing aka wheezy setup to a mixed setup with apt pinning,  see
+pure  testing aka wheezy setup to a mixed setup using apt pinning,  see
 etc/apt/sources.list   and   etc/apt/preferences.d/personal   in   the
-examples. To install a package in the mixed setup:</p>
+examples. To install a package from a non-default repository in the mixed setup:</p>
  
 <pre>
 apt-get install &lt;package&gt;/unstable    # prefer testing for resolution  
@@ -1597,8 +1625,8 @@ apt-get -t unstable install &lt;package&gt; # use unstable for resolution
 <p><b>Summary:</b> This concludes the series and by now you can use an
 arbitrary  PC's  vncviewer or putty/ssh setup to connect to your  NOTE
 and work locally on your Note in addition to using the Note to copy or
-serve  files  to the PC. The 1GB memory size of the Note permits  also
-use   of  X11  apps  including  Firefox   or   LibreOffice/OpenOffice.
+serve  files. The 1GB memory size of the Note permits also use of  X11
+apps including Firefox and LibreOffice/OpenOffice.
 
 <p>Excluding  only  the size of the display, the Note already has  the
 capabilities  of  newer tablets as well as those of laptops,  with  at
