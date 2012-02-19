@@ -929,7 +929,10 @@ echo "echo 'All rc.d operations denied by policy; >&amp;2; exit 101" &gt; /x/usr
 mv /x/etc/apt/sources.list /x/etc/apt/sources.list.ORIG # debootstrap version is invalid
 echo "deb     http://ftp.de.debian.org/debian testing main contrib non-free" &gt;&gt; /x/etc/apt/sources.list
 echo "deb-src http://ftp.de.debian.org/debian testing main contrib non-free" &gt;&gt; /x/etc/apt/sources.list
+# change the hostname away from name of the Linux box
+echo note &gt; /etc/hostname
 
+# another few minues
 apt-get update
 apt-get install debian-ports-archive-keyring
 apt-get update
@@ -944,14 +947,18 @@ cd /
 find . -xdev | sort &gt; FIND.chroot
 cat FIND.chroot | cpio -o -H crc &gt; /i/chroot-initial.cpio
 
-# you may wish to install software for basic tasks like desktop or file serving
+# you may wish to install software for basic tasks like desktop or file serving; 
+# requires more than just a few minutes, depending on your selection
 tasksel
 
 dpkg-reconfigure tzdata
 
-
 # all package lines should start with ii (properly installed)
 dpkg -l | grep -v '^ii'
+
+# has aptitude any issues or problems (press 'g')
+aptitude
+
 aptitude clean
 </pre>
 
@@ -978,26 +985,70 @@ libmono-addins0.2-cil libmono-i18n-west4.0-cil libmono-i18n4.0-cil libmono-posix
 aptitude purge mono-runtime libmono-system4.0-cil</i>
 <li>on removing apps, run deborphan and consider uninstalling the listed files,
     then start aptitude and press 'g' and look if aptitude suggests additional
-    removals from the previously automatically installed packages. Remove what you
-    still use and continue.
+    removals from the previously automatically installed packages. Keep what you
+    still use (e.g. press i/m) and continue to remove the rest.
 <li>to add checksums of installed files (though not verifying permissions), install debsums
     and run debsums_init.
 </ul>
 
-<p>here or below:</p>
 
-<p>ssh</p>
 
-<p>mutt</p>
+<h4>Some customization</H4>
+
+<p> root profiles</p>
+
+<p>ssh dial back</p>
+cd ~/.ssh
+ln -s /etc/ssh/ssh_host_rsa_key id_rsa
+ln -s /etc/ssh/ssh_host_rsa_key.pub id_rsa.pub
+
+(placing symlink x to CHROOT.run in /data/data/berserker.android.apps.sshdroid/dropbear)
+
+
+
+
+append the pub key in sshdroid's home .ssh/authorized_keys
+
+
+<p>a user account - adduser and 3003 (CONFIG_ANDROID_PARANOID_NETWORK)p>
+
+ stay out of android user space!
+edit /etc/login.def to 20000 instead of 1000 for UID_MIN, GID_MIN
+edit /etc/adduser.conf similarly
+invoke adduser <YOUR NAME>
+
+append to /etc/group (and fix gshadow)
+android1:x:1000
+android2:x:1015
+android_network:x:3003:YOUR_LOGNAME (and possibly all network-using daemon accounts as well)
+
+
+<p>ssh-agent > ~/.ssh/env.note</p>
+
+<p>mutt and the outside world</p>
 
 <p>umlauts and locale</p>
+# umlauts: within TERMIDE app: I don't care about them
+# ssh and dropbear: OK, however deleting them requires deleting the char + once more a mangled one
+# (probably utf8 remnant mistreated as latin1 (on deletion))
+# after switching via TERMIDE script: not in bash; otherwise same effect as above
+# --> we don't have utf8 locale in android at all
+# ssh to chroot: # same as above. with LANG=C.UTF-8 LC_COLLATE=C the delete snafu stops.
 
-<p>adduser and 3003<p>
+
 
 stupid ram tricks - page cache, sysctl -w vm.min_free_kbytes=131072
 /sbin/sysctl vm.drop_caches=3
 
 <p>lxc: unsupported (maybe just too old; but this also requires Android side bridging, which may be unsupported)</p>
+
+
+apt-pinning mixed mode as seen with firefox - see etc/apt/sources-list from examples.
+apt-get install <package>/unstable    
+apt-get -t unstable install <package> # prefer unstable for resolution
+
+
+
 
 
 
@@ -1008,6 +1059,9 @@ stupid ram tricks - page cache, sysctl -w vm.min_free_kbytes=131072
 <p>Terminal  multiplexing:  screen  is  broken and  hangs  on  detach,
 however tmux is working properly. See /root/.tmux.conf for setting
 the command key to CTRL-a like with screen.</p>
+
+<p>Virtualization,  e.g. lxc: mostly unsupported (bridging might  also
+be unsupported, depending on the kernel).</p>
 
 <p>Basic  cron  services  are  problematic, as  sleep  is  unreliable.
 abin/CRON* offers an example setup to to cope with this situation. The
@@ -1159,10 +1213,6 @@ fails: firefox>3.5, chromium-browser (shared-memory)
 
 pasting urxvt/ ubuntu issue to require adding xsel -op|xsel -ip about 0.6 seconds after the copying to buffer
 in autocutsel???
-
-apt-pinning mixed mode as seen with firefox - see etc/apt/sources-list from examples.
-apt-get install <package>/unstable    
-apt-get -t unstable install <package> # prefer unstable for resolution
 
 
 notes:
