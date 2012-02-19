@@ -953,10 +953,15 @@ apt-get update
 apt-get install debian-ports-archive-keyring
 apt-get update
 apt-get install build-essential
-apt-get tightvncserver xtightvncviewer icewm xterm
-apt-get mc tmux vim vim-scripts m4 rsync sshfs elinks mutt
-apt-get lsb-languages lsb-languages-armel lsb-languages-noarch lsb-core
 
+apt-get mc tmux vim vim-scripts m4 rsync sshfs elinks mutt
+
+# the bare X11 client-side mininum, with a lightweigth window manager
+apt-get icewm xterm
+
+# if you have enough space I also suggest these
+apt-get tightvncserver xtightvncviewer 
+apt-get lsb-languages lsb-languages-armel lsb-languages-noarch lsb-core
 
 # a first backup of the initial chroot
 cd /
@@ -1155,6 +1160,15 @@ that  I use to switch profiles and sender account according to  folder
 contents,  which you can ignore as long as you use only a single  mail
 account or define macros to switch accounts.</p>
 
+<p>Encryption:  For now I only use <i>apg</i> on the Android side  and
+gpg  in the chroot for a couple of files. This is more than enough  to
+use  vim  to  decrypt a file with some web forum  passwords.  I  would
+sugggest  to  only  edit  this  file  on  your  Linux  box  to   avoid
+synchronization  issues,  as  patch or unison aren't able  to  analyze
+changes within the file.</p>
+
+<p><b>ERRATA: Demonstrate an encrypted loop mount?</b></p>
+
 <p>For   backup   and  synchronization,  revisit  the   example   file
 xfer_backup.wrapper.anuurn.local and the nightly backup job invoked by
 remote  root cron. Besides running the list-based rsync, it also  runs
@@ -1241,9 +1255,163 @@ and folder synchronization.</p>
 <a name=vnc></a>
 <H3>Desktop and X11</H3>
 
-<-- -------------------------^^^ clean \/\/\/ borked ---------------------------------------------------------------- -->
+
+
+<H4>VNC Viewers</H4>
+
+<p>The  idea  of VNC is to split X11 into the server  component  (e.g.
+tightvncserver)  and  a  separate,  remote  display  component   (e.g.
+vncviewer),  which just exchanging compressed graphic data between the
+two  parts.  Comparing  local  VNC  to using  a  remote  X11  display,
+transmitting  graphic data is usually less efficient than other  types
+of  data, but eliminating remote call / round trips to the X11  server
+by  the client strips all remote call latency, which in itself already
+makes  vnc very interesting for non-LAN situations.</p>
+
+<p>For  the  chroot we ignore issues other than 2d display,  keyboard,
+mouse.  If you want audio, consider a network-capable audio setup like
+pulseaudio,  or have a look at sl4a, where your might send intents  to
+the  Android  framework. If device access isn't blocked by  something,
+you could also try accessing the device directly. I also ignore flash;
+if you need it w/o audio in the chroot, consider e.g. gnash. But adobe
+itself nowadays seems pretty ambivalent towards use of flash. The idea
+behind  RDP is similar, and some viewers support both protocols, but I
+didn't check for server components usable in a chroot.</p>
+
+<p>A selection of vnc viewer components</p>
+<ul>
+<li><i>vncviewer</i> - android app classic (there are multiple other viewers)
+<li><i>xvnc</i> - android app, hardcoded to use its own vncserver
+                  installed outside the chroot (useful to reduce the chroot size)
+<li>there is also tightvncviewer - the default vncviewer inside the chroot,
+    but I'd suggest use with only small remote vnc server displays, as
+    we'd need a local vncserver or a remote X11 display (if that actually
+    works)
+</ul>
+
+<p>A selection of vnc server components</p>
+<ul>
+<li><i>xvnc</i> - the vncserver component is accessible to localhost,
+    so use <i>vncviewer localhost:0 -via root@note</i> or establish a 
+    port forwarding ssh tunnel and then connect using localhost
+    <i>ssh -L 5909:localhost:5900 -N -f root@note; vncviewer :9</i>.
+    For more information, see <a href="http://theqvd.com/trac/wiki/AndroidX11Server">theqvd.com/trac/wiki/AndroidX11Server</a> (the vnc password cannot be changed yet in the Android viewer).
+<li><i>tightvncserver</i> - the default vncserver inside the chroot.
+</ul>
+
+<p  class=anno>(there are also some interesting ideas on VNC abuse for
+e.g.  remote  input devices, most of which seem to work fine at  least
+for  single head displays. E.g. Android as mouse-cum-touchpad or media
+remote.   There   is  also  in  opposite  direction  an   app   called
+<i>androidvnc</i>    that    exports   the   Android    display    to
+vncviewers.)</p>
+
+
+
+<h4>Memories</h4>
+
+<p>My  current  setup reliably crashes the Note as soon as I use X  at
+the  "remove-battery"-level. I think its a kernel issue, assuming that
+Google  somehow messed up in crippling or deconfiguring shared memory.
+As  workaround, I can only offer to actually also enforce zero  values
+for  all  shared  memory  settings. This hack is part of  the  ivnc  /
+ivncapp  functions  in  the root bash setup included  in  the  example
+files.</p>
 
 <pre>
+for i in /proc/sys/kernel/shm*;
+do
+   echo 0 | sudo tee -a $i > /dev/null;
+done;
+</pre>
+
+<p>Initially,  I  suspected free memory issues, but neither watch  -n1
+cat  /proc/meminfo  nor strace indicated anything interesting. If  you
+run  into  a  real memory-issue, these are the values I  played  with:
+<i>sysctl   -w   vm.min_free_kbytes=80000</i>  or   <i>sync;sleep   2;
+/sbin/sysctl  vm.drop_caches=3</i>,  if you have swap,  also  consider
+swappiness  and as a last resort, you can play with  /proc/PID/oom_adj
+or  setting  up  limits  using  cgroups  (search  wrapcgroup  in   the
+script-archive).  Returning  to  my  memory suspicion,  I  have  about
+300-350M  free  before  X, which is enough for  a  vncserver,  xterms,
+firefox  3.5  and  LibreOffice with icewm, and still leaves  room  for
+buffers  and  caches.  In testing, I never had into  an  out-of-memory
+situation.</p>
+
+<p>Still,  being able to add swap space (the second reserved partition
+above;  or just a swap file) would be nice, but my current kernel does
+permit  swap. The fast internal flash would be tempting. But I'm a bit
+sceptical  and  thus would only suggest to use the removable  external
+flash,  with a swappiness setting to make swap a real last resort  for
+the  kernel  just before invoking the out-of-memory-killer.  I  assume
+that  swap  write  access patterns will have random,  but  very  heavy
+hotspots,  which  would be the worst possible pattern for testing  the
+implementation  quality of a only possibly existing flash  translation
+layer on sdcards. Given my experiences with bad flash and the frequent
+firmware  updates  as  observed for better SSD  devices  from  quality
+vendors  in the last few years (indicating firmware fixes to also  the
+FTL), I'll for now stick to my paranoia. Don't argue with database use
+of  flash - as e.g. transaction logs are the most friendly  sequential
+access  pattern  there  is, that is, they do not stress nor  need  the
+flash FTL at all.</p>
+
+
+
+<h4>Testing X</h4>
+
+<p>For  starters, try running xterm on the Note and display the window
+on your Linux box: e.g. <i>DISPLAY=&lt;REMOTEDISPLAY&gt; xterm</i>. To
+work,  the  X-server must list to tcp and permit  connections  (Ubuntu
+doesn't  by  default). You may need to run xauth on the Linux box  and
+copy  the values of the current cookie to the chroot by running  xauth
+add  &lt;REMOTEDISPLAY&gt; MIT-MAGIC-COOKIE-1 &lt;COOKIE&gt;. For this
+quick  test  consider  to  temporarily turn off  the  firewall:  <i>FW
+off</i>  on  the Android and maybe add an exception on the  Linux  box
+(e.g.  man ufw on Ubuntu). Don't forget to reactivate both  host-based
+firewalls.</p>
+
+<p>If  you've started a second sshd in the chroot (say port 1234), you
+can also run <i>ssh -p 1234 root@note -Y ...</i>, which should include
+the  xauth invocation (in contrast to -X) and shouldn't AFAIR  require
+the  X server to listen to tcp. Ssh tunneling also avoids the X issues
+from above.</p>
+
+<p>Now invoke vncserver inside the chroot by running the ivnc function
+as  provided in root/.bash_aliases.pj in the examples. Define some vnc
+password.  Run  <i>echo $DISPLAY</i>. Switch to the Linux Box and  run
+<i>vncviewer &lt;EXACT_VALUE_FROM_ECHO&gt; -via root@note</i>. If you
+don't have tightvncviewer, you need to use ssh with port forwarding.
+Assuming that the echo returned localhost:4, you'd say
+<i>ssh -L 5909:localhost:5904 -N -f root@note; vncviewer :9</i>.
+We do not collide with the firewall, as we are using ssh.</p>
+
+<p>As final test, run your vncviewer app on the Android and connect to
+the  vncserver  in  the  chroot. Using Xvnc is  identical,  but  skips
+configuring  the  connection in the app and explicitely  starting  the
+vncserver in the chroot. Use the ivncapp alias after starting X within
+Xvnc.</p>
+
+<p>You  can  use  the file ~/.vnc/xstartup to run  commands  like  the
+window  manager  automatically on starting the vncserver. In  case  of
+troubles, chmod 755 ~/.vnc/xstartup might be required. A small example
+is the following:</p>
+
+<pre>
+#!/bin/sh
+xrdb $HOME/.Xresources
+icewm &amp;
+sleep 2; xsetroot -solid black; xterm &amp;
+/etc/X11/Xsession
+</pre>
+
+
+
+<h4>DEBIAN X11 Applications</h4>
+
+
+
+
+
 
 
 The  final  step is running a local X11 Desktop on the Note,  using
@@ -1257,25 +1425,6 @@ based  browsers  work), even without swap: I've usually  beyond  350MB
 free  (free+buffers+cache) before starting X, which is enough for X11,
 some xterms, firefox and LibreOffice.
 
-Q: consider some encrypted loop mount ???
-
-My  suspicions  on being very careful wrt using swap: SSD should  have
-flash  translation layers (if cheaper flash actually has that at all):
-A FAT fielsystem is simle (only the first few blocks are rewritten all
-the  time). Database transaction logs are even simpler (all blocks get
-rewritten  in sequence, so "wear and tear" is balanced) - both  permit
-trivial  flash translation layers, or actually coping without any. Now
-swap  and filesystem journals are differing: rist select a semi-random
-set of blocks, and then rewrite them all the time.
-
-Suggestion:  enable  swap  with  a very  stringent  swappiness  value;
-despite  speed and quality differences, place swap (if at all) on  the
-external sdcard, and only activate it when required.
-
-
-
-the frequent firmware updates of quality vendors for all early ssd shows the severity of the issues wrt Flash.
-
 wm and gnome/kde/...
 browsers incl firefox  (only 3.5)
 libreoffice
@@ -1286,6 +1435,8 @@ pasting urxvt/ ubuntu issue to require adding xsel -op|xsel -ip about 0.6 second
 in autocutsel???
 
 
+
+
 notes:
 
 apt-pinning mixed mode as seen with firefox - see etc/apt/sources-list from examples.
@@ -1294,13 +1445,8 @@ apt-get -t unstable install <package> # prefer unstable for resolution
 
 
 
-<li>if you want to increase the free ram reserved, consider e.g. 
-<i>sysctl -w vm.min_free_kbytes=32768</i> or consider dropping most
-cached pages <i>sync;sleep 2; /sbin/sysctl vm.drop_caches=3</i>.
-Not necessary...
 
 
-</pre>
 
 <p><b>Summary:</b> This concludes the series and by now you can use an
 arbitrary  PC's  vncviewer or putty/ssh setup to connect to your  NOTE
