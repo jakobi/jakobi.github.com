@@ -46,7 +46,7 @@ below (android-setup-example-files.tgz).</p>
 <p>In  it  you  find the scripts for the Android  shell,  a
 collection  of static armel binaries, the tree structure of the chroot
 on  the  Galaxy note, as well as scripts and configuration files  used
-for monitoring, backup, etc from a remote linux server via cron.</p>
+for monitoring, backup, etc from a remote Linux server via cron.</p>
 
 <p>Current  versions of the more interesting scripts will be placed in
 above   directory   (if   Android-specific)  or   elsewhere   in   the
@@ -55,7 +55,7 @@ script-archive (parts of my bash/ksh setup or generic Unix stuff).</p>
 
 
 <hr>
-<a href="01_setup.html"><H2>01 - Setting  up  the Samsung Galaxy Note as a Unix  Box</H2></a>
+<h2>01 - Setting  up  the Samsung Galaxy Note as a Unix  Box</H2>
 
 <p  class=anno><i>(or  at  least as much as we can get away  with,  given
 Google's  Linux kernel  patches and dumbed-down kernel configuration)</i></p>
@@ -71,7 +71,7 @@ Google's  Linux kernel  patches and dumbed-down kernel configuration)</i></p>
 
 <p>
 State described: Android 2.3.6 (gingerbread)<BR>
-Last change: 20120216<BR>
+Last change: 20120219<BR>
 License: CC-BY-SA.
 </p>
 
@@ -83,11 +83,6 @@ errata at the end of each part.</p>
 
 
 <hr>
-<p>Still polishing notes - version 1 to be online before 20120220</p>
-
-
-
-<hr>
 <a name=firstlook></a>
 <H3>A first look at the Note / Web-Resources / Rooting</H3>
 
@@ -95,7 +90,7 @@ errata at the end of each part.</p>
 <B>1-GB-RAM   DUAL-CORE  PC</B>  (henceforth  called   the   armel
 architecture  Android device <b>Samsung Galaxy Note</b> GT-N7000).
 
-<p>This hardware is more than enough for a moderate desktop pc that is
+<p>This hardware is more than enough for a moderate desktop PC that is
 not  used  for heavy gaming, virtualization or video editing. In  this
 article,   I'm   not  interested  in  audio/video   input/output   nor
 phone/s-pen/sensor/camera use.</p>
@@ -114,23 +109,24 @@ phone/s-pen/sensor/camera use.</p>
 <li>the Note to the PC (adb, access to 
     the Note's FAT user filesystems) or
 <li>some external USB hardware
-    to the Note (Mouse/Keyboard/Memory stick, etc, as long an in-kernel
+    to the Note (mouse/keyboard/memory stick, etc, as long as an in-kernel
     driver is available)
-<li>the HDMI connection cable (reuses the physical OTG port)
+<li>the HDMI connection cable (reusing the physical OTG port)
 </ul>
 <li>acting as either a WLAN-client or a WLAN Access Point
 <li>networking over USB
 <li>the S-pen - a real wacom-style stylus offering pressure-sensitivity
-    and high resolution (not one of those useless iphone-style capacitive 
-    finger-tip-replacements; better quality tablet-pc pens work
+    and high resolution (not one of the iphone-style capacitive 
+    finger-tip-replacements; better quality tablet-PC pens do work
     on the Note offering both eraser and stylus)
 <li>...
 </ul>
 
 
-<p>Flash  considerations:  Choose a <i>quality</i> sdhc microsd
-flash, 16  or 32GB. Read speeds for the internal flash are 50+ MB/s and 18MB/s
-for  Sandisk.</p>
+<p>Flash  considerations: Choose a <i>quality</i> sdhc microsd  flash,
+with  a size of 16 or 32GB. Read speeds for the internal flash are 50+
+MB/s  and  18MB/s  for the external (as measured with  hdparm  for  my
+Sandisk class 4).</p>
 
 <p  class=anno>After bad experiences with both Class 10 Transcend  and
 Lexar,  I've  now settled on a reliable Sandisk class 4  16GB  microsd
@@ -140,7 +136,7 @@ find the chroot remounted read-only, as this means to shutdown/restart
 the chroot and running fsck (no loss of data though). When switching I
 had  a  look at the external sdcard's FAT filesystem and  my  titanium
 backup files:  Massive  data corruption. Flash problems may well  have  been
-worsened  by  whatever timeout changes&amp;co Google patched  into  the
+worsened  by  whatever timeout changes Google patched  into  the
 kernel.</p>
 
 
@@ -150,7 +146,7 @@ kernel.</p>
 <li>enable automatic battery savings  in Settings.
 <li>turn off WLAN and GPS - the location by cell towers is still
 pretty exact. 
-<li>if necessary, you can also use titanium backup to freeze
+<li>if necessary, you can also use <i>titanium backup</i> to freeze
 some of the more annoying and power hungry apps in your firmware (kies, socialhub).
 </ul>
 
@@ -158,12 +154,12 @@ some of the more annoying and power hungry apps in your firmware (kies, socialhu
 <ul>
 <li><i>adb</i> and using symlinks in Android-side paths - silent failure.
 <li>bad flash (in all possible meanings)
-<li><i>kies</i> (connectivity suite / flashing windows software provided by Samsung)
+<li><i>kies</i> (connectivity suite / flashing software provided by Samsung for Windows)
 <li>use of app2sd: do move all apps to the phone (/data) - the core of
     the Android framework has <B>MAJOR PROBLEMS</B> with apps on sdcards,
     upto and including hanging in a boot-loop (recover by full wipe or
     by <i>adb shell</i> from the PC and removing any packages on the sdcards;
-    access by ssh with sshdroid is not possible).
+    access by ssh with <i>sshdroid</i> is not possible).
 </ul>
 
 
@@ -171,7 +167,7 @@ some of the more annoying and power hungry apps in your firmware (kies, socialhu
 <h4>The Whys of Rooting</H4>
 
 Besides  getting faster access to upstream security and bug fixes than
-by  waiting for something to trickle down rom Google to Hardware Maker
+by  waiting for something to trickle down from Google to Hardware Maker
 to Provider to OTA distribution, rooting enables more options for
 
 <ul>
@@ -180,15 +176,14 @@ to Provider to OTA distribution, rooting enables more options for
 <li>privacy (<i>lbe privacy guard</i>, <i>aspotcat</i>, ...; iptables-based "personal" outbound firewalls)
 <li>routing (improved tethering and intelligent "routing" at ip route/iptables level)
 <li>security (<i>lookout</i>, <i>avast</i>; the ability to create a real iptables-based inbound packet-filter/firewall)
-<li>access to non-Android programs, for the Android shell or for a chroot
-    maybe containing a full DEBIAN or Ubuntu.
+<li>access to non-Android programs, for the Android shell or for a chroot containing a real Linux install
 </ul>
 
 Depending  on how you root the device, the flash counter may  increase
-(though that <a href="http://forum.xda-developers.com/showthread.php?t=1354888">301K
-resistor  field testing jig</a> may help). But in case of mailing  in
-the  device for service, you need to reflash a stock firmware anyway. In  summary:
-so what.
+(though                             that                            <a href="http://forum.xda-developers.com/showthread.php?t=1354888">301K
+resistor  field  testing jig</a> may help). But in case of mailing  in
+the  device for service, you need to reflash a stock firmware  anyway.
+Thus for me, the conclusion was: <i>so what</i>.
 
 
 
@@ -197,32 +192,36 @@ so what.
 
 <p>ROMs  are very device specific, so Android ecosystem and  community
 are  <i>extremely fragmented</i>: <b>Good community support and custom
-roms  are IMHO a pre-requirement when buying Android devices</b>. Some
-custom  roms  reuse  stock  kernels, some  use  custom  kernel  builds
-(usually   based   on  Android  Open  Source  Project/AOSP;   e.g.
+ROMs  are IMHO a pre-requirement when buying Android devices</b>. Some
+custom  ROMs  reuse  stock  kernels, some  use  custom  kernel  builds
+(usually   based   on the Android  Open  Source  Project/AOSP;   e.g.
 cyanogenmod).</p>
 
 <p   class=anno>Bad  makers  or  lack  of  community  lead  to   early
 obsolescence  of the device and wasted money (consider the  disastrous
 Motorola  Milestone).  Depending on the number of non-standard  chips,
 various firmware-blobs might be required to get a fully working kernel
-/  firmware. With some makers not even supporting devices, the initial
-release  kernel might well be the only Linux kernel ever working on  a
-device  (again the Milestone example). This will also worsen community
-support  and  shorten  availability  of community  firmware  for  this
-maker's devices (which has to reuse the old buggy kernel). <b>Some</b>
-of  this  is visible for the Note as well: the unofficial  CM9  builds
-still lack blobs for camera and accelerated display.</p>
+/  firmware. With some makers not even supporting devices at start  of
+sale,  the initial release kernel might well be the only Linux  kernel
+ever working on a device (again the Milestone example). This will also
+worsen  community  support  and  shorten  availability  of   community
+firmware  for this maker's devices (as any ROM would have to reuse the
+old, unmaintained and probably also buggy kernel). <b>Some</b> of this
+is  already  visible for the Note as well: the unofficial  CM9  builds
+currently still lack blobs for camera and accelerated display.</p>
 
 <ul>
 <li><a href="http://forum.xda-developers.com/forumdisplay.php?f=1349">XDA Note forum</a>
-<li><a href="http://sammobile.com" <a>Sammobile</a> (aka samfirmware.com aka samsung-firmwares.com; also contains stock images for reflashing)
-<li><a href="http://forum.xda-developers.com/showthread.php?t=1424997">XDA: stock rom list and rom overview</a>
-<li><a href="http://cyanogenmod.com">Cyanogenmod</a> and <a href="http://teamhacksung.org/wiki/index.php/Main_Page">teamhacksung</a> (only preliminary unofficial CM7 and CM9 builds for the Note, still lacking some blobs; <a href="http://forum.xda-developers.com/showthread.php?t=1423795&page=52">XDA: cm9</a>)
+<li><a href="http://sammobile.com">Sammobile</a> (aka samfirmware.com aka samsung-firmwares.com; also contains stock images for reflashing)
+<li><a href="http://forum.xda-developers.com/showthread.php?t=1424997">XDA: stock ROM list and ROM overview</a>
+<li><a href="http://cyanogenmod.com">Cyanogenmod</a> and 
+    <a href="http://teamhacksung.org/wiki/index.php/Main_Page">teamhacksung</a>
+    (only preliminary unofficial CM7 and CM9 builds for the Note, still lacking some blobs; 
+     <a href="http://forum.xda-developers.com/showthread.php?t=1423795&page=52">XDA: cm9</a>)
 <li>ROM: <a href="http://forum.xda-developers.com/showthread.php?t=1331784">XDA: Chainfire's CFROOT with CWM (clockworkmod)</a>
 <li>ROM: <a href="http://forum.xda-developers.com/showthread.php?t=1352945">Sheeprom</a> by Frank_M aka Riversource
-<li>ROM: <a href="http://forum.xda-developers.com/showthread.php?t=1424401">Chris_X roms</a> by Chris_X
-<li>Other mentions were villain rom and <a href="http://forum.xda-developers.com/showthread.php?t=1380284">XDA: rocket v13</a>.
+<li>ROM: <a href="http://forum.xda-developers.com/showthread.php?t=1424401">Chris_X ROMs</a> by Chris_X
+<li>Other mentions were villain ROM and <a href="http://forum.xda-developers.com/showthread.php?t=1380284">XDA: rocket v13</a>.
 </ul>
 
 <p class=anno>(state 201112-201201, Note gingerbread ROMs)</p>
@@ -234,57 +233,58 @@ still lack blobs for camera and accelerated display.</p>
 
 <ul>
 <li>create and validate a backup suitable to recover ALL of your device from a 
-    barebones custom rom install.
+    barebones custom ROM install.
 <ul>
    <li>if not yet installed, do install <i>titanium backup</i> from market.
-   <li>ensure that you have a copy of the /efs contents somewhere (imei, etc)
-   <li>consider backups of /mnt/sdcard and /mnt/external_sd.
+   <li>if still unrooted, and you do need a backup of user apps, consider e.g. <i>mybackup</i>.
+   <li>if possible, ensure that you have a copy of the /efs contents somewhere (IMEI!)
+   <li>consider backups of your "sdcards": /mnt/sdcard and /mnt/sdcard/external_sd.
    <li>consider a backup of /data, even if only <i>tar cf /sdcard/data0.tar /data</i>
-   <li>consider using titanium backup to backup user/system apps and data.
+   <li>consider using <i>titanium backup</i> to backup user/system apps and data.
    <li>validate your backup!
-   <li>consider using cfroot/cwm to do a backup from the recovery rom:
+   <li>consider using cfroot/cwm to do a backup from the recovery ROM:
        way faster than titanium to recover the previous state, but not
        that useful on restoring user data into a new custom ROM, as it
        is easy to restore "too much".
    <li>consider copying the backup to your PC! If that happens 
        automatically as part of a nightly backup run, do manually check that copy!
 </ul>
-<li>ensure that USB-debugging is enabled and adb shell still works
-<li>ensure a high battery level
+<li>ensure that USB-debugging is enabled and <i>adb shell</i> still works
+<li>check the battery level!
 </ul>
 
 
 <h4>The Way of Rooting (Tourist Travel Sketch, with dog-eared threads)</h4>
 
 <p>At the end of the research phase, you should have selected a target
-custom  rom, and maybe one or more intermediate steps if you start out
-with  a stock rom. In my case the sequence led from stock back in time
+custom  ROM, and maybe one or more intermediate steps if you start out
+with  a stock ROM. In my case the sequence led from stock back in time
 to  a full install of the older KJ1 with CFROOT/CWM, and then  forward
 again  to  Chris_X 4lph4 ROMs offering KL8 using the AbyssNote  2.6.35
 kernel.</p>
 
 <p><i>Stock to Chainfire KJ1 including the modified factoryfs</i> (see
 <a href="http://forum.xda-developers.com/showthread.php?t=1331784">posting
-1+2</a>).  If  your  rom doesn't offer CFROOT/CWM, you first  need  to
-install  a version of ODIN on Windows that lists the Note as supported
+1+2</a>).  If  your  ROM doesn't offer CFROOT/CWM, you first  need  to
+install  a version of <i>odin</i> on Windows that lists the Note as supported
 (v3  version 1.83 or 1.85 was the one I found - there doesn't seem  to
 be any official home page or author, nor any sane version numbering; a
 list        if       provided       e.g.       in       this        <a href="http://droidangel.blogspot.com/2011/05/odin-multi-downloader-flasher-program.html">overview</a>).
-For  Linux,  Heimdall  might  work (untested). To set  the  Note  into
+For  Linux,  <i>heimdall</i>  might  work (untested). To set  the  Note  into
 download  mode,  use lower-vol + home + power and connect to USB.  For
 more detail, check the XDA threads for your selected ROM.</p>
 
 <p><i>Chainfire     KJ1     to    Chris_X    4lph4</i>     (see     <a href="http://forum.xda-developers.com/showthread.php?t=1424401">XDA</a>).
 As  we  now  have CFROOT/CWM available, this step no  longer  requires
 Windows  and Odin. I repeated this step once to go to a newer ROM from
-Chris,  currently  the v1.0.5 from early January which is very  stable
+Chris,  currently  the v1.0.5 from early January, which is very  stable
 (excluding  Google's  carefully  prepared pitfalls  concerning  shared
 memory  and  system_server  vs app2sd). 
 
 <p  class=anno>As of mid February, Chris is at v1.7.</p>
 
 <p  class=anno>I  will  follow  Chris once in a  while  until  ICS  is
-available  as a CFROOT/CWM supported rom. In the long run, I'll expect
+available  as a CFROOT/CWM supported ROM. In the long run, I'll expect
 to end up on CM9 or newer.</p>
 
 <p>Notes:</p>
@@ -302,7 +302,7 @@ recovery, as you'd restore the previous state and fully or partially undo
 a successful flashing. Though it's perfect to undo a bad flashing or to go back
 from testing another ROM.
 <li>consider turning off OTA updates (Settings -&gt; About Phone -&gt; 
-Software updates). While still pretty rare, Samsung is one of the select
+Software updates). While still a pretty rare event, Samsung is one of the select
 few Android makers that actually publish ROM updates.
 </ul>
 
@@ -312,37 +312,40 @@ few Android makers that actually publish ROM updates.
 
 <ul>
 <li>check /data/system/uiderrors.txt (chown/chgrp as required as root or try CFROOT's
-    fix permissions from the recovery shell; uninstalling all affected apps is another
+    fix permissions menu point in the recovery shell; uninstalling all affected apps is another
     option via market or <i>pm uninstall</i> in the shell)
 <li>optional: consider doing an immediate fresh-custom-ROM-install backup, maybe 
-    as simple as <i>tar cf /sdcard/data1.tar /data</i>, but don't overwrite any of your backups.
+    as simple as <i>tar cf /sdcard/data1.tar /data</i>, but don't overwrite any of your previous backups.
 <li>optional: copy the backups from the PC back to the Note
 <li>(selective) restore of applications (and possibly data) using <i>titanium backup</i>.
 <li>use <i>zdbox</i> to move any apps on sdcard back to the phone (there are preference
-    settings, but some apps get still always installed to sdcard)
+    settings, but some apps always get installed on sdcard)
 <li>check /data/system/uiderrors.txt again
 <li>skim through the Android's settings menu:
 <ul>
-<li>fix language settings, reenable keyboards(?)
-<li>application -&gt; usb debugging still enabled (<i>adb shell</i> command from PC still working?)
+<li>fix language settings, reenable keyboards and assistance (if using e.g. <i>clip ninja</i>)
+<li>test if application -&gt; USB debugging still enabled
 <li>power settings
-<li>phone: disable OTA software updates
+<li>phone menu: disable OTA software updates (this protects rooting/superuser in case of an 
+    improbable OTA update by maker or provider)
 <li>...
 </ul>
-<li>restore your widgets (<i>quick agenda</i>, <i>floatmemo</i>, <i>coolapps</i>)
+<li>restore your widgets (e.g. <i>quick agenda</i>; <i>floatmemo</i>, <i>coolapps</i> and <i>smart task switcher</i> 
+    might also be classified as offering widgets)
 <li>check apps that should run on boot / have active schedules (in my case: <i>titanium backup</i>, <i>tasker</i>, 
     <i>lookout</i>, <i>LBE privacy guard</i>, <i>ring guard</i>, <i>smart task switcher</i>)
 <li>check <i>terminal ide</i> and root access
 <li>from the PC, check the SDK's <i>adb shell</i> access as well as ssh access via <i>sshdroid</i>
 <li>check logcat in the shell (is there a need to run insmod /lib/modules/logger.ko or similar?)
 <li>rerun sl4a installers (perl apk file is e.g. the installer/uninstaller for perl)
-<li>fix your ring and notification tones
+<li>restore your ring and notification tone settings
 <li>check apps (e.g. by <i>titanium backup</i> or by ls /system/app) for applications to 
     disable (<i>titanium backup</i>: freeze)
 <li>optional: restore your own modifications to the Android shell and to 
-    the <i>terminal ide</i> environment (run INSTALL from part two to recover Android shell 
-    modifications, scripts, binaries and symlinks; if lost, do recover the root account 
-    for <i>terminal ide</i> from backup)
+    the <i>terminal ide</i> environment (run /s/INSTALL from part two to recover Android shell 
+    modifications, scripts, binaries and symlinks; if lost, do recover the contents of /s
+    and the root account for <i>terminal ide</i> from backup. In my case /s should be a symlink
+    pointing to /data/local/setup, which currently points to /mnt/sdcard/COMPACT/setup).
 <li>optional: if already installed: check mc, bash, vi/vim in the shell and in <i>terminal ide</i>
 <li>optional: check the availability and functionality of the chroot setup
 </ul>
@@ -366,42 +369,49 @@ few Android makers that actually publish ROM updates.
 <li><i>coolapps</i> (system load widget and much more)
 <li><i>jota</i> (nice text editor)
 <li><i>k9</i> (nice mailer)
-<li><i>mobile odin</i> (custom ROM flasher, see also the cwm app, that should be part of of the custom ROM)
-<li><i>printbot</i>, <i>scanthing</i> (printing and scanning, with OCR via update to google docs; also consider adding some
-    office suite app.
-<li><i>ringguard</i> (don't accidentally change ring tone loudness)
+<li><i>mobile odin</i> (custom ROM flasher, see also the <i>cwm</i> app, which should be part of the custom ROM)
+<li><i>printbot</i>, <i>scanthing</i> (printing and scanning, with OCR by uploading to google docs; also consider 
+    adding some simple office suite app (most also double as - usually slow - pdf readers)
+<li><i>ring guard</i> (the Note's way better than the Milestone in this regard, but I still accidentally 
+            manage to change ring tone loudness)
 <li><i>smart taskswitcher</i>, <i>task manager</i>
-<li><i>tasker</i> (programmable android event handling, can substitute for cron, can turn on/off WLAN depending on location, etc)
+<li><i>tasker</i> (programmable Android event handling, can substitute for cron, can turn on/off WLAN depending on location, etc)
 <li><i>terminal emulator</i>
 <li><i>zdbox</i> (task killing, moving apps from sdcard to phone)
 </ul>
 
 <p  class=anno>(voice recognition and more than word-level handwriting
-recognition aren't quite there yet in gingerbread)</p>
+recognition  aren't quite there yet in gingerbread; evernote  features
+the  last  one, but the recognized text is inaccessible and only  used
+for indexing/searching)</p>
 
 
 <p>2. Required market apps for the rest of this article:</p>
 <ul>
-<li><i>busybox installer</i> (stericson, use /system/xbin as installation path)
-<li><i>connectbot</i> (use ssh to connect to remote systems)
-<li><i>file expert</i> or any other filemanager capable of accessing non-sdcard directories
-<li><i>sshdroid</i> (permit incoming ssh connections, dropbear-based)
-<li><i>superuser</i> (usually part of the custom firmware we install)
-<li><i>terminal ide</i> (a pretty complete unix user space for the Android shell)
-<li><i>titanium backup</i> (backup and restore apps, also offers dealing with offending (firmware) apps)
-<li><i>xvnc</i> or <i>vnc viewer</i>
+<li><i>busybox installer</i> (from stericson, use /system/xbin as installation path)
+<li><i>connectbot</i> (ssh app to connect to remote systems)
+<li><i>file expert</i> or any other filemanager capable of accessing non-sdcard or root directories
+<li><i>sshdroid</i> (permit incoming ssh connections, dropbear-based, also including ssh/scp)
+<li><i>superuser</i> (usually part of the custom firmware: a fake su coupled 
+       with popups to ask the user to accept/deny, and an editor for stored decisions about application root requests)
+<li><i>terminal ide</i> (a pretty complete unix user space for the Android shell; works well even without root)
+<li><i>titanium backup</i> (backup and restore; also offers dealing with offending firmware apps)
+<li><i>xvnc</i> or <i>vnc viewer</i> (we use them in part 4)
 <li>mostly optional: <a href="http://code.google.com/p/android-scripting/">sl4a and perl</a> (perl/python/lua wrapper
-    examples are availble for use of the languages in the Android shell; some of my scripts may require perl)
+    examples are available for use in the Android shell; some of my Android shell scripts may require perl)
 </ul>
 
-<p class=anno>(there  also  are one or two apps that may simplify setting  up  the
-chroot   for  sections  3  and  4  of  this  article  (market:   Linux
-installer))</p>
+<p  class=anno>(there also are one or two apps that intend to simplify
+the  creation  of  the chroot for sections 3 and 4 of this  article  -
+search for linux installer on the market; usually either Ubuntu or DEBIAN)</p>
 
 
-<p>3. PC-side applications</p>
+<p>3. PC applications</p>
 <ul>
 <li><i>adb</i> (in the <a href="http://developer.android.com/sdk">Android SDK</a>, tools directory)
+<li>(the initial flashing above required one-time use of <i>odin</i> or <i>heimdall</i>; <i>kies</i> 
+    may or may not offer that feature, but according to most threads, <i>kies</i> is 
+    one of those four letter words rather than a usable application)
 </ul>
 
 
@@ -417,31 +427,45 @@ the ROM.</p>
 <a name=shell></a>
 <H3>Adding Unix Standards to the Android Shell</H3>
 
-<p>Do run and setup each of <i>busybox installer</i>, <i>sshdroid</i>, <i>terminal ide</i>,
-<i>titanium  backup</i> and <i>superuser</i> (probably already activated in custom ROMs). From now on, I assume
-that</p>
+<p>Do run and setup each of <i>busybox installer</i>, <i>sshdroid</i>,
+<i>terminal ide</i>, <i>titanium backup</i> and <i>superuser</i>. From
+now on, I assume that</p>
 
 <ul>
 <li>you've a Linux PC available (if you want to look at the automation examples incl. nightly backup and monitoring)
 <li>grep, sh, etc is available in /system/xbin (<i>stericson busybox installer</i>)
-<li>running su, then id in <i>terminal ide</i> show either root or the numerical id 0 (otherwise 
-    verify <i>superuser</i>; note that this su is not the real Linux su)
-<li>you can run <i>shh root@&lt;WLAN IP of your device&gt;</i> to start an android shell using the dropbear daemon (check <i>sshdroid</i>; 
+<li>running <i>su</i>, then <i>id</i> in <i>terminal ide</i> shows either root or the numerical id 0 (otherwise 
+    verify <i>superuser</i>; note that the Android shell <i>su</i> is not the normal Linux <i>su</i>)
+<li>you can run <i>shh root@&lt;WLAN IP of your device&gt;</i> to start an Android shell using the dropbear daemon (check <i>sshdroid</i>; 
     your public key goes to /data/data/berserker.android.apps.sshdroid/.ssh/authorized_keys)
 </ul>
 
 Further assumptions and settings of my setup (please also check in case of errors):
 <ul>
-<li>run <i>mount -orw,remount /system</i> as necessary in case of errors 
-<li>hostname of the Note is note: <i>hostname note; echo "127.0.0.1 note.compact note "$(getprop net.hostname)" localhost" >> /etc/hosts</i>
-<li>DNS lookup is provider-independent: <i>(echo nameserver 8.8.8.8; echo nameserver 8.8.4.4) > /etc/resolv.conf</i>, see also the setprop statements in VPN.
+<li>my hostname of the Note is note or note.compact: <i>hostname note; echo "127.0.0.1 note.compact note "$(getprop net.hostname)" localhost" >> /etc/hosts</i>
+<li>DNS lookup should probably be provider-independent: 
+   <i>(echo nameserver 8.8.8.8; echo nameserver 8.8.4.4) > /etc/resolv.conf</i> in case something queries /etc; 
+   <i>for i in net.pdp0.dns1 net.eth0.dns1 net.dns1; do setprop $i 8.8.8.8; done</i> for anything using bionic or the
+   Android framework.
 <li>If you see a hardcoded WLAN IP of 192.168.2.114, please replace it with your own Note's WLAN IP. 
-<li>/s is a symlink to /mnt/sdcard/COMPACT/setup.
+<li>If you see a hardcoded WLAN IP of 192.168.2.6 or the name anuurn: this refers to my Linux Box, please replace it with your IP on the WLAN.
+<li>/s is a symlink to /mnt/sdcard/COMPACT/setup. /s/INSTALL is the script responsible
+    installing my symlinks and scripts into the Android shell.
+<li>system/xbin or just xbin is the directory containing most of my scripts, armel binaries and
+    a DNS-resolving copy of <i>busybox</i>.
+<li>/x will be the mountpoint of the chroot below. Inside, it is a symlink to the root of the chroot.
+    If it is obvious, I shall omit the /x prefix. Thus /root and /home/jakobi with or without 
+    leading slash are paths in the chroot. 
+<li>/x/abin or just abin is the chroot directory used for chroot-specific glue scripts complementing 
+    the scripts in system/xbin, many of which are usable also from within the chroot.
 <li>the example home/jakobi/bin/shell/android.func defines some shell aliases to interact with the
     Note from a Linux box: inote, notescp, notessh
+<li>of course, all of these paths are also valid inside the host-specific subdirectory in the tarball
 </ul>
 
-<p>Please unpack a copy of the <a href="https://github.com/jakobi/script-archive/blob/master/android/android-setup-example-files.tgz?raw=true">example files</a> somewhere (though <b>not in / on your Note</b>). You can check the  <a href="http://github.com/jakobi/script-archive/tree/master/android">Android directory</a> for updated versions, as I will only very infrequently update the tarball. Host.note is an extract of the Note's files, while host.anuurn contains some files from the Linux PC.</p>
+<hr>
+<p><center>Please unpack a copy of the <a href="https://github.com/jakobi/script-archive/blob/master/android/android-setup-example-files.tgz?raw=true">example files</a> somewhere (though <b>not in / on your Note</b>). You can check the  <a href="http://github.com/jakobi/script-archive/tree/master/android">Android directory</a> for updated versions, as I will only very infrequently update the tarball. ./host.note is an extract of the Note's files, while host.anuurn contains some files from the Linux PC.</center></p>
+<hr>
 
 <p>If you intend to use my INSTALL script to modify your Android shell
 setup,  only  files  below /s (or /mnt/sdcard/COMPACT/setup)  will  be
@@ -462,7 +486,7 @@ Note,  let's get to the more interesting parts of this article.</p>
 
 <h4>Differences  from  a real Linux system</h4>
 
-libc and its most visible problem: Google reinvented an embedded small
+<p>libc and its most visible problem: Google reinvented an embedded small
 libc  clone  by  the name of bionic, with together  with  the  Android
 framework  implements  DNS in a non-standard way. This leads  to  some
 confusion  in porting as whether to look at the output of setprop  and
@@ -485,7 +509,7 @@ similarly mistreated. Which just happens to be a <b>severe reliability
 issue</b>.  Note that there's nothing in a chroot that can work around
 this problem.</p>
 
-<p class=anno>(logcat use may require insmod /lib/modules/logger.ko)</a>
+<p class=anno>(logcat use may require insmod /lib/modules/logger.ko)</p>
 
 <p>Other   things  that  may  be  unavailable:  Shared  memory.  Again
 improperly removed/unconfigured, leading to crashes and the X11 shared
@@ -547,7 +571,7 @@ package (all 3 on market).</p>
 
 <p class=anno>(in case you do not want sl4a: at the end of part 3, you
 will  also  be able to alias <i>perl</i> to <i>x perl</i> and use  the
-chroot's perl installation)</a>
+chroot's perl installation)</p>
 
 <p>Script examples:</p>
 <ul>
@@ -632,7 +656,7 @@ R -        26203     1 root     S     2892  0.3   0  0.0 /usr/bin/dbus-daemon --
 <p><i>terminal  ide</i>  aims to attempt to make standard  Unix  setup
 available  to permit working with vim and java, thus the <i>IDE in the
 terminal</i>  name. This provides the best working environment for the
-android shell outside of a chroot. It offers e.g.</p>
+Android shell outside of a chroot. It offers e.g.</p>
 
 <ul>
 <li>bash (this lacks subshell/jobs support)
@@ -695,7 +719,7 @@ all.</p>
 <p>Using   ssh:   Ssh-client  and  scp  can  be  found  as   part   of
 <i>sshdroid</i> including sftp server and scp. Another copy is offered
 by   <i>terminal   ide</i>.   A  real  openssh  build   is   part   of
-<i>sshtunnel</i>,  also  named  sshtunnel. As  android  app,  consider
+<i>sshtunnel</i>,  also  named  sshtunnel. As  Android  app,  consider
 <i>connectbot</i>.  Note  that I was unable to trivially port  an  old
 ssh-based  tunnel trick of mine, as some ssh options are not supported
 by any of these.</p>
@@ -1272,7 +1296,7 @@ invocation  is  as  simple as <i>DISPLAY= unison  /data/unison  -batch
 
 <p>Using  sshd:  I'm  still using <i>sshdroid</i>'s  dropbear  as  the
 primary  ssh daemon, dealing with backup traffic, and everything.  The
-chroot  from  the linux box by running <i>ssh root@note x  COMMAND</i>
+chroot  from  the Linux box by running <i>ssh root@note x  COMMAND</i>
 (e.g.  done  by  unison;  rsync dislikes the space  in  'remote  rsync
 command   names'   and  requires  the  chroot-rsync  dummy   file   in
 sshdroid/dropbear).   If   you  need  a  real  sshd  without   similar
@@ -1369,8 +1393,8 @@ didn't check for server components usable in a chroot.</p>
 
 <p>A selection of vnc viewer components</p>
 <ul>
-<li><i>vncviewer</i> - android app classic (there are multiple other viewers)
-<li><i>xvnc</i> - android app, hardcoded to use its own vncserver
+<li><i>vncviewer</i> - Android app classic (there are multiple other viewers)
+<li><i>xvnc</i> - Android app, hardcoded to use its own vncserver
                   installed outside the chroot (useful to reduce the chroot size)
 <li>there is also tightvncviewer - the default vncviewer inside the chroot,
     but I'd suggest use with only small remote vnc server displays, as
@@ -1555,8 +1579,8 @@ etc/apt/sources.list   and   etc/apt/preferences.d/personal   in   the
 examples. To install a package in the mixed setup:</p>
  
 <pre>
-apt-get install <package>/unstable    # prefer testing for resolution  
-apt-get -t unstable install <package> # use unstable for resolution
+apt-get install &lt;package&gt;/unstable    # prefer testing for resolution  
+apt-get -t unstable install &lt;package&gt; # use unstable for resolution
 # afterwards consider pinning the package to a specific release in 
 # /etc/apt/preferences.d/*
 </pre>
