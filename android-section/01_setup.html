@@ -1011,7 +1011,6 @@ aptitude purge mono-runtime libmono-system4.0-cil</i>
 
 <h4>Some customization</H4>
 
-<-- -------------------------^^^ clean \/\/\/ borked ---------------------------------------------------------------- -->
 
 
 <p>While the scripts in system/xbin are for the outside Android shell,
@@ -1028,12 +1027,12 @@ The CHROOT scripts in detail:</p>
 <ul>
 <li>CHROOT.available prints the mount state of the chroot
 <li>CHROOT.fsck is a mere example on how to fsck the chroot from
-    within, as the note doesn't contain an external fsck for ext4,
+    within, as the Note doesn't contain an external fsck for ext4,
     despite using ext4 filesystems for the Android data.
 <li>CHROOT.mount mounts all filesystems for the chroot (basically it
     runs the mount statements you already saw above when using the chroot
     for the first time)
-<li>CHROOT.run either starts a shell in the chroot or runs a command
+<li><b>CHROOT.run</b> either starts a shell in the chroot or runs a command
     and returns the command's return code. It can be used transparently 
     as part of a pipe, and it will try hard to properly deal with outside
     full or partial filenames (mounts if necessary)
@@ -1055,56 +1054,52 @@ CHROOT.umount due to never using it again :))</p>
 
 
 
+<p>Root  account:  As  I  didn't want to maintain  umpteen  copies  of
+profiles,  I keep my own stuff in root/.bash{_aliases,rc}.pj and  just
+add  suitable sourcing or updating statements to the other files. That
+way,  user accounts and <i>terminal ide</i> share this master copy  to
+provide  their  own  environment. The profiles set a sane  prompt  and
+window  title  providing  port/pty/user/directory  information,   plus
+return  code  in  case  of PS1. They also contain  aliases  to  shadow
+updatedb/locate  with a grep in the nightly generated filelists of the
+backup. Note that this requires a not that secure chmod 711 on /root -
+the  clean  way would have been to put the config files to share  into
+abin  and  just source them as everyone else does. Again you can  find
+copies of these files in the example tarball.</p>
 
-<p> root profiles</p>
+<p>In  setting  up non-system user accounts, you do not want  to  trip
+over  Android  ID's. I changed /etc/login.def to use 20000 instead  of
+1000  for the values of UID_MIN, GID_MIN. In /etc/adduser.conf, change
+FIRST_UID and FISRT_GID similarly. Add android_network:x:3003:USERNAME
+to  /etc/group and fix gshadow accordingly. 3003 is the public  secret
+number  for  the  group permitting network access. A  possible  search
+keyword is ANDROID_PARANOID_NETWORK.</p>
 
-<p>ssh dial back</p>
-cd ~/.ssh
+<p>Escaping the chroot can be done by ssh to localhost, as shown below
+in  the example using the chroot's host key. If you use ssh-agent with
+other   passphrase-protected  keys,  invoke  it  as   <i>ssh-agent   >
+~/.ssh/env.$(hostname)</i>.</p>
+
+<pre>
+cd /root/.ssh
 ln -s /etc/ssh/ssh_host_rsa_key id_rsa
 ln -s /etc/ssh/ssh_host_rsa_key.pub id_rsa.pub
+cd /data/data/berserker.android.apps.sshdroid/dropbear
+ln -s /system/xbin/CHROOT.run x
+cd ../home/.ssh
+cat /root/.ssh/id_rsa.pub &gt;&gt; authorized_keys
+# check permission and owner
+ls -l authorized_keys
+</pre>
 
-(placing symlink x to CHROOT.run in /data/data/berserker.android.apps.sshdroid/dropbear)
-
-
-
-
-append the pub key in sshdroid's home .ssh/authorized_keys
-
-
-<p>a user account - adduser and 3003 (CONFIG_ANDROID_PARANOID_NETWORK)p>
-
- stay out of android user space!
-edit /etc/login.def to 20000 instead of 1000 for UID_MIN, GID_MIN
-edit /etc/adduser.conf similarly
-invoke adduser <YOUR NAME>
-
-append to /etc/group (and fix gshadow)
-android1:x:1000
-android2:x:1015
-android_network:x:3003:YOUR_LOGNAME (and possibly all network-using daemon accounts as well)
-
-
-<p>ssh-agent > ~/.ssh/env.note</p>
-
-<p>umlauts and locale</p>
-# umlauts: within TERMIDE app: I don't care about them
-# ssh and dropbear: OK, however deleting them requires deleting the char + once more a mangled one
-# (probably utf8 remnant mistreated as latin1 (on deletion))
-# after switching via TERMIDE script: not in bash; otherwise same effect as above
-# --> we don't have utf8 locale in android at all
-# ssh to chroot: # same as above. with LANG=C.UTF-8 LC_COLLATE=C the delete snafu stops.
-
-
-
-
-<p>lxc: unsupported (maybe just too old; but this also requires Android side bridging, which may be unsupported)</p>
-
-
-apt-pinning mixed mode as seen with firefox - see etc/apt/sources-list from examples.
-apt-get install <package>/unstable    
-apt-get -t unstable install <package> # prefer unstable for resolution
-
-
+<p>Umlauts  and  locale settings are a bit surprising, as  I  expected
+full  utf8 support everywhere on the Android by default. Umlauts  seem
+properly displayed, on delete however they're appear as multiple chars
+in the Android shell. I still need to really run DEBIAN as more than a
+server  system  to get a better grip on where and what packages  offer
+locales,  as  I didn't find e.g. en_US.UTF8. For the time  being,  the
+sanest  setting is LANG=C.UTF-8, plus a paranoid LC_COLLATE=C, as this
+repairs deletion on ssh logins to the chroot.</p>
 
 
 
@@ -1246,6 +1241,7 @@ and folder synchronization.</p>
 <a name=vnc></a>
 <H3>Desktop and X11</H3>
 
+<-- -------------------------^^^ clean \/\/\/ borked ---------------------------------------------------------------- -->
 
 <pre>
 
@@ -1291,6 +1287,12 @@ in autocutsel???
 
 
 notes:
+
+apt-pinning mixed mode as seen with firefox - see etc/apt/sources-list from examples.
+apt-get install <package>/unstable    
+apt-get -t unstable install <package> # prefer unstable for resolution
+
+
 
 <li>if you want to increase the free ram reserved, consider e.g. 
 <i>sysctl -w vm.min_free_kbytes=32768</i> or consider dropping most
