@@ -802,8 +802,9 @@ umount any automatically mounted filesystems from the sdcard. Then run
 fdisk and create the filesystems.</p>
 
 <p class=anno>(the commands are pasted from my notes, I shouldn't have
-changed much afterwards; any interesting changes should be part of the 
-CHROOT.mount script)</p>
+changed much afterwards; any interesting changes should be part of the
+CHROOT.mount  script,  which  mirrors  some  of  the  post-debootstrap
+preparations like the mount -obind commands below)</p>
 
 <pre>
 # avoid problems on Ubuntu 10.4 with recent kernels
@@ -937,7 +938,8 @@ cd /
 ln -s / x
 # some apps may honor this and do not startup during installation
 mv /x/usr/sbin/policy-rc.d /x/usr/sbin/policy-rc.d.ORIG # does not exist
-echo "echo 'All rc.d operations denied by policy; >&amp;2; exit 101" &gt; /x/usr/sbin/policy-rc.d
+# policy taken from http://wiki.debian.org/ArmHardFloatChroot
+echo "echo 'All rc.d operations denied by policy' >&amp;2; exit 101" &gt; /x/usr/sbin/policy-rc.d
 mv /x/etc/apt/sources.list /x/etc/apt/sources.list.ORIG # debootstrap version is invalid
 echo "deb     http://ftp.de.debian.org/debian testing main contrib non-free" &gt;&gt; /x/etc/apt/sources.list
 echo "deb-src http://ftp.de.debian.org/debian testing main contrib non-free" &gt;&gt; /x/etc/apt/sources.list
@@ -1156,14 +1158,10 @@ maker  (at least Samsung doesn't do this before release to the market,
 like some other makers).
 <li>a newer architecture called <b>armhf</b> is being in the works at 
 DEBIAN and Ubuntu, which introduces support for more modern CPU features 
-and improves FPU support. However the
-repository mentioned in the article on armhf failed already in stage
-one of debootstrap in early January. This should prove interesting 
-in the medium term. When it's ready, just replace <i>armel</i> with
-<i>armhf</i>. (Check the release note and check with Google - it might even be 
-possible to just change architectures in sources-list on an uptodate 
-armel setup and reinstall (all) DEBIAN packages for use of armhf without
-starting over with debootstrap and an empty directory).
+and improves FPU support. However the suggested repositories for armhf failed
+already in stage one of debootstrap in early January. 
+This should prove interesting  in the medium term. When it's entered 'testing', 
+just  replace <i>armel</i> with <i>armhf</i> and recreate the chroot. 
 <li>swap would be a good idea to add with a suitable swappiness  setting
 to reserve swap as a last resort, as a notifier-by-pain to delay the 
  out-of-memory-killer (though I  didn't meet oom during any tests 
@@ -1175,6 +1173,15 @@ way worse than FAT (one hotspot at the beginning), ext4 with an ordinary
 Linux install (with or without journal) or database files, with database
 transaction logs being the most harmless use of all).
 </ul>
+
+<p class=anno>(as of 20120214
+<a href="http://wiki.debian.org/ArmHardFloatChroot">wiki.debian.org/ArmHardFloatChroot</a>
+suggests the standard repositories for non-source packages, using 'sid' and 'unreleased'. If FPU support
+is indeed the only change, after the final backup and before removing the contents of the chroot, it is
+tempting to just change the architecture in the apt/sources-list and check what happens. Maybe with first
+repeating the debootstrap steps, and then restoring the old /var and most of /etc. 
+Do check the release notes first, there might even be a supported armel to armhf upgrading path for installations :))
+ </p>
 
 <p><b>Summary:</b>  By  now we have a DEBIAN chroot and can access  it
 from   the   Android  shell  interactively  or  as  part  of  a   pipe
