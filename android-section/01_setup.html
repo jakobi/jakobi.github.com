@@ -545,6 +545,10 @@ to  the captured output. Maybe also of interest/possibly working as  a
 "host":  <i>tasker</i>  and  <i>taskbomb</i> with its  script  support
 package (all 3 on market).</p>
 
+<p class=anno>(in case you do not want sl4a: at the end of part 3, you
+will  also  be able to alias <i>perl</i> to <i>x perl</i> and use  the
+chroot's perl installation)</a>
+
 <p>Script examples:</p>
 <ul>
 <li><i>CHROOT.run</i> (often aliased to x); starts a shell in the chroot or
@@ -1012,6 +1016,22 @@ apt-get install debian-ports-archive-keyring
 apt-get update
 apt-get install build-essential
 
+# a first backup of the initial chroot
+cd /
+find . -xdev | sort &gt; FIND.chroot
+cat FIND.chroot | cpio -o -H crc &gt; /i/chroot-initial-debootstrap.cpio
+</pre>
+
+
+
+<H4>Post Bootstrap Package Installation and Cleanup</H4>
+
+<p>Install  required  application  packages, then you  can  optionally
+install  one or more of the major meta-packages suggested by  tasksel.
+In January, the Deskop-selection contained issues with bluez and mono,
+as described in the notes below.</p>
+
+<pre>
 apt-get mc tmux vim vim-scripts m4 rsync sshfs elinks mutt
 
 # the bare X11 client-side mininum, with a lightweigth window manager
@@ -1021,10 +1041,12 @@ apt-get icewm xterm
 apt-get tightvncserver xtightvncviewer 
 apt-get lsb-languages lsb-languages-armel lsb-languages-noarch lsb-core
 
-# a first backup of the initial chroot
+# check for issues and possible look at recommendations
+aptitude
+
 cd /
 find . -xdev | sort &gt; FIND.chroot
-cat FIND.chroot | cpio -o -H crc &gt; /i/chroot-initial.cpio
+cat FIND.chroot | cpio -o -H crc &gt; /i/chroot-initial-minimal.cpio
 
 # you may wish to install software for basic tasks like desktop or file serving; 
 # requires more than just a few minutes, depending on your selection
@@ -1039,8 +1061,12 @@ dpkg -l | grep -v '^ii'
 aptitude
 
 aptitude clean
-</pre>
 
+# backup the full chroot for the first time 
+cd /
+find . -xdev | sort &gt; FIND.chroot
+cat FIND.chroot | cpio -o -H crc &gt; /i/chroot-initial-final.cpio
+</pre>
 
 
 
@@ -1062,7 +1088,7 @@ libmono-addins0.2-cil libmono-i18n-west4.0-cil libmono-i18n4.0-cil libmono-posix
  libmono-sharpzip4.84-cil libmono-system-configuration4.0-cil libmono-system-core4.0-cil
  libmono-system-drawing4.0-cil libmono-system4.0-cil mono-gac mono-runtime; 
 aptitude purge mono-runtime libmono-system4.0-cil</i>
-<li>other things to remove: wicd (wireless connection manager) and bluetooth
+<li>other candidates for removal: wicd (wireless connection manager) and bluetooth
     (I've not tested to run bluez &amp; friends from the chroot; for now I do
     the network management outside of the chroot excluding just ip route or iptables,
     which I occasionally also call from within; note that I even use things like
