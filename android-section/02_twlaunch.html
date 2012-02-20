@@ -43,39 +43,463 @@ directory of the script-archive</a>.</p>
 
 
 <hr>
-la href="02_twlaunch.html"><H2>02 - (Ab)Using TWLAUNCHER - Another Way of Helping Android Cope with Moore's Law</H2></a>
+la href="02_twlaunch.html"><H2>02 - (Ab)Using TWLAUNCHER - Another Way of Helping Android (&amp; User) Cope with Moore's Law</H2></a>
 
-<p>Last change: 20120216</p>
+<p>Last change: 20120219</p>
 <p>License: CC-BY-SA.</p>
 
-<p>Still polishing notes - version 1 to be online before 20120220</p>
+<hr>
+
+<p>A  modern Android runs on hardware comparable to a Desktop PC,  and
+may have multiple hundred applications installed. In case of the Note,
+we have about 180 apps as part of the system (/system), plus about 300
+apps in my case (/data and sdcard).</p>
+
+<p>The normal launcher approach is to either offer a sorted list, or a
+graphical   icon   based  multi-page  mess   using   the   first-come,
+first-displayed  principle, which is not conductive to quickly  locate
+and launch a specific app.</p>
+
+<p>There  are some apps that offer use of categories like  <i>titanium
+backup</i>,  inside  the app, maybe even in form of a widget. One  app
+also  attempts to automate categorizing and - if memory serves -  even
+to crowd-source categories (usually only lumping to many apps in a too
+broad  category  or outright saying 'unknown'; though it also  permits
+manual categorization per app install).</p>
+
+<p>Samsung's  Galaxy  Note  comes  with the  TouchViz  user  interface
+<i>twlauncher</i>  app  as  the standard launcher. While  the  app  is
+neither  stable when opening a dozen folders in sequence, nor fast  to
+reload after execution of some(?) programs, it at least offers folders
+on  the  app screens and thus a possibility to sort applications  into
+folder with (possibly hierarchical) category names.</p>
+
+<p>Image  me  sorting 300 apps into folders. VNC apps go  to  net.vnc,
+connectbot goes to net.ssh, ...</p>
+
+<p  class=anno>(of  course, the IMHO best scheme would be  a  launcher
+that doesn't have a database, but instead just uses filesystem objects
+to  map apk files to screen names, categories and screen locations - a
+simple   file  browser  would  be  enough  to  access  and  edit   the
+database)</p>
+
+<p>It  would  be nice to reuse these categories when  managing  backup
+files  and  apps  inside and outside of <i>titanium  backup</i>.  This
+would  also  help  when  flashing a new ROM or  when  recovering  from
+misbehaving apps.</p>
+
+<p>Recovering  an old database: <i>twlauncher</i> is quite  forgiving,
+so it is possible to kill -STOP it, copy in an old database version in
+the  application directory in /data/data, kill -TERM it, and then  use
+the  categories  from  the  old database,  updated  to  the  currently
+installed  apps.  So the manual categorizing effort can  be  recovered
+even in case of problems. Nice to know. You also can use sqlite3 and 
+its .dump command to get at the database contents in SQL format.</p>
+
+<p>Enter    a   small   Perl   experiment   by   the   name   of    <a href="https://github.com/jakobi/script-archive/blob/master/android/android.twlauncher.decode">android.twlauncher.decode</a>.
+The script's output is a readable 3 column list of the folders, screen
+names and class names of the apps as seen by <i>twlauncher</i>.</p>
+
+<pre>
+# extract the folder, screen name and starter/class name 
+# (the "directory name" is the stem of the apk name for most apps)
+#
+scp root@note:/data/data/com.sec.android.app.twlauncher/databases/* .
+android.twlauncher.decode -v launcher.db > VLISTING
+</pre>
+
+
+
+<H3>Script Output, Categories and Peter's App Selection</h3>
+
+<pre>
+# selection from the output of cat VLISTING | sort | cut -b-120 
+
+# add fsck.k9 as a better email client than the ones below
+mail+web             :: Dolphin Browser HD                       :: mobi.mgeek.TunnyBrowser/.BrowserActivity
+mail+web             :: Email                                    :: com.android.email/.activity.Welcome
+mail+web             :: Firefox Beta                             :: org.mozilla.firefox_beta/.App
+mail+web             :: Google Mail                              :: com.google.android.gm/.ConversationListActivityGmail
+mail+web             :: Groundhog Newsreader                     :: com.almarsoft.GroundhogReader/.GroupListActivity
+mail+web             :: Internet                                 :: com.android.browser/.BrowserActivity
+mail+web             :: Opera Mobile                             :: com.opera.browser/com.opera.Opera
+mail+web             :: ReadItLater                              :: com.ideashower.readitlater.free/com.ideashower.readi
+mail+web             :: UrlToPDF                                 :: com.nop.urltopdf/.UrlToPDF_Forground
+mail+web             :: Web Translator Lite                      :: jp.ne.sakura.knatt.webtranslatorlite/.MainActivity
+messaging            :: AndroIRC                                 :: com.androirc/.AndroIRC
+messaging            :: Talk                                     :: com.google.android.talk/.SigningInActivity
+messaging            :: eBuddy                                   :: com.ebuddy.android/.ui.StartupActivity
+
+voice+phone           :: Auto Redial                              :: com.adengappa/.Redial
+voice+phone           :: Call Recorder                            :: com.appstar.callrecorder/.TabbedActivity
+voice+phone           :: Callback Assistant                       :: callbackassistant.alarmspider.com/.AfterInstallWindo
+voice+phone           :: Voice recorder                           :: com.sec.android.app.voicerecorder/.VoiceRecorderMain
+
+
+
+# market and application management
+and.app.market       :: Market                                   :: com.android.vending/.AssetBrowserActivity
+and.app.market       :: S choice                                 :: com.sec.android.app.schoice/.schoice
+and.app.market       :: Samsung Apps                             :: com.sec.android.app.samsungapps/.Main
+and.app.mgr          :: AutoAppOrganizer                         :: com.utility.autoapporganizer/.MainForm
+and.app.mgr          :: Smart TaskSwitcher                       :: com.smart.taskswitcher/.main.TaskSwitcher
+and.app.mgr          :: Task manager                             :: com.sec.android.app.controlpanel/.activity.JobManage
+and.app.mgr          :: ZDbox                                    :: com.zdworks.android.toolbox/.ui.HomeActivity
+
+# android information
+and.info             :: CatLog                                   :: com.nolanlawson.logcat/.LogcatActivity
+and.info             :: JS Log                                   :: com.zoeetrope.jslog/.Settings
+and.info             :: Log This                                 :: com.mgamerzproductions.logthis/.PathActivity
+and.info             :: OS Monitor                               :: com.eolwral.osmonitor/.OSMonitor
+and.info             :: Phone Explorer                           :: com.tbs.activity/.TbsMainActivity
+and.info             :: Under the Hood                           :: aws.apps.underthehood/.Main
+
+# ui tweaks; add clipper to complement clip ninja
+and.misc             :: Clip Ninja                               :: com.qoobees.clipninja/.library.FightWindow
+and.misc             :: LCD Density Modder Pro                   :: com.birdapi.android.dpipro/.activities.HomeActivity
+and.misc             :: Multicon                                 :: com.h9kdroid.multicon/.Multicon
+# cpu, memory etc, as a semi-transparent display
+and.misc             :: Cool Tool                                :: ds.cpuoverlay/.MagicCPUActivity
+
+# NTP
+and.misc             :: ClockSync                                :: ru.org.amip.ClockSync/.view.Main
+
+# battery saving
+and.misc             :: JuiceDefender Ultimate                   :: com.latedroid.ultimatejuice/com.latedroid.juicedefen
+and.misc             :: Owner                                    :: com.appengine.paranoid_android.lost/.InfoSetup
+and.misc             :: RingGuard                                :: com.x475aws.android.ringguard/.RingGuardPreferences
+
+# event- or location-specific automation 
+and.misc             :: Tasker                                   :: net.dinglisch.android.taskerm/.Tasker
+
+# recovery ROM access, flashing, root access
+and.root             :: CWM                                      :: eu.chainfire.cfroot.cwmmanager/.MainActivity
+and.root             :: Fix Permissions                          :: com.stericson.permissionfix/.PermissionFix
+and.root             :: Mobile ODIN                              :: eu.chainfire.mobileodin.pro/eu.chainfire.mobileodin.
+and.root             :: ROM Manager                              :: com.koushikdutta.rommanager/.RomManager
+and.root             :: Rom Toolbox                              :: com.jrummy.liberty.toolbox/.MainActivity
+and.root             :: Superuser                                :: com.noshufou.android.su/.Su
+
+# backup and restore
+and.root             :: Titanium Backup                          :: com.keramidas.TitaniumBackup/.MainActivity
+and.root             :: Titanium Restore BETA                    :: it.elaware.titaniumrestore/.MainActivity
+
+# antivirus (or maybe avast)
+and.sec              :: Lookout                                  :: com.lookout/.ui.LoadDispatch
+
+# security: permission checking and some allow/deny editing; LBE also acts as a personal outbound firewall
+and.sec.app.perm     :: APeWatch                                 :: de.struse.apewatch/.AndroidPermissionWatcherActivity
+and.sec.app.perm     :: Addons Detector                          :: com.denper.addonsdetector/.ui.AddonsDetector
+and.sec.app.perm     :: Autorun Manager                          :: com.rs.autorun/.MainDashboardActivity
+and.sec.app.perm     :: LBE Privacy Guard                        :: com.lbe.security.lite/com.lbe.security.ui.SplashActi
+and.sec.app.perm     :: Permissions Free                         :: com.stericson.permissions/.activities.Permissions
+and.sec.app.perm     :: aSpotCat                                 :: com.a0soft.gphone.aSpotCat/.MainWnd
+
+
+
+# file manager local and remote, blue tooth
+files                :: Dateien                                  :: com.sec.android.app.myfiles/.MainActivity
+files                :: Download All Files                       :: com.hwkrbbt.downloadall/.MainActivity
+files                :: Downloads                                :: com.android.providers.downloads.ui/.DownloadsListTab
+files                :: File Expert                              :: xcxin.filexpert/.FileLister
+files.remote         :: AndFTP                                   :: lysesoft.andftp/.SplashActivity
+files.remote         :: Androbex                                 :: com.androbex.activity/.MainActivity
+files.remote         :: Bluetooth File Transfer                  :: it.medieval.blueftp/.AMain
+files.remote         :: SharesFinder                             :: com.scan.places/.MainPlacesActivity
+files.remote.server  :: FTPDroid                                 :: berserker.android.apps.ftpdroid/.MainActivity
+files.remote.server  :: Samba Filesharing                        :: com.funkyfresh.samba/.samba
+files.remote.server  :: SwiFTP                                   :: org.swiftp/.ServerControlActivity
+
+files.misc           :: APG                                      :: org.thialfihar.android.apg/.MainActivity
+files.misc           :: ArchiDroid                               :: org.ais.archidroid/.StartActivity
+files.misc           :: Keeper                                   :: com.callpod.android_apps.keeper/.ResultsActivity
+files.misc           :: Send to SD card preferences              :: ru.gelin.android.sendtosd/.PreferencesActivity
+files.misc           :: Unrar Free                               :: com.newzdroid.unrar/.Unrar
+
+# more comfortable file selection (only offered by 3rd party apps?)
+files.selector       :: ASTRO                                    :: com.metago.astro/.SplashActivity
+files.selector       :: ASTRO Bluetooth Module                   :: com.metago.astro.network.bluetooth/.ASTROBluetoothAc
+files.selector       :: OI File Manager                          :: org.openintents.filemanager/.FileManagerActivity
+
+
+
+# networking
+net.debug            :: DNS Lookup                               :: com.kodholken.dnslookup/.Lookup
+net.debug            :: Fing                                     :: com.overlook.android.fing/.FingActivity
+net.debug            :: IP Track                                 :: org.movingstuff.IpTrack/.IpTrack
+net.debug            :: IP-Geolocator                            :: com.ericonjava/.MainView
+net.debug            :: Network Info II                          :: aws.apps.networkInfoIi/co.uk.alt236.android.lib.netw
+net.debug            :: Network Speed                            :: netspeed.pt/.NetworkSpeedActivity
+net.debug            :: Ping & DNS                               :: com.ulfdittmer.android.ping/.Main
+net.debug            :: STUN Client                              :: com.kodholken.stunclient/.MainActivity
+net.debug            :: Shark                                    :: lv.n3o.shark/.SharkMain
+net.debug            :: Speed Test                               :: org.zwanoo.android.speedtest/.MainTabActivity
+net.debug            :: ipconfig                                 :: com.mankind.ipconfig/.IpConfig
+
+net.prx.tun+socks    :: AutoProxy Lite                           :: com.mgranja.autoproxy_lite/.ProxyListActivity
+net.prx.tun+socks    :: OpenVPN Settings                         :: de.schaeuffelhut.android.openvpn/.OpenVpnSettings
+net.prx.tun+socks    :: Orbot                                    :: org.torproject.android/.Orbot
+net.prx.tun+socks    :: ProxyDroid                               :: org.proxydroid/.ProxyDroid
+net.prx.tun+socks    :: SSHTunnel(BETA)                          :: org.sshtunnel.beta/.SSHTunnel
+net.prx.tun+socks    :: VPN-Menu                                 :: com.vpn_menu/.activity_main
+
+net.ssh              :: ConnectBot                               :: org.connectbot/.HostListActivity
+net.ssh              :: SSHDroid                                 :: berserker.android.apps.sshdroid/.MainActivity
+net.ssh.misc         :: PortKnocker                              :: org.thebigmachine.portknocker/.PorkKnotList
+net.ssh.misc         :: SSHmote                                  :: com.zokama.sshmote/.SSHmote
+net.ssh.misc         :: ServerAssistant                          :: org.openobjectives.serverassistant/.MenuActivity
+
+net.vnc              :: PocketCloud                              :: com.wyse.pocketcloudfree/.SplashActivity
+net.vnc              :: VNC Viewer                               :: com.realvnc.viewer.android/.ConnectionsActivity
+net.vnc              :: androidVNC                               :: android.androidVNC/.androidVNC
+net.vnc              :: xvnc                                     :: com.theqvd.android.x/.MainActivity
+
+net.wifi             :: Antennas                                 :: com.technolatry.antennas/.Antennas
+net.wifi             :: OpenSignal                               :: com.staircase3.opensignal/.library.Main
+net.wifi             :: Wi-Fi Finder                             :: com.jiwire.android.finder/.MainTabActivity
+net.wifi             :: Wifi Analyzer                            :: com.farproc.wifi.analyzer/.MainScreen
+net.wifi             :: qNetInfo                                 :: com.qxbo.qnetinfo/.qNetInfo
+
+
+
+office               :: Docs                                     :: com.google.android.apps.docs/.app.MainProxyActivity
+office               :: IncSlide Lite                            :: com.oozic.apps.inslidelite/com.oozic.apps.inslide.Wh
+office               :: OfficeSuite                              :: com.mobisystems.editor.office_registered/com.mobisys
+office               :: OpenOffice Document Reader               :: at.tomtasche.reader/.ui.activity.OpenOfficeActivity
+office               :: Polaris Office                           :: com.infraware.polarisoffice/.OfficeMainActivity
+office               :: Project Schedule Free                    :: de.thorstensapps.ttf/.MainActivity
+office.misc          :: Calculator                               :: com.sec.android.app.calculator/.Calculator
+office.misc          :: Copy Paste It Trial                      :: com.edwardkim.android.copyscreentextfree/com.edwardk
+office.misc          :: FloatMemo(Free)                          :: com.psc.fukumoto.FloatMemo/com.psc.fukumoto.FloatMem
+office.misc          :: PrintBot                                 :: net.jsecurity.printbot/.chooser.FileChooser
+office.misc          :: Scanthing                                :: com.scanthing.android/.ui.DashboardActivity
+office.misc          :: TechCalc                                 :: com.roamingsquirrel.android.calculator/.Calculate
+office.misc          :: Translate                                :: com.google.android.apps.translate/.HomeActivity
+office.misc          :: iTranslate                               :: at.nk.tools.iTranslate/com.sonicomobile.itranslate.g
+office.note.geo+gfx  :: Catch                                    :: com.threebanana.notes/.Notes
+office.note.geo+gfx  :: Evernote                                 :: com.evernote/.ui.HomeActivity
+office.note.geo+gfx  :: Mini diary                               :: com.sec.android.app.minidiary/.MiniDiaryListActivity
+office.note.geo+gfx  :: Skitch                                   :: com.evernote.skitch/.app.SkitchHomeActivity
+office.note.structured :: AndyUML                                  :: com.yeradis.android.yuml/.HomeActivity
+office.note.structured :: Mind Map Memo                            :: com.takahicorp.MindMap/.MindMap
+office.note.structured :: Mindjet                                  :: net.thinkingspace/.activities.LauncherActivity
+office.note.structured :: NoteLynX                                 :: com.astrodean.notelynx/.MainActivity
+office.task+cal      :: Agenda Widget                            :: com.roflharrison.agenda.plus/com.roflharrison.agenda
+office.task+cal      :: Astrid Tasks                             :: com.timsu.astrid/com.todoroo.astrid.activity.TaskLis
+office.task+cal      :: GTasks                                   :: org.dayup.gtask/.GoogleTaskActivity
+office.task+cal      :: S Planner                                :: com.android.calendar/.LaunchActivity
+
+
+
+# camera and augmented reality, sensors
+cam                  :: Camera                                   :: com.sec.android.app.camera/.Camera
+cam.ar               :: Layar                                    :: com.layar/.Main
+cam.ar               :: Qr Barcode Scanner                       :: appinventor.ai_progetto2003.SCAN/.Tab
+cam.ar               :: Satellite AR                             :: com.agi.android.augmentedreality/.ChooseSatsActivity
+cam.ar               :: ShopSavvy                                :: com.biggu.shopsavvy/.Main
+cam.ar               :: Wikitude                                 :: com.wikitude.samsung/com.mobilizy.wikitude.content.e
+cam.ar               :: junaio                                   :: com.metaio.junaio/.MainActivity
+sensor               :: AndroSensor                              :: com.fivasim.androsensor/.SensorActivity
+sensor               :: Audalyzer                                :: org.hermit.audalyzer/.Audalyzer
+sensor               :: AudioSpectrumMonitor                     :: my.sample/.AudioSpectrumMonitorActivity
+sensor               :: FrequencyGenerator                       :: pikumac.app.frequencygenerator/.FrequencyGeneratorAc
+sensor               :: Proximity Sensor Finder                  :: com.tigermonster.proxfinder/.ProxFinder
+sensor               :: Ruler Green                              :: RulerFreely.Common/.Ruler
+sensor               :: Smart Tools                              :: kr.aboy.tools/.LicenseCheck
+sensor               :: Speed Gun                                :: kr.sira.speed/.SmartSpeed
+sensor               :: Swiss Army Knife                         :: com.digital_and_dreams.android.swiss_army_knife/.Mai
+sensor               :: Thread Pitch                             :: kr.sira.thread/.ThreadGauge
+sensor               :: Tool Box                                 :: maxcom.toolbox.free/.MaxToolsMainAct
+sensor               :: TripAlarm                                :: com.tripAlarm/.TripAlarm
+sensor               :: Ulysse Gizmos                            :: com.binarytoys.ulysse/.UlysseGizmos
+sensor               :: UlysseSpeedometer                        :: com.binarytoys.speedometer/.UlysseSpeedometer
+sensor               :: gStrings                                 :: org.cohortor.gstrings/.GStrings
+
+
+
+# some map apps, incl. openstreetmap and location-based point-of-interest apps; travel schedule
+map                  :: Google Sky Map                           :: com.google.android.stardroid/.activities.SplashScree
+map                  :: MapQuest                                 :: com.mapquest.android.ace/.MainActivity
+map                  :: Maps                                     :: com.google.android.apps.maps/com.google.android.maps
+map                  :: MultiMap                                 :: radonsoft.net.multimap/.MultiMap
+map                  :: Navigation                               :: com.google.android.apps.maps/com.google.android.maps
+map                  :: Osmand                                   :: net.osmand/.plus.activities.MainMenuActivity
+map.misc             :: GPS Status                               :: com.eclipsim.gpsstatus2/.GPSStatus
+map.misc             :: GPSLogger                                :: com.mendhak.gpslogger/.GpsMainActivity
+map.misc             :: OSMTracker for Android™                  :: me.guillaumin.android.osmtracker/.activity.TrackMa
+map.misc             :: Trip Journal Lite                        :: com.iqapps.mobile.tripjournallite/com.iqapps.mobile.
+map.poi              :: Aloqa                                    :: com.aloqa.me.client_modules.android/.gui_client.over
+map.poi              :: XXX Örtliche                             :: de.dasoertliche.android/.DasOertliche
+map.poi              :: Latitude                                 :: com.google.android.apps.maps/com.google.android.maps
+map.poi              :: Munich                                   :: com.triposo.droidguide.munich/com.triposo.droidguide
+map.poi              :: Munich POI                               :: edu.hm.devcamp/.presentation.activities.SplashScreen
+map.poi              :: Places                                   :: com.google.android.apps.maps/com.google.android.maps
+map.poi              :: TripAdvisor                              :: com.tripadvisor.tripadvisor/.TripAdvisorTripAdvisorA
+rec.travel           :: DB Navigator                             :: de.hafas.android.db/de.hafas.j2me.Hafas
+rec.travel           :: Öffi Directions                          :: de.schildbach.oeffi/.directions.DirectionsActivity
+rec.travel           :: Öffi Network Plans                       :: de.schildbach.oeffi/.plans.PlansPickerActivity
+rec.travel           :: Öffi Stations                            :: de.schildbach.oeffi/.stations.StationsActivity
+
+
+
+# media playing and editing
+media.edit           :: Photo editor                             :: com.sec.android.mimage.photoretouching/.LauncherActi
+media.edit           :: Photoshop Express                        :: com.adobe.psmobile/.PhotoshopMobile
+media.edit           :: PicsArt                                  :: com.picsart.studio/com.socialin.android.photo.picsin
+media.edit           :: SBM                                      :: com.sketchbook/com.adsk.sketchbook.SketchBook
+media.edit           :: TapeMachine Lite                         :: com.samalyse.free.tapemachine/.StartActivity
+media.edit           :: Zen Brush                                :: jp.co.psoft.zenbrush/.ZenBrushActivity
+media.edit.vector    :: ID                                       :: com.brakefield.id/.Main
+media.edit.vector    :: MaplePaint                               :: com.mapleworks/.paint.PaintActivity
+media.misc           :: Live Art                                 :: net.portalgraphics.liveart/.SplashActivity
+media.misc           :: Rescan Media                             :: com.addz.mediascanner/.ScanActivity1
+media.play           :: Amazon MP3                               :: com.amazon.mp3/.client.activity.LauncherActivity
+media.play           :: Flash Player Settings                    :: com.adobe.flashplayer/.SettingsManager
+media.play           :: Gallery                                  :: com.cooliris.media/.Gallery
+media.play           :: Last.fm Free                             :: com.danikula.lastfmfree/.ui.DashboardActivity
+media.play           :: Music Hub                                :: com.samsung.music/.Main
+media.play           :: Music player                             :: com.android.music/.MusicBrowserTabActivity
+media.play           :: RockPlayer Lite                          :: com.redirectin.rockplayer.android.unified.lite/com.r
+media.play           :: Videos                                   :: com.sec.android.app.videoplayer/.activity.MainTab
+
+news.av              :: FM radio                                 :: com.sec.android.app.fm/.MainActivity
+news.av              :: SPB TV                                   :: com.spb.tv.am/com.spb.tvlib.app.activity.EulaActivit
+news.av              :: TuneIn Radio                             :: tunein.player/.Activity
+news.av              :: USRadios                                 :: com.ggomeze.usradios/.TabView
+news.av              :: Watch TV                                 :: com.watchtv/.TVForAndroidActivity
+news.av              :: ZeRadio                                  :: com.ZeRadio/.ZeRadio
+news.av              :: tagesschau                               :: de.cellular.tagesschau/.Splash
+news.paper           :: Deutsch News Online                      :: zapDroid.DeutschNewsOnline/.LunchList
+news.paper           :: FOCUS                                    :: de.cellular.focus/.Splash
+news.paper           :: Guardian Anywhere                        :: com.futureplatforms.android.guardian/.FrontScreenAct
+news.paper           :: News & Weather                           :: com.google.android.apps.genie.geniewidget/.activitie
+news.paper           :: SPIEGEL ONLINE                           :: de.spiegel.android.app.spon/de.spiegel.android.lib.s
+news.paper           :: World Newspapers                         :: com.world.newspapers/.Main
+news.sites           :: NASA Nowt                                :: com.kellytechnology.NASANowt/.FeedTitleView
+news.sites           :: Pulse                                    :: com.alphonso.pulse/.newsrack.NewsRackActivity
+news.sites.it        :: Drippler Galaxy Note                     :: drippler.samsung.galaxy.note/.splash
+news.sites.it        :: Golem                                    :: com.golem/.Golem
+news.sites.it        :: heise online                             :: de.heise.android.heiseonlineapp/.DashboardActivity
+
+sites.social         :: Blogger                                  :: com.google.android.apps.blogger/.TosActivity
+sites.social         :: Google+                                  :: com.google.android.apps.plus/.phone.HomeActivity
+sites.social         :: Messenger                                :: com.google.android.apps.plus/.phone.ConversationList
+sites.social         :: Social Hub                               :: com.sec.android.socialhub/.activity.SocialHubMainAct
+sites.social         :: XING                                     :: com.xing.android/.activities.MainActivity
+
+news.sw              :: AudioAnywhere                            :: com.audioanywhere/.StartActivity
+news.sw              :: Listen                                   :: com.google.android.apps.listen/.HomeActivity
+news.sw              :: RssDemon                                 :: com.meecel.feedreader.RssDemonAd/com.appyet.mobile.a
+news.sw              :: Unix & Linux News                        :: cz.ursimon.unixnews/.unixnews
+news.sw              :: YouTube                                  :: com.google.android.youtube/.app.froyo.phone.HomeActi
+
+
+
+# various ebook readers
+ebook.sw             :: Adobe Reader                             :: com.adobe.reader/.AdobeReader
+ebook.sw             :: Mantano Reader Free                      :: com.mantano.reader.android.trial/com.mantano.android
+ebook.sw             :: Readers Hub                              :: com.sec.android.app.readershub/.ReadersHub
+ebook.sw             :: RepliGo Reader                           :: com.cerience.reader.app/.RepliGoReader
+ebook.sw.div         :: Cool Reader                              :: org.coolreader/.CoolReader
+ebook.sw.div         :: EBookDroid                               :: org.ebookdroid/.core.RecentActivity
+ebook.sw.div         :: Moon+ Reader                             :: com.flyersoft.moonreader/.ActivityMain
+ebook.sw.div         :: TIViewer                                 :: TIViewer.Alex.com.free.www/.TIVFileListActivity
+ebook.sw.div         :: iReader                                  :: com.chaozh.iReader/.ui.activity.RecentBookListA
+
+
+
+# programming, scripting languages for android, text editor, terminal ide
+prg+shell            :: Android API Browser                      :: org.rubyandroid.apibrowser/.AndroidAPIBrowser
+prg+shell            :: GitHub Viewer                            :: net.flaxia.android.githubviewer/.StartActivity
+prg+shell            :: Jota Text Editor                         :: jp.sblo.pandora.jota/.Main
+prg+shell            :: Terminal Emulator                        :: jackpal.androidterm/.Term
+prg+shell            :: Terminal IDE                             :: com.spartacusrex.spartacuside/.Start
+prg+shell            :: Touchqode                                :: com.touchqode.editor/.CodeEditorActivity
+prg+shell            :: WebMasterLite                            :: com.welant.webmaster.DEMO/com.welant.webmaster.Edito
+
+prg.lang.misc        :: AndroidShell                             :: com.fourgstudio.androidshell/.AndroidShell
+prg.lang.misc        :: Java IDE (Android)                       :: com.t_arn.JavaIDEdroid/.MainActivity
+prg.lang.misc        :: Jruby Meetup Demo                        :: org.rubyandroid.demo.jruby_meetup_demo/.JrubyMeetupD
+prg.lang.misc        :: MyProcessing                             :: net.sytes.gopi.MyProcessingAD/.MyProcessing
+prg.lang.misc        :: Ruboto Core                              :: org.ruboto.core/.RubotoCoreActivity
+prg.lang.misc        :: Ruboto IRB                               :: org.ruboto.irb/.IRB
+prg.lang.misc        :: Ruboto Startup Timer                     :: org.ruboto.startup_timer/.StartupTimerActivity
+prg.lang.misc        :: pseudo irb                               :: org.splhack.android.irbapp/.IRB
+prg.lang.sl4a        :: BeanShell for Android                    :: com.googlecode.bshforandroid/.BshMain
+prg.lang.sl4a        :: JRuby for Android                        :: org.ruboto.sl4a/.JRubyMain
+prg.lang.sl4a        :: Lua for Android                          :: com.googlecode.luaforandroid/.LuaMain
+prg.lang.sl4a        :: PHP for Android                          :: com.irontec.phpforandroid/.PhpMain
+prg.lang.sl4a        :: Perl for Android                         :: com.googlecode.perlforandroid/.PerlMain
+prg.lang.sl4a        :: Python for Android                       :: com.googlecode.pythonforandroid/.PythonMain
+prg.lang.sl4a        :: Rhino for Android                        :: com.googlecode.rhinoforandroid/.RhinoMain
+prg.lang.sl4a        :: SL4A                                     :: com.googlecode.android_scripting/.activity.ScriptMan
+prg.lang.sl4a        :: Script Launcher                          :: org.androidideas.scriptlauncher/org.androidideas.com
+
+prg.sql              :: Remote DB                                :: com.quickDB/net.remoteDB.ui.activities.LauncherActiv
+prg.sql.sqlite       :: SQL note                                 :: net.saltfactory.apps.android.sqlnote/.RootActivity
+prg.sql.sqlite       :: aSQLiteManager                           :: dk.andsen.asqlitemanager/.aSQLiteManager
+prg.sql.sqlite       :: aShell                                   :: dk.andsen.aShell/.aShell
+
+
+</pre>
 
 
 <hr>
+<hr>
+
+<h3>Raw Addendum</h3>
+
+<p>We  can go a bit further and consider also the /system packages. As
+for  some  cases,  twlauncher does not use the official apk  name,  we
+standardize  on the names from <i>pm list packages -f</i>. At the  end
+of  this  sketch we get the list of packages not shown by  twlauncher.</p>
+
+<p>But  modifying  the  first perl scrap, you could  also  extend  the
+LISTING to include the real package name.</p>
+
 <pre>
+# get various package lists and massage them
+scp root@note:/data/system/packages* .
+ssh root@note pm list packages -f &gt; find.pm # ok, not find ...
+ssh root@note "find /*/app /*/framework/*.apk /mnt/asec/*/*.apk" |  \
+   egrep -v '^/data/app$|^/system/app$|^/system/framkework|^/mnt/asec$'   | \
+   sed -r 's! -&gt;.*!!;s!(-[0-9][0-9]*)?(/pkg)?\.apk$!!' | egrep -v '^\.drm$' | \
+   grep . | sort -u &gt; find.app
+ssh root@note "find /*/data" |  egrep -v '^/data/data$|^/system/data$' | \
+   sed -r 's! -&gt;.*!!;s!(^/[^/]*/[^/]*/[^/]*)/.*!\1!;s!-[0-9][0-9]*\.apk|\.apk!!' | \
+   egrep -v '^\.drm$' | grep . | sort -u &gt; find.data
 
-note to add: auto categorizer, manual categories, titanium. part of Samsungs TouchWiz UI modifications.
+cat find.pm | sed -r 's/^package://;s!=.*!!;s!-[0-9][0-9]*(/pkg)?\.apk$|(/pkg)?\.apk$!!' | \
+   sed 's!^/data/|^/system/|^/mnt/asec/!!;s!^data/|^app/|^framework/!!' |sort &gt; packages.pm
+cat find.app  | sed -r 's!^/data/|^/system/|^/mnt/asec/!!; s!^data/|^app/!!' | \
+   sed -r 's!-[0-9][0-9]*/pkg.apk|/pkg.apk!!' | sort -u &gt; packages.app
+cat find.data | sed -r 's!^/data/|^/system/!!; s!^data/|^app/!!' | sort -u &gt; packages.data
 
-I  cannot help but assume that Android devices were never  expected
-to  grow  to  Deskop  size, considering  user  interface,  application
-presentation  and  some sneak peeks into the framework  source.  Maybe
-Google  wanted to be polite and offer the user to install a dozen apps
-of his own.
+# twlauncher listing
+cat LISTING | sed 's!.*::!!;s!/.*!!' | sort -u | grep -v '^#' &gt; packages.twlaunch
 
-But  a  modern  Android runs on  different  hardware:  Desktop-size
-displays  (1280x800)  coupled  with Desktop-size RAM (1GB)  and  Flash
-sizes  already  suitable  to  a full-sized  Linux  or  Windows  "root"
-installation. Available space and possibilities tend to be used, so we
-have  standard  Android setups using 180 apps as part of the rom  blob
-with maybe 200 to 300 additional installs from the user.
+# replace java package names with package file names as per pm list packages -f
+perl -e '@h=`cat packages.twlaunch`; @p=`cat find.pm`;
+   for $h (@h){$h=~s/\n//;
+      @g=();
+      @g=grep{m!=\Q$h\E$! and s!^package:!! and s!=.*!!}@p if not @g;      
+      @g=grep{s!(-\d+)?(/pkg)?\.apk$!!;s!.*/!!;1}@g if @g;
+      if(@g){print @g}else{warn "!! twlaunch not in pm list packages: &gt;&gt;$h&lt;&lt;\n"}};
+' | sort -u &gt; packages.twlaunch2
 
-This  article describes an approach to use the default app launcher
-of  the  note to organize your apps and to reuse that data outside  of
-the  launcher,  e.g.  in  conjunction with  titanium  backup  and  apk
-management after e.g. flashing a new rom.
-
-Note that adding a single apps2sd app is identical to running a round
-of russian roulette for the core of the android framework.
+# and dump the packages NOT shown by twlaunch - useful to clean up once in a while
+# this should be old plugins, keys for paid apps, things just offering a receiver
+# (like that share-via-http helper) and the like
+cat packages.pm packages.app | sort -u &gt; packages.all
+cat packages.twlaunch2 packages.all | sort | uniq -u &gt; packages.hidden
+perl -e '@h=`cat packages.hidden`; @f=`cat find.app`; @p=`cat find.pm`;
+   for $h (@h){$h=~s/\n//;
+      @g=();
+      @g=grep{m!=\Q$h\E$! and s!^package:!! and s!=.*!!}@p if not @g;      
+      @g=grep{m!/\Q$h\E(-\d+)?(\.apk)?$!}@f if not @g;
+      @g=grep{s!(-\d+)?\.apk$!!;1}@g if @g;
+      if(@g){print @g }else{print "!! not found: &gt;&gt;$h&lt;&lt;\n"}};
+' | sort -u &gt; HIDDEN_OR_SYSTEM_INTERNAL
 </pre>
 
 
