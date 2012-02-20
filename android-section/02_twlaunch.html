@@ -127,7 +127,7 @@ android.twlauncher.decode -v launcher.db > VLISTING
 <pre>
 # selection from the output of cat VLISTING | sort | cut -b-120 
 
-# add fsck.k9 as a better email client than the ones below
+# add **fsck.k9** as a better email client than the ones below
 mail+web             :: Dolphin Browser HD                       :: mobi.mgeek.TunnyBrowser/.BrowserActivity
 mail+web             :: Email                                    :: com.android.email/.activity.Welcome
 mail+web             :: Firefox Beta                             :: org.mozilla.firefox_beta/.App
@@ -138,6 +138,7 @@ mail+web             :: Opera Mobile                             :: com.opera.br
 mail+web             :: ReadItLater                              :: com.ideashower.readitlater.free/com.ideashower.readi
 mail+web             :: UrlToPDF                                 :: com.nop.urltopdf/.UrlToPDF_Forground
 mail+web             :: Web Translator Lite                      :: jp.ne.sakura.knatt.webtranslatorlite/.MainActivity
+
 messaging            :: AndroIRC                                 :: com.androirc/.AndroIRC
 messaging            :: Talk                                     :: com.google.android.talk/.SigningInActivity
 messaging            :: eBuddy                                   :: com.ebuddy.android/.ui.StartupActivity
@@ -166,20 +167,31 @@ and.info             :: OS Monitor                               :: com.eolwral.
 and.info             :: Phone Explorer                           :: com.tbs.activity/.TbsMainActivity
 and.info             :: Under the Hood                           :: aws.apps.underthehood/.Main
 
-# ui tweaks; add clipper to complement clip ninja
+
+
+# clipboard support incl. support for boilerplate texts (clipper!)
+# add **clipper** in this list
+office.misc          :: FloatMemo(Free)                          :: com.psc.fukumoto.FloatMemo/com.psc.fukumoto.FloatMem
 and.misc             :: Clip Ninja                               :: com.qoobees.clipninja/.library.FightWindow
+# copy-ocr2text-clipboard
+office.misc          :: Copy Paste It Trial                      :: com.edwardkim.android.copyscreentextfree/com.edwardk
+
+
+
+# ui tweaks
 and.misc             :: LCD Density Modder Pro                   :: com.birdapi.android.dpipro/.activities.HomeActivity
 and.misc             :: Multicon                                 :: com.h9kdroid.multicon/.Multicon
-# cpu, memory etc, as a semi-transparent display
+# a small semi-transparent icon showing cpu, memory, etc
 and.misc             :: Cool Tool                                :: ds.cpuoverlay/.MagicCPUActivity
-
 # NTP
 and.misc             :: ClockSync                                :: ru.org.amip.ClockSync/.view.Main
+# display the owner on the lock screen
+and.misc             :: Owner                                    :: com.appengine.paranoid_android.lost/.InfoSetup
+# retain loudness in case of accidental changes
+and.misc             :: RingGuard                                :: com.x475aws.android.ringguard/.RingGuardPreferences
 
 # battery saving
 and.misc             :: JuiceDefender Ultimate                   :: com.latedroid.ultimatejuice/com.latedroid.juicedefen
-and.misc             :: Owner                                    :: com.appengine.paranoid_android.lost/.InfoSetup
-and.misc             :: RingGuard                                :: com.x475aws.android.ringguard/.RingGuardPreferences
 
 # event- or location-specific automation 
 and.misc             :: Tasker                                   :: net.dinglisch.android.taskerm/.Tasker
@@ -210,9 +222,6 @@ and.sec.app.perm     :: aSpotCat                                 :: com.a0soft.g
 
 
 # file manager local and remote, blue tooth
-files                :: Dateien                                  :: com.sec.android.app.myfiles/.MainActivity
-files                :: Download All Files                       :: com.hwkrbbt.downloadall/.MainActivity
-files                :: Downloads                                :: com.android.providers.downloads.ui/.DownloadsListTab
 files                :: File Expert                              :: xcxin.filexpert/.FileLister
 files.remote         :: AndFTP                                   :: lysesoft.andftp/.SplashActivity
 files.remote         :: Androbex                                 :: com.androbex.activity/.MainActivity
@@ -230,7 +239,6 @@ files.misc           :: Unrar Free                               :: com.newzdroi
 
 # more comfortable file selection (only offered by 3rd party apps?)
 files.selector       :: ASTRO                                    :: com.metago.astro/.SplashActivity
-files.selector       :: ASTRO Bluetooth Module                   :: com.metago.astro.network.bluetooth/.ASTROBluetoothAc
 files.selector       :: OI File Manager                          :: org.openintents.filemanager/.FileManagerActivity
 
 
@@ -248,9 +256,10 @@ net.debug            :: Shark                                    :: lv.n3o.shark
 net.debug            :: Speed Test                               :: org.zwanoo.android.speedtest/.MainTabActivity
 net.debug            :: ipconfig                                 :: com.mankind.ipconfig/.IpConfig
 
+net.prx.tun+socks    :: Orbot                                    :: org.torproject.android/.Orbot
+# some of these as well?
 net.prx.tun+socks    :: AutoProxy Lite                           :: com.mgranja.autoproxy_lite/.ProxyListActivity
 net.prx.tun+socks    :: OpenVPN Settings                         :: de.schaeuffelhut.android.openvpn/.OpenVpnSettings
-net.prx.tun+socks    :: Orbot                                    :: org.torproject.android/.Orbot
 net.prx.tun+socks    :: ProxyDroid                               :: org.proxydroid/.ProxyDroid
 net.prx.tun+socks    :: SSHTunnel(BETA)                          :: org.sshtunnel.beta/.SSHTunnel
 net.prx.tun+socks    :: VPN-Menu                                 :: com.vpn_menu/.activity_main
@@ -258,8 +267,6 @@ net.prx.tun+socks    :: VPN-Menu                                 :: com.vpn_menu
 net.ssh              :: ConnectBot                               :: org.connectbot/.HostListActivity
 net.ssh              :: SSHDroid                                 :: berserker.android.apps.sshdroid/.MainActivity
 net.ssh.misc         :: PortKnocker                              :: org.thebigmachine.portknocker/.PorkKnotList
-net.ssh.misc         :: SSHmote                                  :: com.zokama.sshmote/.SSHmote
-net.ssh.misc         :: ServerAssistant                          :: org.openobjectives.serverassistant/.MenuActivity
 
 net.vnc              :: PocketCloud                              :: com.wyse.pocketcloudfree/.SplashActivity
 net.vnc              :: VNC Viewer                               :: com.realvnc.viewer.android/.ConnectionsActivity
@@ -278,16 +285,16 @@ office               :: Docs                                     :: com.google.a
 office               :: IncSlide Lite                            :: com.oozic.apps.inslidelite/com.oozic.apps.inslide.Wh
 office               :: OfficeSuite                              :: com.mobisystems.editor.office_registered/com.mobisys
 office               :: OpenOffice Document Reader               :: at.tomtasche.reader/.ui.activity.OpenOfficeActivity
+# from Samsung
 office               :: Polaris Office                           :: com.infraware.polarisoffice/.OfficeMainActivity
 office               :: Project Schedule Free                    :: de.thorstensapps.ttf/.MainActivity
 office.misc          :: Calculator                               :: com.sec.android.app.calculator/.Calculator
-office.misc          :: Copy Paste It Trial                      :: com.edwardkim.android.copyscreentextfree/com.edwardk
-office.misc          :: FloatMemo(Free)                          :: com.psc.fukumoto.FloatMemo/com.psc.fukumoto.FloatMem
-office.misc          :: PrintBot                                 :: net.jsecurity.printbot/.chooser.FileChooser
-office.misc          :: Scanthing                                :: com.scanthing.android/.ui.DashboardActivity
 office.misc          :: TechCalc                                 :: com.roamingsquirrel.android.calculator/.Calculate
 office.misc          :: Translate                                :: com.google.android.apps.translate/.HomeActivity
 office.misc          :: iTranslate                               :: at.nk.tools.iTranslate/com.sonicomobile.itranslate.g
+# printing and scanning (ocr by upload to google docs)
+office.misc          :: PrintBot                                 :: net.jsecurity.printbot/.chooser.FileChooser
+office.misc          :: Scanthing                                :: com.scanthing.android/.ui.DashboardActivity
 office.note.geo+gfx  :: Catch                                    :: com.threebanana.notes/.Notes
 office.note.geo+gfx  :: Evernote                                 :: com.evernote/.ui.HomeActivity
 office.note.geo+gfx  :: Mini diary                               :: com.sec.android.app.minidiary/.MiniDiaryListActivity
@@ -296,10 +303,11 @@ office.note.struct   :: AndyUML                                  :: com.yeradis.
 office.note.struct   :: Mind Map Memo                            :: com.takahicorp.MindMap/.MindMap
 office.note.struct   :: Mindjet                                  :: net.thinkingspace/.activities.LauncherActivity
 office.note.struct   :: NoteLynX                                 :: com.astrodean.notelynx/.MainActivity
+office.task+cal      :: S Planner                                :: com.android.calendar/.LaunchActivity
+
+# the best calendar widget and the best task application
 office.task+cal      :: Agenda Widget                            :: com.roflharrison.agenda.plus/com.roflharrison.agenda
 office.task+cal      :: Astrid Tasks                             :: com.timsu.astrid/com.todoroo.astrid.activity.TaskLis
-office.task+cal      :: GTasks                                   :: org.dayup.gtask/.GoogleTaskActivity
-office.task+cal      :: S Planner                                :: com.android.calendar/.LaunchActivity
 
 
 
@@ -348,9 +356,9 @@ map.poi              :: Munich POI                               :: edu.hm.devca
 map.poi              :: Places                                   :: com.google.android.apps.maps/com.google.android.maps
 map.poi              :: TripAdvisor                              :: com.tripadvisor.tripadvisor/.TripAdvisorTripAdvisorA
 rec.travel           :: DB Navigator                             :: de.hafas.android.db/de.hafas.j2me.Hafas
-rec.travel           :: Öffi Directions                          :: de.schildbach.oeffi/.directions.DirectionsActivity
-rec.travel           :: Öffi Network Plans                       :: de.schildbach.oeffi/.plans.PlansPickerActivity
-rec.travel           :: Öffi Stations                            :: de.schildbach.oeffi/.stations.StationsActivity
+rec.travel           :: Oeffi Directions                         :: de.schildbach.oeffi/.directions.DirectionsActivity
+rec.travel           :: Oeffi Network Plans                      :: de.schildbach.oeffi/.plans.PlansPickerActivity
+rec.travel           :: Oeffi Stations                           :: de.schildbach.oeffi/.stations.StationsActivity
 
 
 
@@ -373,7 +381,8 @@ media.play           :: Music Hub                                :: com.samsung.
 media.play           :: Music player                             :: com.android.music/.MusicBrowserTabActivity
 media.play           :: RockPlayer Lite                          :: com.redirectin.rockplayer.android.unified.lite/com.r
 media.play           :: Videos                                   :: com.sec.android.app.videoplayer/.activity.MainTab
-
+  
+# I should remove a few rarely used ones
 news.av              :: FM radio                                 :: com.sec.android.app.fm/.MainActivity
 news.av              :: SPB TV                                   :: com.spb.tv.am/com.spb.tvlib.app.activity.EulaActivit
 news.av              :: TuneIn Radio                             :: tunein.player/.Activity
@@ -392,7 +401,6 @@ news.sites           :: Pulse                                    :: com.alphonso
 news.sites.it        :: Drippler Galaxy Note                     :: drippler.samsung.galaxy.note/.splash
 news.sites.it        :: Golem                                    :: com.golem/.Golem
 news.sites.it        :: heise online                             :: de.heise.android.heiseonlineapp/.DashboardActivity
-
 sites.social         :: Blogger                                  :: com.google.android.apps.blogger/.TosActivity
 sites.social         :: Google+                                  :: com.google.android.apps.plus/.phone.HomeActivity
 sites.social         :: Messenger                                :: com.google.android.apps.plus/.phone.ConversationList
@@ -420,7 +428,7 @@ ebook.sw.div         :: iReader                                  :: com.chaozh.i
 
 
 
-# programming, scripting languages for android, text editor, terminal ide
+# programming, scripting languages for android, text editor, **terminal ide**
 prg+shell            :: Android API Browser                      :: org.rubyandroid.apibrowser/.AndroidAPIBrowser
 prg+shell            :: GitHub Viewer                            :: net.flaxia.android.githubviewer/.StartActivity
 prg+shell            :: Jota Text Editor                         :: jp.sblo.pandora.jota/.Main
@@ -429,18 +437,7 @@ prg+shell            :: Terminal IDE                             :: com.spartacu
 prg+shell            :: Touchqode                                :: com.touchqode.editor/.CodeEditorActivity
 prg+shell            :: WebMasterLite                            :: com.welant.webmaster.DEMO/com.welant.webmaster.Edito
 
-prg.lang.misc        :: AndroidShell                             :: com.fourgstudio.androidshell/.AndroidShell
-prg.lang.misc        :: Java IDE (Android)                       :: com.t_arn.JavaIDEdroid/.MainActivity
-prg.lang.misc        :: Jruby Meetup Demo                        :: org.rubyandroid.demo.jruby_meetup_demo/.JrubyMeetupD
 prg.lang.misc        :: MyProcessing                             :: net.sytes.gopi.MyProcessingAD/.MyProcessing
-prg.lang.misc        :: Ruboto Core                              :: org.ruboto.core/.RubotoCoreActivity
-prg.lang.misc        :: Ruboto IRB                               :: org.ruboto.irb/.IRB
-prg.lang.misc        :: Ruboto Startup Timer                     :: org.ruboto.startup_timer/.StartupTimerActivity
-prg.lang.misc        :: pseudo irb                               :: org.splhack.android.irbapp/.IRB
-prg.lang.sl4a        :: BeanShell for Android                    :: com.googlecode.bshforandroid/.BshMain
-prg.lang.sl4a        :: JRuby for Android                        :: org.ruboto.sl4a/.JRubyMain
-prg.lang.sl4a        :: Lua for Android                          :: com.googlecode.luaforandroid/.LuaMain
-prg.lang.sl4a        :: PHP for Android                          :: com.irontec.phpforandroid/.PhpMain
 prg.lang.sl4a        :: Perl for Android                         :: com.googlecode.perlforandroid/.PerlMain
 prg.lang.sl4a        :: Python for Android                       :: com.googlecode.pythonforandroid/.PythonMain
 prg.lang.sl4a        :: Rhino for Android                        :: com.googlecode.rhinoforandroid/.RhinoMain
