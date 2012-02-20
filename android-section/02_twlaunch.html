@@ -51,17 +51,18 @@ directory of the script-archive</a>.</p>
 <hr>
 
 <p>A  modern Android runs on hardware comparable to a Desktop PC,  and
-may have multiple hundred applications installed. In case of the Note,
-we have about 180 apps as part of the system (/system), plus about 300
-apps in my case (/data and sdcard).</p>
+will  have hundreds of applications installed. In case of a Note using
+Android  gingerbread,  we  have about 180 apps as part of  the  system
+(/system), plus about 300 apps in my case (/data and sdcard).</p>
 
 <p>The normal launcher approach is to either offer a sorted list, or a
 graphical   icon   based  multi-page  mess   using   the   first-come,
 first-displayed  principle, which is not conductive to quickly  locate
-and launch a specific app.</p>
+and  launch  a  specific  app. A few apps might be  put  on  the  home
+screens, but that is insufficient.</p>
 
 <p>There  are some apps that offer use of categories like  <i>titanium
-backup</i>,  only inside the app. A few offer access to the categories
+backup</i>, but only inside the app. A few offer access to the categories
 in  form  of  a  widget  on  the home  screen  (these  would  fit  the
 requirements).  At least one app attempts to automate categorizing and
 -  if  memory serves - even to crowd-source categories  (usually  only
@@ -69,34 +70,43 @@ lumping  too  many  apps in too broad a category  or  outright  saying
 'unknown';  though  it  also  permits manual  categorization  per  app
 install).</p>
 
+<p>The  categorization shouldn't be restricted or accessible only  the
+the  app  itself  (a widget might help the user when  search  apps  or
+launching an app), but rather be available for reuse in other apps and
+other  usage scenarios. All in all, categorization is a main issue for
+every  user  with  more  than  a  few  apps,  and  should  dealt  with
+centrally (I'm curious about ICS's take on this issue - if any).</p>
+
 <p>Samsung's  Galaxy  Note  comes  with the  TouchViz  user  interface
 <i>twlauncher</i>  app  as  the standard launcher. While  the  app  is
 neither  stable when opening a dozen folders in sequence, nor fast  to
 reload after execution of some(?) programs, it at least offers folders
 on  the  app list 'pages' and thus a possibility to sort  applications
-into folders with (possibly hierarchical) category names.</p>
+into  folders with (possibly hierarchical) category names (but failing
+the reuse requirement from above).</p>
 
-<p>Image  me  sorting 300 apps into folders. VNC apps go  to  net.vnc,
-connectbot goes to net.ssh, ...</p>
+<p>Image  me  sorting 300 apps into folders. VNC apps go  to  <i>net.vnc</i>,
+<i>connectbot</i> goes to <i>net.ssh</i>, ...</p>
 
 <p  class=anno>(of  course, the IMHO best scheme would be  a  launcher
 that doesn't have a database, but instead just uses filesystem objects
-to  map apk files to screen names, categories and screen locations - a
-simple   file  browser  would  be  enough  to  access  and  edit   the
-database)</p>
+to  map  apk files to screen names, categories and screen locations  -
+perl  and  the  shell, or alternately a simple file browser  would  be
+enough to access and edit the database)</p>
 
 <p>It  would  be nice to reuse these categories when  managing  backup
 files  and  apps  inside and outside of <i>titanium  backup</i>.  This
 would  also  help  when  flashing a new ROM or  when  recovering  from
 misbehaving apps.</p>
 
-<p>Recovering  an old database: <i>twlauncher</i> is quite  forgiving,
-so it is possible to kill -STOP it, copy in an old database version in
-the  application directory in /data/data, kill -TERM it, and then  use
-the  categories  from  the  old database,  updated  to  the  currently
-installed  apps.  So the manual categorizing effort can  be  recovered
-even in case of problems. Nice to know. You also can use sqlite3 and 
-its .dump command to get at the database contents in SQL format.</p>
+<p>Concerning  recovering an old database: <i>twlauncher</i> is  quite
+forgiving, so it is possible to kill -STOP it, copy in an old database
+version in the application directory in /data/data, kill -TERM it, and
+after  it's  restart  use the categories from the  injected  database,
+updated  to  the currently installed apps. So the manual  categorizing
+effort  can  be recovered even in case of problems. Nice to know.  You
+also  can  use  sqlite3 and its .dump command to get at  the  database
+contents in SQL format.</p>
 
 <p>Enter    a   small   Perl   experiment   by   the   name   of    <a href="https://github.com/jakobi/script-archive/blob/master/android/android.twlauncher.decode">android.twlauncher.decode</a>.
 The script's output is a readable 3 column list of the folders, screen
@@ -132,10 +142,10 @@ messaging            :: AndroIRC                                 :: com.androirc
 messaging            :: Talk                                     :: com.google.android.talk/.SigningInActivity
 messaging            :: eBuddy                                   :: com.ebuddy.android/.ui.StartupActivity
 
-voice+phone           :: Auto Redial                              :: com.adengappa/.Redial
-voice+phone           :: Call Recorder                            :: com.appstar.callrecorder/.TabbedActivity
-voice+phone           :: Callback Assistant                       :: callbackassistant.alarmspider.com/.AfterInstallWindo
-voice+phone           :: Voice recorder                           :: com.sec.android.app.voicerecorder/.VoiceRecorderMain
+voice+phone          :: Auto Redial                              :: com.adengappa/.Redial
+voice+phone          :: Call Recorder                            :: com.appstar.callrecorder/.TabbedActivity
+voice+phone          :: Callback Assistant                       :: callbackassistant.alarmspider.com/.AfterInstallWindo
+voice+phone          :: Voice recorder                           :: com.sec.android.app.voicerecorder/.VoiceRecorderMain
 
 
 
@@ -282,10 +292,10 @@ office.note.geo+gfx  :: Catch                                    :: com.threeban
 office.note.geo+gfx  :: Evernote                                 :: com.evernote/.ui.HomeActivity
 office.note.geo+gfx  :: Mini diary                               :: com.sec.android.app.minidiary/.MiniDiaryListActivity
 office.note.geo+gfx  :: Skitch                                   :: com.evernote.skitch/.app.SkitchHomeActivity
-office.note.structured :: AndyUML                                  :: com.yeradis.android.yuml/.HomeActivity
-office.note.structured :: Mind Map Memo                            :: com.takahicorp.MindMap/.MindMap
-office.note.structured :: Mindjet                                  :: net.thinkingspace/.activities.LauncherActivity
-office.note.structured :: NoteLynX                                 :: com.astrodean.notelynx/.MainActivity
+office.note.struct   :: AndyUML                                  :: com.yeradis.android.yuml/.HomeActivity
+office.note.struct   :: Mind Map Memo                            :: com.takahicorp.MindMap/.MindMap
+office.note.struct   :: Mindjet                                  :: net.thinkingspace/.activities.LauncherActivity
+office.note.struct   :: NoteLynX                                 :: com.astrodean.notelynx/.MainActivity
 office.task+cal      :: Agenda Widget                            :: com.roflharrison.agenda.plus/com.roflharrison.agenda
 office.task+cal      :: Astrid Tasks                             :: com.timsu.astrid/com.todoroo.astrid.activity.TaskLis
 office.task+cal      :: GTasks                                   :: org.dayup.gtask/.GoogleTaskActivity
