@@ -2,8 +2,8 @@
 <HEAD>
 <link rel="icon"          href="/favicon.png"/>
 <link rel="shortcut icon" href="/favicon.png"/>
-<meta name="description" content="Coping with Android - Setup as a Unix Box: survival unix shell chroot debian ubuntu google android tutorial samsung galaxy note vnc X11 xvnc bash office arm armel">
-<meta name="keywords" content="coping android setup as unix box survival shell chroot debian ubuntu google tutorial samsung galaxy note vnc xvnc bash office arm armel">
+<meta name="description" content="Coping with Android - Setup as a Unix Box: survival unix shell chroot debian ubuntu google android tutorial samsung galaxy note vnc X11 xvnc bash office arm armel jailbreak root rooting">
+<meta name="keywords" content="coping android setup as unix box survival shell chroot debian ubuntu google tutorial samsung galaxy note vnc xvnc bash office arm armel jailbreak root rooting">
 <meta name="author" content="Peter Jakobi">
 <TITLE>Coping with Android - Setup as a Unix Box</TITLE>
 <style type="text/css"><!--
@@ -48,6 +48,8 @@ below (android-setup-example-files.tgz).</p>
 collection  of static armel binaries, the tree structure of the chroot
 on  the  Galaxy note, as well as scripts and configuration files  used
 for monitoring, backup, etc from a remote Linux server via cron.</p>
+
+<p class=anno>Last changes: <BR>20120222 abin/CHECK + CHROOT.mount, system/xbin/CHROOT.umount</p>
 
 <p>Current  versions of the more interesting scripts will be placed in
 above   directory   (if   Android-specific)  or   elsewhere   in   the
@@ -1378,6 +1380,13 @@ and improves FPU support. However the suggested repositories for armhf failed
 already in stage one of debootstrap in early January. 
 This should prove interesting  in the medium term. When it's entered 'testing', 
 just  replace <i>armel</i> with <i>armhf</i> and recreate the chroot. 
+<li>even the most program easily hard crashes the Note when using
+shared memory: statnet/statnetd, package netdiag. See the next part,
+subsection memories, for the work-around, as with X, the shared-memory kernel issues
+become fully unavoidable (consider placing a work-around in 
+abin/CHROOT.mount to activate depending on a file test of e.g. /i/zz_CHROOT_SHM). 
+Don't forget to crash-test when using a different kernel as the bug might no longer occur.
+
 </ul>
 
 <p class=anno>(as of 20120214,

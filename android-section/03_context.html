@@ -59,84 +59,55 @@ furthermore, the device is an always connected internet computer, with
 all  the  inherent  security  issues  and  third-party  cravings  for
 access to device and user profiling data.</p>
 
-<p class=anno>{but this is merely the optimistic view point}</p>
+<p class=anno>{but this only is the optimistic view point for sunny days}</p>
 
-<p  class=anno>{it sure takes quite a bit of time once in a while, but
-Richard  M.  Stallman's caution is unfortunately vindicated  time  and
-again}</p>
+<!-- ------------------------------------------------------------------------------------------------- -->
+<hr>
+<h3>Packaging Methods and Security Updates</h3>
 
-<pre>
+<H4>Giant Android Rom Blobs Vs. 30+ Years of Computer Science</h4>
 
-when  considering modern it and hardware aspects: like battery  saving
-by  local caching instead of network access: the implementation  costs
-both includes the savings from the reduced load of our servers and the
-reduced value of the user profile per user.
+<h4>Gingerbread and Market Issues</h4>
 
-http://www.itworld.com/mobile-wireless/251508/can-android-phone-run-without-google?source=ITWNLE_nlt_wireless_2012-02-21
-(but still android-only, and some questionable alternatives, and no solution of updates and security ...)
+Note that most ROM components are not available on the existing market
+structure. Better yet, any attempt to link them to the market triggers
+very  interesting failures (requiring Root, Market Fixer and  Titanium
+Backup to recover).
 
-http://www.itworld.com/mobile-wireless/250628/why-android-will-never-be-closed?source=ITWNLE_nlt_wireless_2012-02-21
-closing the soruce: unlikely as they already have most of the benefits w/o the pr damage. 
-But is it really open as in cook-your-own-easily in the first place??
+Note the inability to buy some apps in the market despite a fully working free test-app (for me this mostly security-related apps)
 
-
-reinventing wheels, with small differences:
-sonderlocken: ipc -> binder
-shm -/-> ashmem (lklm: a small extension to ramfs is better)
-
-https://linaro.papyrs.com/KWG2011-ANDROID-WAKELOCK-UPSTREAMING
-
-logget -> http://elinux.org/Mainline_Android_logger_project
-
-https://blueprints.launchpad.net/linux-linaro/+spec/linaro-kernel-android-upstreaming
-hopefully...
-
-http://elinux.org/Android_Binder...
-https://docs.google.com/document/pub?id=1IC9yOXj7j6cdLLxWEBAGRL6wl97tFxgjLUEHIX3MSTs&pli=1 systemd/journal vs syslog analysis
-
-Logging is a crucial part of service management. On Unix, most running services connect to syslog to write log messages. In systemd, we built logging into the very core of service management: since Fedora 16 all services started are automatically connected to syslog with their standard output and error output. Regardless whether a service is started at early boot or during normal operation, its output ends up in the system logs. Logging is hence something so central, that it requires configuration to avoid it, and is turned from opt-in to opt-out. The net effect is a much more transparent, debuggable and auditable system. Transparency is no longer just an option for the knowledgeable, but the default.
+Note the uiderrors.txt issues
 
 
+<!-- ------------------------------------------------------------------------------------------------- -->
+<hr>
+<h3>A Look At Internet Traffic</H3>
+
+<h4>Analysis<h4>
+
+<h4>Firewalls and Android Permissions/Intents/Receivers<h4>
+
+<!-- ------------------------------------------------------------------------------------------------- -->
+<hr>
+<h3>Kernel Changes - aka Not-Invented-Here</h3>
+
+We've stumbled on a number of changes from standard kernel that lead to
+bugs and ugly work-arounds: 
+
+- Unreliable Sleep and Wakelocks.
+- Shared-Memory. 
+
+A short reading list:
 
 
-big firmware blob and chain vs security updates
 
-lack of proper package management
-
-mixing security and package management - Oops, I xml'ed it again
-
-core of the framework's  security and package management and the packages.xml/sdcard/uiderr.txt symptoms of its scaling problems. 
-
-FW - firewall lack
-
-an interesting use of OSS not returning anything
-
-use of OSS to disempower 
-
-recurring netstat output for network connectivity
-
-LBE, Permissions-Denied (both  market) and Android permissions/intents/receivers
-including the soft denial and IMEI issue in CM.
-
-Summary:  I don't even value certain subsets of my privacy that  much.
-But  the lack of bug and security fixes, artificially shortened device
-life time is already a bit much, even w/o adding in the privacy issues.
-
-(Naturally,  when considering business secrets, any smartphones  ought
-
-a la thin clients
-
-to  be forbidden, or at very least restricted to graphics-only  access
-to terminal servers permitting working on ... using e.g RDP or VNC)
-
-</pre>
-
-<p  class=anno>Note  that the issues raised are generic to  all  newer
-smartphones and tablets.</p>
 
 
 
 <!-- ------------------------------------------------------------ -->
+<hr>
+<p  class=anno>Note  that the issues raised above are generic to  all  newer
+smartphones and tablets.</p>
  
 <hr>
 <p>Back to the <a href="index.html">Android Section Overview</a>.</p>
