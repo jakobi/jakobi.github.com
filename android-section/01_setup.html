@@ -725,6 +725,118 @@ user account or for root. Running the app is not required for this.</p>
 
 <p><b>Errata: Terminal IDE screenshot?</b></p>
 
+<h4>Interacting with the Android Framework</h4>
+
+<p>We  can use the <i>am</i> shell command to invoke java entry  point
+classes  and send intents to the framework-side. As am invocations can
+be  lengthy,  a  small wrapper for use in chroot or android  shell  is
+helpful:                                                            <a href="https://github.com/jakobi/script-archive/blob/master/android/dir.android-unix-userspace/VIEW">VIEW</a>.
+See  the script itself for more details. To get supported entry points
+and  mime-types,  check the manifest file included in the  application
+apk.  Note  that the am is a debugging tool and doesn't return  proper
+result  values.</p>
+
+<pre>
+# some examples
+VIEW CALL tel:3311                    # am start -a android.intent.action.CALL tel:3311 # actually do the call
+VIEW      tel:3311                    # am start -a android.intent.action.VIEW tel:3311 # view entry (same as DIAL)
+VIEW /long/path/file.mkv              # am start -a android.intent.action.VIEW -d file:///long/path/file.mkv \
+                                      # -n com.clov4r.android.nil/com.clov4r.android.nil.MainActivity
+VIEW 'geo:NewYork,USA'                # am start geo:NewYork,USA / am start 'geo:0,0?q=NewYork,USA'
+VIEW http://leo.org                   # am start http://leo.org / am start -a android.intent.action.VIEW \
+                                      # -n com.android.browser/.BrowserActivity -d http://leo.org
+# display home screen                 # am start -a android.intent.action.MAIN -c android.intent.category.HOME 
+# view contact entry # 815            # am start -a android.intent.action.VIEW  -d content://contacts/people/815 \
+                                      # -t vnd.android.cursor.item/person # required to resolve to contacts app (!?)
+</pre>
+
+
+<p class=anno>Further reading: 
+<a href="http://developer.android.com/guide/appendix/g-app-intents.html">Intents List: Invoking Google Applications</a>,
+<a href="http://developer.android.com/reference/android/content/Intent.html">Intents, (Broadcast-)Receivers, Background Services</a>, 
+<a href="http://www.kandroid.org/online-pdk/guide/instrumentation_testing.html">Instrumentation Testing with AM</a>, 
+<a href="http://developer.android.com/reference/android/app/ActivityManager.html">ActivityManager.html</a>, 
+Helpful apps include <i>Android Intent Playground</i>, <i>ManifestViewer</i>, and <i>Intent Intercept</i>.
+</p>
+
+<p  class=anno>(I cannot find any content://com.android.contacts/  URI
+examples  for contact search by name and display of result list in the
+contacts          app          (excluding          maybe          just
+content://com.android.contacts/phone_lookup/&lt;NUMBER&gt;)   -  every
+example encodes the query, possibly including some pseudo-SQL and then
+iterates  using a database cursor, and maybe then triggering a display
+intent  of an individual numeric contact &lt;ID&gt;. So this seems  to
+require  more than a simple am intent command: a bit of programming in
+Java or SL4A or just fully bypassing the framework and parsing the raw
+contacts  database,  similar to what I'll show in the second  article.
+It's  however  quite  annoying that some schemes like  geo:  URIs  are
+expressive  enough  to include arbitrary queries, while on  the  other
+hand the contacts provider requires extra effort - besides crashing on
+most  URIs.  Search intents using the quicksearchbox also fail,  as  I
+don't  seem to be able to successfully provide a query string. Intents
+do expose some internals for reuse, but Google's design is fragile and
+lacks  standardization,  making intents for ipc and application  reuse
+needlessly difficult to unusable)</p>
+
+<p>For the opposite direction, we need to start Unix commands from the
+framework.  This  can  be as simple as Java  invoking  system()  (e.g.
+<i>tasker</i>  invoking  shell  scripts  depending  on  location,   or
+regularly  running  the  "fake" cron  <i>abin/CRON.15min</i>  as  used
+below).  Or as indirect as using intents. Both apps and intents can be
+placed  as icons on the home screen to trigger the action; for intents
+consider apps like <i>xShortcut</i> or <i>Any Cut</i>.</p>
+
+<p>Intent example: Install <i>Scripting Languages for Android/SL4A</i>
+and  SL4A Perl (if you see force-close, uninstall and reinstall  using
+the  SL4A  Perl  installer). We want to invoke a shell  command  using
+intents,   more   specifically   a   Perl  script.   We   use   SL4A's
+LAUNCH_BACKGROUND_SCRIPT intent with the ScriptingLayerServiceLauncher
+entry  point  to invoke the script. On the shell, you can  create  and
+invoke this intent as follows:</p>
+
+<pre>
+am start -a com.googlecode.android_scripting.action.LAUNCH_BACKGROUND_SCRIPT \
+   -n com.googlecode.android_scripting/.activity.ScriptingLayerServiceLauncher \
+   -e com.googlecode.android_scripting.extra.SCRIPT_PATH \
+   /x/tmp/test.pl
+</pre>
+
+<p>As  we use SL4A already for the intent example, let's do  something
+more interesting: add three lines to display a small framework widget.
+As a small lookahead to the chroot setup later on, add another line to
+have SL4A Perl invoke the chroot's Perl with a second script, which in
+turn  demonstrates use of framework graphical elements from inside the
+chroot.  This  works,  as su/CHROOT.run  retains  the  AP_HOST/AP_PORT
+environment   variables  from  SL4A  acting  as  the   "framework-side
+graphical server". Here are the scripts used for this example:</p>
+
+<pre>
+# /x/tmp/test.pl - the first script as run from android shell or chroot via intent
+
+# su is required for chroot to work 
+# (possibly due to SL4A id (e.g. app_247) being undefined inside the chroot?)
+use Android;
+my  $droid   = Android->new();
+$droid->makeToast('Hello, Perl!');
+system("su -c '/system/xbin/CHROOT.run perl /x/tmp/test2.pl' > /x/tmp/test2.out 2>&1");
+my $rc=$?>>8;
+$droid->makeToast("returns $rc");
+</pre>
+<br>
+<pre>
+# /x/tmp/test2.pl - interacting with android from within the chroot
+
+BEGIN{push @INC, "/mnt/sdcard/com.googlecode.perlforandroid/extras/perl/site_perl"};
+use Android;
+my  $droid   = Android->new();
+$droid->makeToast('Hello from the Chroot, Perl!');
+</pre>
+
+<p              class=anno>Further             reading:             <a href="http://code.google.com/p/android-scripting/">SL4A</a>   and   <a href="http://code.google.com/p/android-scripting/wiki/RemoteControl">remote
+control</a>.</p>
+
+
+
 <h4>Networking</h4>
 
 <p>Browsing:  some  providers  like to mangle HTML pages  and  provide
@@ -1669,7 +1781,7 @@ Android:
 ...
 </p>
 
-<p class=anno>jakobi(at)acm.org, 2012-01 - 2012-02</p>
+<p class=anno>jakobi(at)acm.org, 2012-01 - 2012-03</p>
 
 </BODY>
 </HTML>
