@@ -167,6 +167,7 @@ some of the more annoying and power hungry apps in your firmware (kies, socialhu
 
 
 
+<br>
 <h4>The Whys of Rooting</H4>
 
 Besides  getting faster access to upstream security and bug fixes than
@@ -191,7 +192,7 @@ Thus for me, the conclusion was: <i>so what</i>.
 
 
 
-<h4>A Sabbatical for Research</h4>
+<br><h4>A Sabbatical for Research</h4>
 
 <p>ROMs  are very device specific, so Android ecosystem and  community
 are  <i>extremely fragmented</i>: <b>Good community support and custom
@@ -231,7 +232,7 @@ currently still lack blobs for camera and accelerated display.</p>
 
 
 
-<h4>Pre-Flashing Checklist</h4>
+<br><h4>Pre-Flashing Checklist</h4>
 
 
 <ul>
@@ -257,7 +258,7 @@ currently still lack blobs for camera and accelerated display.</p>
 </ul>
 
 
-<h4>The Way of Rooting (Tourist Travel Sketch, with dog-eared threads)</h4>
+<br><h4>The Way of Rooting (Tourist Travel Sketch, with dog-eared threads)</h4>
 
 <p>At the end of the research phase, you should have selected a target
 custom  ROM, and maybe one or more intermediate steps if you start out
@@ -311,7 +312,7 @@ few Android makers that actually publish ROM updates.
 
 
 
-<h4>Post-Flashing Checklist</H4>
+<br><h4>Post-Flashing Checklist</H4>
 
 <ul>
 <li>check /data/system/uiderrors.txt (chown/chgrp as required as root or try CFROOT's
@@ -361,7 +362,7 @@ few Android makers that actually publish ROM updates.
 </ul>
 
 
-<h4>Software</h4>
+<br><h4>Software</h4>
 
 <p>1. Nice to have market apps to improve on Android graphical offerings:</p>
 <ul>
@@ -495,7 +496,7 @@ Note,  let's get to the more interesting parts of this article.</p>
 
 
 
-<h4>Differences  from  a real Linux system</h4>
+<br><h4>Differences  from  a real Linux system</h4>
 
 <p>libc  and  the most visible problem: Google reinvented an  embedded
 small  libc  clone  by  the name of bionic, which  together  with  the
@@ -550,7 +551,7 @@ upstream into the Linux kernel sources)</p>
 
 
 
-<h4>Notes on Functionality and Commands</h4>
+<br><h4>Notes on Functionality and Commands</h4>
 
 <p>Editing  text:  a  simple vi clone is part of busybox, and  can  be
 found  in /system/xbin, and as part of <i>sshdroid</i> and <i>terminal
@@ -666,7 +667,7 @@ R -        26203     1 root     S     2892  0.3   0  0.0 /usr/bin/dbus-daemon --
 
 
 
-<h4>Treasure Trove Terminal IDE</h4>
+<br><h4>Treasure Trove Terminal IDE</h4>
 
 <p>(there's no need to use java and the ide to really profit from installing and using <i>terminal ide</i>)</p>
 
@@ -725,7 +726,8 @@ user account or for root. Running the app is not required for this.</p>
 
 <p><b>Errata: Terminal IDE screenshot?</b></p>
 
-<h4>Interacting with the Android Framework</h4>
+<br>
+<h4>Interacting with the Android Framework and the Android GUI</h4>
 
 <p>We  can use the <i>am</i> shell command to invoke java entry  point
 classes  and send intents to the framework-side. As am invocations can
@@ -843,7 +845,7 @@ control</a>.</p>
 
 
 
-<h4>Networking</h4>
+<br><h4>Networking</h4>
 
 <p>Browsing:  some  providers  like to mangle HTML pages  and  provide
 different  resolution images or even embed extra javascript in  pages.
@@ -1006,7 +1008,7 @@ real inbound firewall (<i>system/xbin/FW</i>).</p>
 
 
 
-<h4>Setting up the filesystems</h4>
+<br><h4>Setting up the filesystems</h4>
 
 <p>Let  us  create  an SSD-style 4MB-aligned  partitioning  scheme  by
 starting  the first partition at 8192 and have all partitions start at
@@ -1072,7 +1074,7 @@ to a fixed start of journal; not checked)</p>
 
 
 
-<h4>Debootstrap</h4>
+<br><h4>Debootstrap</h4>
 
 <p>Run  stage  1  on the Linux Box and copy the results  to  the
 chroot  filesystem.  Both  stable (squeeze) and testing  (wheezy)  are
@@ -1201,7 +1203,7 @@ cat FIND.chroot | cpio -o -H crc &gt; /i/chroot-initial-debootstrap.cpio
 
 
 
-<H4>Post Bootstrap Package Installation and Cleanup</H4>
+<br><H4>Post Bootstrap Package Installation and Cleanup</H4>
 
 <p>Install  required  application  packages, then you  can  optionally
 install  one or more of the major meta-packages suggested by  tasksel.
@@ -1281,7 +1283,7 @@ aptitude purge mono-runtime libmono-system4.0-cil</i>
 
 
 
-<h4>Some customization</H4>
+<br><h4>Some customization</H4>
 
 
 
@@ -1382,7 +1384,7 @@ repairs those deletion issue e.g. for ssh logins to the chroot.</p>
 
 
 
-<H4>Overview of Services and an Automation Example</h4>
+<br><H4>Overview of Services and an Automation Example</h4>
 
 <p>Some  applications  require  a  running  dbus:  <i>/etc/init.d/dbus
 start</i>.  abin/CHROOT.start  is  intended  to  collect  the  startup
@@ -1480,7 +1482,7 @@ any  Linux  box. Don't forget to edit and rerun FW on if you  need  to
 open ports in the firewall.</p>
 
 
-<h4>Notes</h4>
+<br><h4>Notes</h4>
 
 <ul>
 <li>in  the  long  run, an Android  chroot  setup  is  still  not
@@ -1531,7 +1533,7 @@ and folder synchronization.</p>
 
 
 
-<H4>VNC Viewers</H4>
+<br><H4>VNC Viewers</H4>
 
 <p>The  idea  of VNC is to split X11 into the server  component  (e.g.
 tightvncserver)  and  a  separate,  remote  display  component   (e.g.
@@ -1582,7 +1584,7 @@ or media remote. There is also - in opposite direction - an app called
 
 
 
-<h4>Memories</h4>
+<br><h4>Memories</h4>
 
 <p>My current setup reliably "remove-battery"-crashes the Note as soon
 as  I use X. I think its a kernel issue, assuming that Google  somehow
@@ -1636,7 +1638,7 @@ flash FTL at all.</p>
 
 
 
-<h4>Testing X</h4>
+<br><h4>Testing X</h4>
 
 <p>For  starters, try running <i>xterm</i> on the Note and display the
 window   on  your  Linux  box:  e.g.  <i>DISPLAY=&lt;REMOTEDISPLAY&gt;
@@ -1694,7 +1696,7 @@ buffer. If you have an idea to find the culprit, drop me a line.</p>
 
 
 
-<h4>DEBIAN X11 Applications</h4>
+<br><h4>DEBIAN X11 Applications</h4>
 
 <p>Successfully tested applications</p>
 <ul>
