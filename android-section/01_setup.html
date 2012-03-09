@@ -733,11 +733,12 @@ be  lengthy,  a  small wrapper for use in chroot or android  shell  is
 helpful:                                                            <a href="https://github.com/jakobi/script-archive/blob/master/android/dir.android-unix-userspace/VIEW">VIEW</a>.
 See  the script itself for more details. To get supported entry points
 and  mime-types,  check the manifest file included in the  application
-apk.  Note  that the am is a debugging tool and doesn't return  proper
-result  values.</p>
+apk.  Note  that most intents are intended only for app-internal  use;
+furthermore,  the  am command is a debugging tool and  doesn't  return
+proper result values.</p>
 
 <pre>
-# some examples
+# wrapper invocation and corresponding am intent invocation
 VIEW CALL tel:3311                    # am start -a android.intent.action.CALL tel:3311 # actually do the call
 VIEW      tel:3311                    # am start -a android.intent.action.VIEW tel:3311 # view entry (same as DIAL)
 VIEW /long/path/file.mkv              # am start -a android.intent.action.VIEW -d file:///long/path/file.mkv \
@@ -764,27 +765,31 @@ examples  for contact search by name and display of result list in the
 contacts          app          (excluding          maybe          just
 content://com.android.contacts/phone_lookup/&lt;NUMBER&gt;)   -  every
 example encodes the query, possibly including some pseudo-SQL and then
-iterates  using a database cursor, and maybe then triggering a display
-intent  of an individual numeric contact &lt;ID&gt;. So this seems  to
-require  more than a simple am intent command: a bit of programming in
-Java or SL4A or just fully bypassing the framework and parsing the raw
-contacts  database,  similar to what I'll show in the second  article.
-It's  however  quite  annoying that some schemes like  geo:  URIs  are
-expressive  enough  to include arbitrary queries, while on  the  other
-hand the contacts provider requires extra effort - besides crashing on
-most  URIs.  Search intents using the quicksearchbox also fail,  as  I
-don't  seem to be able to successfully provide a query string. Intents
-do expose some internals for reuse, but Google's design is fragile and
-lacks  standardization,  making intents for ipc and application  reuse
-needlessly difficult to unusable)</p>
+iterates  using a database cursor, and at most only then triggering  a
+display  intent  of an individual numeric contact &lt;ID&gt;. So  this
+seems  to  require  more  than a simple am intent command:  a  bit  of
+programming  in Java or SL4A or just fully bypassing the framework and
+parsing  the  raw contacts database, similar to what I'll show in  the
+second  article for twlauncher. It's however quite annoying that  some
+schemes  like  geo:  URIs are expressive enough to  include  arbitrary
+queries,  while on the other hand the contacts provider requires extra
+effort  -  besides  crashing on most URIs. Search  intents  using  the
+quicksearchbox  also fail, as I don't seem to be able to  successfully
+provide  a  query string. Intents do expose some internals for  reuse,
+but  Google's  design  is fragile and  lacks  standardization,  making
+intents   for  ipc  and  application  reuse  needlessly  difficult  to
+unusable)</p>
+
+
+<br>
 
 <p>For the opposite direction, we need to start Unix commands from the
 framework.  This  can  be as simple as Java  invoking  system()  (e.g.
 <i>tasker</i>  invoking  shell  scripts  depending  on  location,   or
 regularly  running  the  "fake" cron  <i>abin/CRON.15min</i>  as  used
 below).  Or as indirect as using intents. Both apps and intents can be
-placed  as icons on the home screen to trigger the action; for intents
-consider apps like <i>xShortcut</i> or <i>Any Cut</i>.</p>
+placed  as icons on the home screen to trigger the action (in case  of
+intents consider apps like <i>xShortcut</i> or <i>Any Cut</i>).</p>
 
 <p>Intent example: Install <i>Scripting Languages for Android/SL4A</i>
 and  SL4A Perl (if you see force-close, uninstall and reinstall  using
@@ -800,15 +805,16 @@ am start -a com.googlecode.android_scripting.action.LAUNCH_BACKGROUND_SCRIPT \
    -e com.googlecode.android_scripting.extra.SCRIPT_PATH \
    /x/tmp/test.pl
 </pre>
+<br>
 
 <p>As  we use SL4A already for the intent example, let's do  something
 more interesting: add three lines to display a small framework widget.
 As a small lookahead to the chroot setup later on, add another line to
 have SL4A Perl invoke the chroot's Perl with a second script, which in
-turn  demonstrates use of framework graphical elements from inside the
-chroot.  This  works,  as su/CHROOT.run  retains  the  AP_HOST/AP_PORT
-environment   variables  from  SL4A  acting  as  the   "framework-side
-graphical server". Here are the scripts used for this example:</p>
+turn   does   the  same  from  inside  the  chroot.  This  works,   as
+su/CHROOT.run  retains  the AP_HOST/AP_PORT environment variables  and
+permit  use  of SL4A acting as the "framework-side graphical  server".
+Here are the scripts used for this example:</p>
 
 <pre>
 # /x/tmp/test.pl - the first script as run from android shell or chroot via intent
