@@ -72,9 +72,15 @@ Google's  Linux kernel  patches and dumbed-down kernel configuration)</i></p>
 <li><a href="#vnc">Desktop and X11</a>
 </ul>
 
+<p>For       alternative       native       setups       like       <a href="http://www.nslu2-linux.org/wiki/Optware/HomePage">OPTWARE</a> of
+NSLU2   fame,  see  <a href="01b_setup_alternatives.html">1b   Setup
+Alternatives</a>.  It's  a  good  companion  /  alternative  to  using
+TERMINAL  IDE  for a somewhat sane native environment in  the  android
+shell.</p>
+
 <p>
 State described: Android 2.3.6 (gingerbread)<BR>
-Last change: 20120219<BR>
+Last change: 20120309<BR>
 License: CC-BY-SA.
 </p>
 
@@ -170,9 +176,9 @@ some of the more annoying and power hungry apps in your firmware (kies, socialhu
 <br>
 <h4>The Whys of Rooting</H4>
 
-Besides  getting faster access to upstream security and bug fixes than
+<p>Besides  getting faster access to upstream security and bug fixes than
 by  waiting for something to trickle down from Google to Hardware Maker
-to Provider to OTA distribution, rooting enables more options for
+to Provider to OTA distribution, rooting enables more options for</p>
 
 <ul>
 <li>backup/restore
@@ -183,11 +189,11 @@ to Provider to OTA distribution, rooting enables more options for
 <li>access to non-Android programs, for the Android shell or for a chroot containing a real Linux install
 </ul>
 
-Depending  on how you root the device, the flash counter may  increase
-(though                             that                            <a href="http://forum.xda-developers.com/showthread.php?t=1354888">301K
+<p>Depending  on  how  you  root the device,  the  flash  counter  may
+increase                (though                that                 <a href="http://forum.xda-developers.com/showthread.php?t=1354888">301K
 resistor  field  testing jig</a> may help). But in case of mailing  in
-the  device for service, you need to reflash a stock firmware  anyway.
-Thus for me, the conclusion was: <i>so what</i>.
+the  device  for  service, you need to reflash a  stock  firmware  rom
+anyway. Thus for me, the conclusion was: <i>so what</i>.</p>
 
 
 
@@ -197,19 +203,20 @@ Thus for me, the conclusion was: <i>so what</i>.
 <p>ROMs  are very device specific, so Android ecosystem and  community
 are  <i>extremely fragmented</i>: <b>Good community support and custom
 ROMs  are IMHO a pre-requirement when buying Android devices</b>. Some
-custom  ROMs  reuse  stock  kernels, some  use  custom  kernel  builds
-(usually   based   on the Android  Open  Source  Project/AOSP;   e.g.
-cyanogenmod).</p>
+custom  roms  reuse vendor stock kernels and/or stock roms,  some  use
+custom  kernel  builds  (usually  based on  the  Android  Open  Source
+Project/AOSP; e.g. cyanogenmod).</p>
 
 <p   class=anno>Bad  makers  or  lack  of  community  lead  to   early
 obsolescence  of the device and wasted money (consider the  disastrous
 Motorola  Milestone).  Depending on the number of non-standard  chips,
 various firmware-blobs might be required to get a fully working kernel
-/  firmware. With some makers not even supporting devices at start  of
+and/or "rom". With some makers not even supporting devices at start of
 sale,  the initial release kernel might well be the only Linux  kernel
-ever working on a device (again the Milestone example). This will also
-worsen  community  support  and  shorten  availability  of   community
-firmware  for this maker's devices (as any ROM would have to reuse the
+ever  working  on  a  device that supports  all  hardware  (again  the
+Milestone  example:  blobs issue plus a signed bootloader). This  will
+also  worsen  community support and shorten availability of  community
+firmware  for this maker's devices (as any rom would have to reuse the
 old, unmaintained and probably also buggy kernel). <b>Some</b> of this
 is  already  visible for the Note as well: the unofficial  CM9  builds
 currently still lack blobs for camera and accelerated display.</p>
@@ -281,9 +288,11 @@ more detail, check the XDA threads for your selected ROM.</p>
 <p><i>Chainfire     KJ1     to    Chris_X    4lph4</i>     (see     <a href="http://forum.xda-developers.com/showthread.php?t=1424401">XDA</a>).
 As  we  now  have CFROOT/CWM available, this step no  longer  requires
 Windows  and Odin. I repeated this step once to go to a newer ROM from
-Chris,  currently  the v1.0.5 from early January, which is very  stable
+Chris,  currently the v1.0.5 from early January, which is very  stable
 (excluding  Google's  carefully  prepared pitfalls  concerning  shared
-memory  and  system_server  vs app2sd). 
+memory  and  system_server vs app2sd - given that Chris is  using  the
+AbyssNote  kernel and source for older AbyssNote kernels can be found,
+we may be able to undo some of that damage and recompile the kernel).
 
 <p  class=anno>As of mid February, Chris is at v1.7.</p>
 
@@ -424,7 +433,7 @@ twlauncher</a>  in  more detail and includes some more categories  and
 app  suggestions sorted into those categories - if you want to call my
 personal app collection by that lofty title.</p>
 
-<p><b>Summary:</b>  By now you've a rooted Android device, seen a  few
+<br><p><b>Summary:</b>  By now you've a rooted Android device, seen a  few
 XDA support threads as well as some checklists for use when reflashing
 the ROM.</p>
 
@@ -524,17 +533,20 @@ this problem.</p>
 
 <p class=anno>(logcat use may require insmod /lib/modules/logger.ko)</p>
 
-<p>Other things that are onavailable on my Note:</p> 
+<p>Other things that are not available on my Note (might be fixable by
+a kernel arm-toolchain rebuild if we get the current Source and config
+for the AbyssNote kernel, hoping that they're merely (badly) unconfigured 
+rather than broken by bad patches):</p> 
 <ul>
 <li>shared  memory.  Again improperly  removed/unconfigured,  leading to crashes and  the  shared
 memory  workaround  reported later on, when we deal with X11 apps,  as
-these  are most likely to take advantage of shared memory
+these  are most likely to take advantage of shared memory. 
 <li>NFS  client and server support
 <li>swap space and swap to file
 </ul>
 
 
-<p>The  low  power portions of the Google patches neglect to  properly
+<p>The  low-power portions of the Google patches neglect to  properly
 fix   sleep.   So   without   active  wake_locks   to   avoid   system
 suspend-to-ram,  even a one second sleep is completely unreliable  and
 may  have  a duration of a few minutes. Large sleeps are affected  way
@@ -716,10 +728,11 @@ user account or for root. Running the app is not required for this.</p>
     just ssh on the machine and use the busybox version.
 <li>the app also offeres two <i>full keyboard layouts</i>. However 
     e.g. CTRL isn't accepted by other apps, including all vnc apps!
-    There is also a bug that only affects the <i>Google search widget</i> and the 
-    <i>default Android browser</i>, which don't accept the return key as 'Go' -
-    mobile firefox and the other apps don't have this problem. Work-around: temporarily switch back
-    to the Samsung keyboard.
+    There is also a bug that affects the <i>Google search widget</i>, forms in the
+    <i>default Android browser</i> and <i>mobile firefox</i>, which don't 
+    accept the return key as 'Go' - sometimes without offering an alternative
+    'go' button above the keyboard. 
+    Work-around: temporarily switch back to the Samsung keyboard.
 </ul>
 
 
@@ -737,7 +750,9 @@ See  the script itself for more details. To get supported entry points
 and  mime-types,  check the manifest file included in the  application
 apk.  Note  that most intents are intended only for app-internal  use;
 furthermore,  the  am command is a debugging tool and  doesn't  return
-proper result values.</p>
+proper  result values. Note also that intents from <i>am start</i> for
+already  running  apps/intents  will fail and instead bring the running
+app/intent to  front.</p>
 
 <pre>
 # wrapper invocation and corresponding am intent invocation
@@ -987,7 +1002,7 @@ to see output for logged packets.
 
 
 
-<p><b>Summary:</b>  By  now we have a somewhat usable  and  moderately
+<br><p><b>Summary:</b>  By  now we have a somewhat usable  and  moderately
 comfortable  Android  shell.  We  have basic  networking  commands  to
 connect  remote  servers and we we can run perl scripts.  An  external
 host  can  be used to run shell commands on the Note or run  rsync  to
@@ -1249,6 +1264,9 @@ cat FIND.chroot | cpio -o -H crc &gt; /i/chroot-initial-final.cpio
 
 
 
+<br>
+
+
 <p>Notes</p>
 <ul>
 <li>run mount and check the mount options for the chroot filesystem: it
@@ -1372,6 +1390,7 @@ ls -l authorized_keys
 
 # now you can run ssh localhost COMMAND from within the chroot
 </pre>
+<br>
 
 <p>Umlauts  and  locale settings are a bit surprising, as  I  expected
 full  UTF8 support everywhere on the Android by default. Umlauts  seem
@@ -1488,7 +1507,7 @@ open ports in the firewall.</p>
 <li>in  the  long  run, an Android  chroot  setup  is  still  not
 comparable  to a native install, that can replace and update the Linux
 kernel  as  part of the normal package maintenance. We still  have  to
-rely  on  availability of stock kernels as part of the custom ROM,  as
+rely  on  availability of stock components as part of the custom ROM,  as
 it's  unlikely that the device blobs will be made available as part of the kernel or library sources.
 Furthermore,  vulnerabilities of the outside  Android environment cum kernel still
 apply  and  will  only get worse when the device is obsoleted  by  the
@@ -1519,7 +1538,7 @@ Do check the release notes first, as I might not be the only one dreaming about 
 armel to armhf migration path :))
  </p>
 
-<p><b>Summary:</b>  By  now we have a DEBIAN chroot and can access  it
+<br><p><b>Summary:</b>  By  now we have a DEBIAN chroot and can access  it
 from   the   Android  shell  interactively  or  as  part  of  a   pipe
 (system/xbin/CHROOT.run  aka  x). We are able to  access  remote
 files  using  everything  but  NFS (see the  abin/SSHFS  example).  We
@@ -1588,11 +1607,12 @@ or media remote. There is also - in opposite direction - an app called
 
 <p>My current setup reliably "remove-battery"-crashes the Note as soon
 as  I use X. I think its a kernel issue, assuming that Google  somehow
-messed up in crippling or deconfiguring shared memory. As workaround I
-can  only  offer to enforce zero shared memory values as shown  below.
-This  hack  is part of the ivnc / ivncapp functions in the  root  bash
-setup.  Applications that use shared memory only for speed-up will run
-a  bit slower. Applications like chromium-browser will fail.</p>
+messed  up  in  crippling or deconfiguring shared memory. Short  of  a
+custom  kernel rebuild, we can only enforce zero shared memory  values
+as  a  work-around  as shown below. This hack is part of  the  ivnc  /
+ivncapp functions in the root bash setup. Applications that use shared
+memory  only for speed-up will run a bit slower. New applications like
+chromium-browser that cannot work w/o real shared memory will fail.</p>
 
 <pre>
 # test if you crash or if you can get by without
@@ -1748,7 +1768,7 @@ vncviewer  on  Linux showing xterms and LibreOffice on the Note?  Both
 here and at the top? Add it also to index.phtml.</b></p>
 
 
-<p><b>Summary:</b> This concludes the series and by now you can use an
+<br><p><b>Summary:</b> This concludes the series and by now you can use an
 arbitrary  PC's  vncviewer or putty/ssh setup to connect to your  NOTE
 and work locally on your Note in addition to using the Note to copy or
 serve  files. The 1GB memory size of the Note permits also use of  X11
@@ -1761,10 +1781,9 @@ most a little bit of DEBIAN help.</p>
 <p  class=anno>And  for  the  pc-less couch potato,  not  desiring  to
 implement      the     above     himself,     there's     still     <a href="http://www.ubuntu.com/devices/android">Canonical's    take    on
 chroot computing</a> as seen e.g. on the Atrix: "<b>In every dual-core
-phone,  there’s a PC trying to get out</b>." - Well said, Canonical!
+phone,  there is a PC trying to get out</b>." - Well said,  Canonical!
 (with  the HDMI cable, the Note should permit already that kind of use
-with  e.g.  Xvnc;  I'll take a look if the cable arrives  and  my  DVI
-displays support it.)</p>
+with  e.g. Xvnc; when it arrives, I'll test using a DVI display and some adapters).</p>
 
 <p><b>ERRATA: another candidate for a photo.</b></p>
 

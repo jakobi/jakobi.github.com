@@ -1,0 +1,315 @@
+<HTML>
+<HEAD>
+<link rel="icon"          href="/favicon.png"/>
+<link rel="shortcut icon" href="/favicon.png"/>
+<meta name="description" content="Coping with Android - Setup Alternatives like NSLU2 OPTWARE: google android samsung galaxy note native unix shell environment optware nslu2">
+<meta name="keywords" content="coping android setup alternatives like nslu2 optware google samsung galaxy note native unix shell environment">
+<meta name="author" content="Peter Jakobi">
+<TITLE>Coping with Android - Setup Alternatives like NSLU2 OPTWARE</TITLE>
+<style type="text/css"><!--
+   .anno { font-size:.8em }
+   pre { background-color:#eeeeee }
+--></style>
+<style type="text/css"><!--
+   .num { padding-left:1em; text-align:right; nopadding-right:1em}
+   .repo{ text-align:center}
+   .file{ nopadding-left:1em; font-family:monospace}
+.desc{ padding-left:2em}
+--></style>
+</HEAD>
+
+<BODY style="background-color:#ffffee">
+
+<p class=anno>
+<a href="http://jakobi.github.com/">HOME</a>                                          &nbsp;|&nbsp; 
+<a href="http://github.com/jakobi/">GIT Overview</a>          &nbsp;|&nbsp;
+Script-Archive:
+<a href="/script-archive-doc/">(docs)</a> : 
+<a href="http://wiki.github.com/jakobi/script-archive/">(wiki)</a> : 
+<a href="http://github.com/jakobi/script-archive">(git)</a>    &nbsp;|&nbsp;
+Android:
+<a href="http://jakobi.github.com/android-section/">(articles)</a> :
+<a href="http://github.com/jakobi/script-archive/tree/master/android">(files)</a> &nbsp;|&nbsp;
+...
+</p>
+
+<H1>Coping with Android - Setup Alternatives like NSLU2 OPTWARE</H1>
+
+<hr>
+
+<hr>
+<H2>01b - Setup Alternatives</H2>
+
+<p>Last change: 20120309</p>
+<p>License: CC-BY-SA.</p>
+
+<hr>
+<H3>NLSU2 OPTWARE</H3>
+
+
+<p>Optware  strives  to  provide package  management  with  dependency
+tracking  for  embedded Linux devices. The best known optware  targets
+are  probably the nslu2, openwrt, the Sharp Zaurus and maybe  nowadays
+the  sheevaplug.  On these devices, optware tries hard to stay out  of
+the  native setup, with the possibly exception of requiring some links
+in  /bin  and  /lib  during bootstrapping  (which  doesn't  matter  on
+Android).</p>
+
+<p>OPTWARE's  easily  enough  to  get a  moderately  sane  environment
+(embedded, and this included Android) up and running, but don't expect
+debian  levels of up-to-dateness and completeness. It certainly  beats
+Android   native  ports  with  their  always  occuring   bionic-or-not
+problems.</p>.
+
+<ul>
+<li>Homepage: <a href="http://www.nslu2-linux.org/wiki/Optware/HomePage">www.nslu2-linux.org/wiki/Optware/HomePage</a>
+<li>Feed/Repository of interest: <a href="ipkg.nslu2-linux.org/feeds/optware/cs08q1armel/">ipkg.nslu2-linux.org/feeds/optware/cs08q1armel/</a>
+<li>Source repository: svn co http://svn.nslu2-linux.org/svnroot/optware/trunk/
+</ul>
+
+
+<br>
+<H4>Bootstrapping OPTWARE</H4>
+
+<p>Set up a slightly more comfortable environment by using the
+TERMINAL IDE binaries.</p>
+
+<pre>
+TERMIDE
+iresolver
+</pre>
+
+<p>I  have  some spare space on the ext4 filesystem mounted on /x  (as
+described in the chroot setup section in article 1). If you've 100+ MB
+on  /data beyond the 10% Android threshold, you can use /data instead.
+The  cs08q1armel  feed  is compatible with the Note and  Android,  and
+offers two branches: stable and unstable.</p>
+
+<pre>
+export FEED=http://ipkg.nslu2-linux.org/feeds/optware/cs08q1armel/cross/stable
+export OPTROOT=/x/optware # WHEREEVER YOU WANT, BUT NOT ON FAT!
+</pre>
+
+<p>First  attempt  is  to follow the basic instructions given  at  the
+bottom  of  the  OPTWARE homepage. But this fails, as ipkg  cannot  be
+loaded  due  to missing libraries (any embedded libc would  have  been
+probably OK, but not Google's bionic). That is, if the tar implements
+the -O option...</p>
+
+<pre>
+mkdir $OPTROOT
+cd $OPTROOT
+
+ipk_name=`wget -qO- $FEED/Packages | awk '/^Filename: ipkg-opt/ {print $2}'`
+wget $FEED/$ipk_name
+tar -xOvzf $ipk_name ./data.tar.gz | tar -C $OPTROOT -xzvf -
+mkdir -p $OPTROOT/opt/etc/ipkg
+echo "src cross $FEED" &gt; $OPTDIR/opt/etc/ipkg/feeds.conf
+
+# optional or symlink instead if you've already a sane resolv.conf
+echo nameserver 8.8.8.8 &gt; opt/etc/resolv.conf
+
+export PATH=/opt/bin:/bin:$OPTROOT/bin:$OPTROOT/opt/bin:$PATH
+# probably unnecessary
+export LD_LIBRARY_PATH=/lib:/opt/lib:$OPTROOT/lib:$OPTROOT/opt/lib:$LD_LIBRARY_PATH
+
+# FAIL despite LD_LIBRARY and all
+# ipkg update
+# for i in {wget,ipkg-opt,busybox-base}; do ipkg install $i; done
+</pre>
+
+<p>Google   shows  an  old  optware-for-android  script  by   pfalcon,
+including  an  2008  tarball that already includes the  missing  libs.
+Longer  download,  but  less  trouble  in  hunting  down  the  missing
+libraries. So let's follow that one.</p>
+
+<pre>
+# fetch_package_index, in case we want to lookup something, probably optional
+wget -q $FEED/Packages
+mkdir opt 
+# mkdir home root home/user
+
+# my Android-side wget seems to hate https, so use the chroot one instead :)
+CHROOT.run wget https://sourcery.mentor.com/sgpp/lite/arm/portal/package2549/public/+++
+   +++arm-none-linux-gnueabi/arm-2008q1-126-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2
+# extract ldd and the missing libs
+( cd arm-2008q1/arm-none-linux-gnueabi/libc/lib && find | cpio -pmd $OPTROOT/lib )
+( cd arm-2008q1/arm-none-linux-gnueabi/libc/usr/bin && find ldd | cpio -pmd $OPTROOT/bin )
+
+# as we cannot quite rely on busybox sanity (and certainly not on Google's toolbox)
+# we unpack the ipkg as above, plus busybox and wget
+get_package_fname () { awk "/^Filename: ${1}_/ {print \$2}" Packages; }
+for i in {wget,ipkg-opt,busybox-base}; do wget -q $FEED/$(get_package_fname $i); done
+for i in {wget,ipkg-opt,busybox-base}*ipk; do tar -zxf $i ./data.tar.gz; tar -zxf data.tar.gz; done
+rm data.tar.gz
+
+# rm -r arm-2008q1 arm-2008q1-126-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2 *ipk
+
+# esp. update-alternatives doesn't like dealing with a bad busybox setup. And it
+# needs sh (or /bin/sh) to be compatible to rm (/bin/rm ...) it uses. IFF it honors
+# PATH, placing /system/xbin first in PATH and removing /bin/sh _might_ suffice.
+( cd bin && for i in sh echo rm sed mkdir head sort dirname ln mv; do ln -s /opt/bin/busybox $i; done )
+
+# Note that we still need to run the initial ipkg invocations to properly
+# initialize package management.
+</pre>
+
+<p>The  original setup recipe would have been mostly sufficient for  a
+working  setup  in  case  of OPTROOT=/,  with  suitable  writable  ext
+diskspace  on  /opt. As we've chosen a different OPTROOT to  keep  all
+OPTWARE  files  together,  we've still to symlink  or  mount-bind,  in
+addition  to  providing  a  sane mtab and  resolv.conf,  which  bionic
+doesn't use.</p>
+
+<pre>
+# you'll see most of this again in the OPTWARE script below
+# root fs mod
+
+# this is one-time and will survive reboots
+mount -oremount,rw /system
+( cd /etc && ln -s /proc/mounts mtab ) 
+( cd /etc && touch resolv.conf )
+mount -oremount,ro /system
+
+# this must be done after each boot
+mount -oremount,rw /
+rm /bin/sh                              # we _need_ a symlink to busybox here
+( cd /bin && ln -s $OPTROOT/bin/* . )   # only ldd for now  - android: usually unused
+( cd /lib && ln -s $OPTROOT/lib/* . )   # libc and the like - android: unused except /lib/modules
+mkdir /opt /home /tmp
+mount -oremount,ro /
+
+# optional mounts
+# mount -obind $OPTROOT/opt/etc/resolv.conf /etc/resolv.conf # already in /etc/resolv.conf
+# mount -obind $OPTROOT/home /home
+
+# optware mount bind (you may use a symlink instead if /opt is empty)
+mount -obind $OPTROOT/opt  /opt
+</pre>
+
+<p>Now initialize ipkg.</p>
+
+<pre>
+ipkg update
+for i in ipkg-opt wget busybox; do ipkg install $i; done
+</pre>
+
+<p>This  complete  the  minimal OPTWARE setup.  OPTWARE  offers  1300+
+packages,  most of which should be useful on Android (maybe  excluding
+alsa/sound-related apps, syslog and nfs packages). This includes among
+others  a  minimal  client-side  X11  setup,  servers  from  tftp   to
+inetutils,               apache               and               samba,
+cups/enscript/groff/ghostscript/mpage/psutils,
+openvpn/strongswan/stunnel/vtun,  bash,  perl, php, python, ruby,  and
+even  9base/rc.</p>
+
+<p>For  a  small  setup, install the following packages: mc  vim  tmux
+elinks w3m less perl python bash gzip bzip2 unzip p7zip cpio diffutils
+findutils  grep mktemp net-tools netcat openssh openssl openvpn  rsync
+wget  lsof  ltrace strace e2fsprogs e2tools gnupg man man-pages  xauth
+xterm  autoconf gcc automake binutils flex make optware-devel. Missing
+dependencies will be resolved automatically by ipkg.</p>
+
+
+
+<br>
+<H4>Bootstrapping OPTWARE</H4>
+
+<p>To  make OPTWARE available after rebooting, you need to restore the
+above  changes to the transient rootfs as well as mounts (if you  have
+chosen to use mount-bind instead of some more symlinks).</p>
+
+<pre>
+# file /system/xbin/OPTWARE
+
+export OPTROOT=/x/optware # *** UNRELATED TO CHROOT despite PATH*** 
+
+## /system: this is one-time and will survive reboots
+#mount -oremount,rw /system
+#( cd /etc && ln -s /proc/mounts mtab ) 
+#( cd /etc && touch resolv.conf )
+#mount -oremount,ro /system
+
+# /: transient rootfs mod - required after each boot
+# note that we might be able to remove some of the symlinks, as we
+# now have a full OPTWARE setup (untested)
+mount -oremount,rw /
+rm /bin/sh                              # we _need_ a symlink to busybox here
+( cd /bin && ln -s $OPTROOT/bin/* . )   # only ldd for now  - android: usually unused
+( cd /lib && ln -s $OPTROOT/lib/* . )   # libc and the like - android: unused except /lib/modules
+mkdir /opt /home /tmp
+mount -oremount,ro /
+
+# optional mounts
+# mount -obind $OPTROOT/opt/etc/resolv.conf /etc/resolv.conf # already in /etc/resolv.conf
+# mount -obind $OPTROOT/home /home
+
+# optware mount bind (you may use a symlink instead if /opt is empty)
+mount -obind $OPTROOT/opt  /opt
+
+echo source /opt/optware.env for use of the optware environment
+</pre>
+
+
+
+<p>To use OPTWARE, you need to at least add OPTWARE to the PATH. In my
+case, I use these files:<p>
+
+<pre>
+# file /opt/optware.env
+
+# we may need to also consider LD_LIBRARY_PATH ?
+
+export OPTWARE_POS="first"
+[ "$OPTWARE_POS" = "first" ] && PATH="/opt/bin:$PATH"
+[ "$OPTWARE_POS" = "last"  ] && PATH="$PATH:/opt/bin"
+</pre>
+
+<pre>
+# .bash_aliases.pj
+
+function ioptware { test -d /opt || sudo OPTWARE; test -f /opt/optware.env && . /opt/optware.env; }
+
+if [ "$HOSTNAME_CHROOT" = "" ]; then
+   # probably invoked via TERMIDE script or TERMIDE app
+   ...
+   [ "$OPTWARE_POS" = "first" ] && PATH="/opt/bin:$PATH"
+   [ "$OPTWARE_POS" = "last"  ] && PATH="$PATH:/opt/bin"
+   ...
+fi
+</pre>
+
+
+
+
+
+<br>
+<H4>Bugs</H4>
+
+<ul>
+<li>screen fails to work (but as this also happens in debian chroot!?)
+</ul>
+
+<!-- ------------------------------------------------------------ -->
+  
+<hr>
+<p>Back to the <a href="index.html">Android Section Overview</a>.</p>
+
+<hr>
+<p class=anno>
+<a href="http://jakobi.github.com/">HOME</a>                                          &nbsp;|&nbsp; 
+<a href="http://github.com/jakobi/">GIT Overview</a>          &nbsp;|&nbsp;
+Script-Archive:
+<a href="/script-archive-doc/">(docs)</a> : 
+<a href="http://wiki.github.com/jakobi/script-archive/">(wiki)</a> : 
+<a href="http://github.com/jakobi/script-archive">(git)</a>    &nbsp;|&nbsp;
+Android:
+<a href="http://jakobi.github.com/android-section/">(articles)</a> 
+<a href="http://github.com/jakobi/script-archive/tree/master/android">(files)</a> &nbsp;|&nbsp;
+...
+</p>
+
+<p class=anno>jakobi(at)acm.org, 2012-01 - 2012-03</p>
+
+</BODY>
+</HTML>
