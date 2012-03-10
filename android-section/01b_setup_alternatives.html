@@ -42,7 +42,7 @@ Android:
 <a name=toc></a>
 <ul>
 <li><a href="#opt">OPTWARE</a>
-<li><a href="#notes">Notes (incl. Building/Crosscompilation and Distribution Overview)</a>
+<li><a href="#notes">(Raw) Notes (incl. Building/Crosscompilation and Distribution Overview)</a>
 <li><a href="#milestones">Milestones in Increasing and Extending Update Availability Despite Vendor Whims</a>
 <li><a href="#x">Native Linux Hacks</a>
 </ul>
@@ -385,7 +385,7 @@ otherwise).</p>
 <p>Build environments / recipe repositories</p>
 
 <ul>
-<li>OE: <a href="http://docs.openembedded.org/usermanual/">openembedded.org</a> - cross compile build system upto rom creation (OPENWRT claims to converge against OE;
+<li>OE: <a href="http://docs.openembedded.org/usermanual/">openembedded.org</a> - cross compile build system upto rom creation (OPTWARE claims to converge against OE;
     see the <a href="http://www.openembedded.org/index.php/LayerIndex">LayerIndex</a> for device/libc/.../... build chain combinations; OE also offers a fairly large
     repository of (versioned) bitbake build recipes, known to build at least on some of these combinations)
 </ul>
@@ -411,7 +411,7 @@ otherwise).</p>
 
 
 
-<hr>
+<br>
 <h4>Distributions</H4>
 
 <p>Non-Android roms and graphical distributions (usually only for a small number of ARM devices, mostly excluding Android hardware)</p>
@@ -419,10 +419,10 @@ otherwise).</p>
 <ul>
 <li><a href="http:shr-project.org">SHR</a> is OE X freesmartphone. Might be a candidate to experiment with dual-booting. 
     Known to work as rom/GUI on some Androids such as the Nexus.
-<li><a href=http://www.angstrom-distribution.org/">Ångström</a> of OpenZaurus fame, currently using OE: deb/ipkg X {,eg,uc}libc X &lt;arch|device|...&gt;.
-   For Zaurus and friends, this may include a full rom from device boot to GUI (one of OPIE, GPE or X11/E17). Package feeds for a suitable architecture
+<li><a href=http://www.angstrom-distribution.org/">&Aring;ngstr&ouml;m</a> of OpenZaurus fame, currently using OE: deb/ipkg X {,eg,uc}libc X &lt;arch|device|...&gt;.
+   For Zaurus and friends, angstrom may include a full rom from device boot to GUI (one of OPIE, GPE or X11/E17). Package feeds for a suitable architecture
    should be usable for a chroot on Android (no mention of rom/GUI on Android seen)
-<li><a href="https://wiki.ubuntu.com/ARM/DeviceSupport">ubuntu</a> (native X11/Unity can be used on a small list of ARM devices, no mention of Android tablets seen)
+<li><a href="https://wiki.ubuntu.com/ARM/DeviceSupport">Ubuntu</a> (native X11/Unity can be used on a small list of ARM devices, no mention of Android tablets seen)
 <li>see also: <a href="http://www.linuxtogo.org/projects">LinuxToGo project list</a> and <a href="http://www.linuxtogo.org/gowiki/LinuxDevices">device list</a>
 </ul>
 
@@ -437,8 +437,8 @@ otherwise).</p>
 
 <p>Android framework "forks"</p>
 <ul>
-<li><a href="http://code.google.com/p/0xdroid/">0xdroid and 0xlab</a>: u-boot/linaro/bionic-based - AOSP android framework rom building for beagleboard&friends
-<li>see also Android full custom roms like <a href="http://cyanogenmod.com">cyanogenmod</a>
+<li><a href="http://code.google.com/p/0xdroid/">0xdroid and 0xlab</a>: u-boot/linaro/bionic-based - AOSP android framework rom building for beagleboard&amp;friends
+<li>see also non-stock-derived Android custom roms like <a href="http://cyanogenmod.com">cyanogenmod</a>
 </ul>
 
 <p>Various</p>
@@ -458,7 +458,7 @@ otherwise).</p>
 bug fixes, any device needs to permit at minimum a chroot with package
 management  and hopefully vnc. At the latest, this must be  available,
 when  the  vendor has obsoleted the device. Otherwise, the user  is  a
-remote-controlled usee and repeatedly replaces devices on the vendor's
+remote-controlled usee and repeatedly replaces devices at the vendor's
 whim.</p>
 
 <p  class=anno>Some Android vendors don't offer any support/updates at
@@ -473,24 +473,26 @@ read A4 documents full-screen without zooming).</p>
 
 <h4>Newer Android Framework Updates by Custom-Rom to</h4>
 
-<p>To  permit  safe use outside the home (and within), a  device  also
+<p>To  permit  secure use outside the home (and within -&gt; defense in depth!), a  device  also
 needs  uptodate  methods  to access the new applications, that  is  an
-uptodate  GUI  with  at least current easily  usable  VNC-Viewer  (for
+uptodate  GUI  with  at least uptodate versions of VNC-Viewer  (for
 access  to  current apps in the chroot), browser and ssh.</p>
 
-<p>As  Android Market doesn't permit marketplace links or updating for
+<p>As  Android Market doesn't permit marketplace links/updating for
 rom apps (about 200 alone on a modern Android 2.3.6 device), this is a
-problem,  that can only be delayed by moving to custom roms, when  the
-device  ages  out  of  vendor  support.  As  custom  roms  suffer  the
+problem-in-wait  that can only be delayed by moving to custom roms, at the latest when the
+device  ages  out  of  vendor  support.</p>
+
+<p>However, custom  roms still suffer  the
 compatibility  limits  of  vendor-provided blobs  (or  possibly  stock
 kernels, cf. Motorola Milestone). Add Android fragmentation and custom
-rom support as well as marketplace app availability will wane as well.
+rom support will wane later on, as will marketplace app availability.
 Even  the chroot environment will suffer some of that bitrot, as newer
-and  missing  kernel features will preclude building or using of  some
+and  missing  kernel features will preclude building or using  some
 programs.</p>
 
-<p>Note  that custom rom availability depends on vendor behaviour  and
-popularity.</p>
+<p>Note  that  custom  rom  availability  further  depends  on  vendor
+behaviour and device popularity.</p>
 
 <h4>Longterm Native Linux (possibly also Dual-Booting)</h4>
 
@@ -505,24 +507,27 @@ wifi/gsm  functionality) and consider switching (or dual-booting) to a
 native   graphical   interface  and/or  a  native  kernel   (AOSP   or
 official).</p>
 
-<p>Now the official end of support only happens for either dying flash
-memory, change of user requirements, or device hardware being actively
-dropped from Xorg (/wayland(?)) and kernel source code.</p>
+<p>Now  our own official end of support only happens for either  dying
+hardware/flash memory, change of user requirements, or device hardware
+being  actively  dropped  from Xorg (/wayland(?))  and  kernel  source
+code.</p>
 
-<p>For  proper  long term support, the result of working X11 /  kernel
-modifications  needs  to be pushed upstream into the official  kernel,
-and  ideally also by packaged by embedded distributions (which lag  in
-tracking  upstream),  better  yet  by  mainstream  distributions  like
-debian:  a  native  setup  of debian unstable with  only  some  manual
-intervention   would   be   perfect.</p>
+<p>For  proper long term support, the results of working X11 /  kernel
+modifications  for  a device also need to be pushed upstream into  the
+official   sources,   and  ideally  also  be  packaged   by   embedded
+distributions   (which  lag  in  tracking  upstream),  better  yet  by
+mainstream  distributions  like  debian:  a  native  setup  of  debian
+unstable  installable with only a little manual intervention is the final
+perfect long-term device support scenario.</p>
 
 <p  class=anno>Otherwise, we're stuck at a series of  badly-repeatable
 one shot demonstrations, that require some to huge effort ranging from
-rebuilding  to  long compiles to porting/rebasing old changes  against
-current Xorg and kernel sources.</p>
+rebuilding  installs  with manual flashing to long compiles with  some
+patching  to  porting/rebasing  old changes against current  Xorg  and
+kernel sources.</p>
 
 <p>Currently all native efforts I've found - listed below - still seem
-to   stuck  at  the  incomplete  restricted   functionality   one-shot
+stuck  at  the  incomplete  restricted   functionality   one-shot
 demonstration  level.</p>
 
 
@@ -530,8 +535,9 @@ demonstration  level.</p>
 <a name=x></a>
 <h3>Native Linux Hacks</h3>
 
-<p>You've  still  a  chance  to  consider how  you  want  to  use and map 
-multi-touch / pointer device clicks to X11 on your device :)</p>
+<p><i>You've still a chance to define how you want Linux proper to use
+and  map  multi-touch  / pointer device clicks to X11 on  your  device
+:)</i></p>
 
 <ul>
 <li><a href="http://forum.xda-developers.com/showthread.php?t=933667">Ubuntu / Galaxy Tab</a> (see also <a href="http://wiki.meego.com/ARM/Hummingbird#Ubuntu">Meego/Ubuntu</a>; mtev or evdev; lacks e.g. graphic accel, camera, phone; bt: no hid, audio out is possible; devices include a Galaxy Tab)
@@ -541,6 +547,7 @@ multi-touch / pointer device clicks to X11 on your device :)</p>
 <li><a href="http://forum.xda-developers.com/showthread.php?t=1158260">Iconia A500</a> (ubuntu, for nvidia stuff see also: <a href="https://launchpad.net/~ac100">ac100 ppa</a>)
 </ul>
 
+<p>Various</p>
 
 <ul>
 <li>ubuntu rootstock: <a href="https://wiki.ubuntu.com/ARM/RootfsFromScratch">Arm rootfs creation</a>
