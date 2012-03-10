@@ -2,10 +2,10 @@
 <HEAD>
 <link rel="icon"          href="/favicon.png"/>
 <link rel="shortcut icon" href="/favicon.png"/>
-<meta name="description" content="Coping with Android - Setup Alternatives including OPTWARE: google android samsung galaxy note native unix shell environment optware nslu2">
+<meta name="description" content="Coping with Android - Setup Alternatives (including OPTWARE): google android samsung galaxy note native unix shell environment optware nslu2">
 <meta name="keywords" content="coping android setup alternatives including optware google samsung galaxy note native unix shell environment nslu2">
 <meta name="author" content="Peter Jakobi">
-<TITLE>Coping with Android - Setup Alternatives including OPTWARE</TITLE>
+<TITLE>Coping with Android - Setup Alternatives (including OPTWARE)</TITLE>
 <style type="text/css"><!--
    .anno { font-size:.8em }
    pre { background-color:#eeeeee }
@@ -33,7 +33,7 @@ Android:
 ...
 </p>
 
-<H1>Coping with Android - Setup Alternatives including OPTWARE</H1>
+<H1>Coping with Android - Setup Alternatives (including OPTWARE)</H1>
 
 <hr>
 
@@ -51,7 +51,7 @@ tracking  for  embedded Linux devices. The best known OPTWARE  targets
 are  probably the nslu2, anything wrt54*/openwrt, the Sharp Zaurus and
 maybe nowadays the sheevaplug. On these devices, OPTWARE tries hard to
 stay  just  within  /opt  and outside of the native  setup,  with  the
-possibly  exception of requiring some links in /bin and /lib at  least
+possible  exception of requiring some links in /bin and /lib at  least
 during bootstrapping (which doesn't matter for Android).</p>
 
 <p>OPTWARE's  easily  enough  to  get a  moderately  sane  environment
@@ -83,10 +83,12 @@ iresolver
 </pre>
 
 <p>I  have  some spare space on the ext4 filesystem mounted on /x  (as
-described  in  the chroot setup in article 1). If you have 100+ MB  on
-/data  beyond  the 10% free threshold, you can use /data instead.  The
-cs08q1armel  feed  is compatible with Android (in my case the  Samsung
-Galaxy Note), and offers two branches: stable and unstable.</p>
+described  in the chroot setup in article 1). If you have at least 100
+MB  on  /data  beyond the 10% free threshold, you can also  use  /data
+(with  some  Unix  and GNU standards including gcc, I am  using  about
+300M). The cs08q1armel feed is compatible with Android (in my case the
+Samsung   Galaxy   Note),   and  offers  two  branches:   stable   and
+unstable.</p>
 
 <pre>
 export FEED=http://ipkg.nslu2-linux.org/feeds/optware/cs08q1armel/cross/stable
@@ -204,14 +206,13 @@ cups/enscript/groff/ghostscript/mpage/psutils,
 openvpn/strongswan/stunnel/vtun,  bash,  perl, php, python, ruby,  and
 even 9base/rc.</p>
 
-<p>For  a  small  setup, consider installing the  following  packages:
-<i>mc vim tmux elinks w3m less perl python bash gzip bzip2 unzip p7zip
-cpio  diffutils findutils grep mktemp net-tools netcat openssh openssl
-openvpn  rsync  wget  lsof ltrace strace e2fsprogs e2tools  gnupg  man
-man-pages  xauth  xterm  autoconf  gcc  automake  binutils  flex  make
-optware-devel</i>. Missing dependencies will be resolved automatically
-by ipkg.</p>
-
+<p>For  a  fairly  small  setup,  consider  installing  the  following
+packages:  <i>mc vim tmux elinks w3m less perl python bash gzip  bzip2
+unzip  p7zip  cpio  diffutils findutils grep mktemp  net-tools  netcat
+openssh  openssl  openvpn  rsync  wget lsof  ltrace  strace  e2fsprogs
+e2tools gnupg man man-pages xauth xterm autoconf gcc automake binutils
+flex  make  optware-devel</i>. Missing dependencies will  be  resolved
+automatically by ipkg.</p>
 
 
 <br>
@@ -293,6 +294,37 @@ article  and  the  TERMINAL IDE/CHROOT setup</a>,  esp.  the  examples
 <ul>
 <li><i>screen</i> fails to work (but as this also happens in debian chroot - kernel!?)
 </ul>
+
+
+<br>
+<h4>Size and Capability Comparison</h4>
+
+<p>sshdroid  is  about 2M, the files in /system/xbin 10M: Basic  shell
+access  by adb and ssh, file and logcat access. TERMINAL IDE  requires
+ca.  120M:  This  permits light shell use and light development  in  a
+graphical  terminal  app. With some effort, this is also  usable  from
+outside  the application. Adding my "fairly small" OPTWARE setup takes
+another  300M  (108 packages), adding some improvements (especially  a
+better  shell environment with proper libc and GNU utilities, gcc  and
+non-SL4A  scripting  options), some server software and a  very  basic
+xterm / X11 client.</p>
+
+<p>In  constrast  the debian chroot from article 1 is installed  on  a
+separate  ext4 partition on the external sdcard, with currently  about
+3.5G  (1200  packages) used by debian proper. However it  additionally
+permits  use  as  a  mobile (remote)  _full_  graphical  desktop-level
+environment    including   Libre-Office,   LaTeX   and    unrestricted
+development.</p>
+
+<p  class=anno>Android  2.3.6 on my Note weighs in at about 2.3GB  for
+190 system and 300 user apps, with another few hundred MB found on the
+internal  sdcard, not counting personal media files and backup  files.
+While offering some mobile and graphical usability, it does <b>not</b>
+offer  proper  shell  use nor desktop-level  capabilities  (mobile  or
+otherwise).</p>
+
+
+
 
 <!-- ------------------------------------------------------------ -->
   
