@@ -37,7 +37,7 @@ Android:
 
 <hr>
 
-<H2>01b - Setup Alternatives</H2>
+<H2>Android Article 01b - Setup Alternatives</H2>
 
 <p>Last change: 20120309</p>
 <p>License: CC-BY-SA.</p>
@@ -135,8 +135,8 @@ mkdir opt
 CHROOT.run wget https://sourcery.mentor.com/sgpp/lite/arm/portal/package2549/public/+++
    +++arm-none-linux-gnueabi/arm-2008q1-126-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2
 # extract ldd and the missing libs
-( cd arm-2008q1/arm-none-linux-gnueabi/libc/lib && find | cpio -pmd $OPTROOT/lib )
-( cd arm-2008q1/arm-none-linux-gnueabi/libc/usr/bin && find ldd | cpio -pmd $OPTROOT/bin )
+( cd arm-2008q1/arm-none-linux-gnueabi/libc/lib &amp;&amp; find | cpio -pmd $OPTROOT/lib )
+( cd arm-2008q1/arm-none-linux-gnueabi/libc/usr/bin &amp;&amp; find ldd | cpio -pmd $OPTROOT/bin )
 
 # as we cannot quite rely on busybox sanity (and certainly not on Google's toolbox)
 # we unpack the ipkg as above, plus busybox and wget
@@ -150,7 +150,7 @@ rm data.tar.gz
 # esp. update-alternatives doesn't like dealing with a bad busybox setup. And it
 # needs sh (or /bin/sh) to be compatible to rm (/bin/rm ...) it uses. IFF it honors
 # PATH, placing /system/xbin first in PATH and removing /bin/sh _might_ suffice.
-( cd bin && for i in sh echo rm sed mkdir head sort dirname ln mv; do ln -s /opt/bin/busybox $i; done )
+( cd bin &amp;&amp; for i in sh echo rm sed mkdir head sort dirname ln mv; do ln -s /opt/bin/busybox $i; done )
 
 # Note that we still need to run the initial ipkg invocations to properly
 # initialize package management.
@@ -167,15 +167,15 @@ doesn't use).</p>
 # you'll see most of this again in the OPTWARE script below
 # this is one-time and will survive reboots
 mount -oremount,rw /system
-( cd /etc && ln -s /proc/mounts mtab ) 
-( cd /etc && touch resolv.conf )
+( cd /etc &amp;&amp; ln -s /proc/mounts mtab ) 
+( cd /etc &amp;&amp; touch resolv.conf )
 mount -oremount,ro /system
 
 # this must be done after each boot
 mount -oremount,rw /
 rm /bin/sh                              # we _need_ a symlink to busybox here
-( cd /bin && ln -s $OPTROOT/bin/* . )   # only ldd for now  - android: usually unused
-( cd /lib && ln -s $OPTROOT/lib/* . )   # libc and the like - android: unused except /lib/modules
+( cd /bin &amp;&amp; ln -s $OPTROOT/bin/* . )   # only ldd for now  - android: usually unused
+( cd /lib &amp;&amp; ln -s $OPTROOT/lib/* . )   # libc and the like - android: unused except /lib/modules
 mkdir /opt /home /tmp
 mount -oremount,ro /
 
@@ -228,8 +228,8 @@ export OPTROOT=/x/optware # *** UNRELATED TO CHROOT despite PATH***
 
 ## /system: this is one-time and will survive reboots
 #mount -oremount,rw /system
-#( cd /etc && ln -s /proc/mounts mtab ) 
-#( cd /etc && touch resolv.conf )
+#( cd /etc &amp;&amp; ln -s /proc/mounts mtab ) 
+#( cd /etc &amp;&amp; touch resolv.conf )
 #mount -oremount,ro /system
 
 # /: transient rootfs mod - required after each boot
@@ -237,9 +237,9 @@ export OPTROOT=/x/optware # *** UNRELATED TO CHROOT despite PATH***
 # now have a full OPTWARE setup (untested)
 mount -oremount,rw /
 rm /bin/sh                              # we _need_ a symlink to busybox here
-( cd /bin && ln -s $OPTROOT/bin/* . )   # only ldd for now  - android: usually unused
-( cd /lib && ln -s $OPTROOT/lib/* . )   # libc and the like - android: unused except /lib/modules
-mkdir /opt /home /tmp
+( cd /bin &amp;&amp; ln -s $OPTROOT/bin/* . 2&gt;/dev/null )   # only ldd for now  - android: usually unused
+( cd /lib &amp;&amp; ln -s $OPTROOT/lib/* . 2&gt;/dev/null )   # libc and the like - android: unused except /lib/modules
+mkdir /opt /home /tmp 2&gt;/dev/null
 mount -oremount,ro /
 
 # optional mounts
@@ -263,20 +263,20 @@ case, I use these files:<p>
 # we may need to also consider LD_LIBRARY_PATH ?
 
 export OPTWARE_POS="first"
-[ "$OPTWARE_POS" = "first" ] && PATH="/opt/bin:$PATH"
-[ "$OPTWARE_POS" = "last"  ] && PATH="$PATH:/opt/bin"
+[ "$OPTWARE_POS" = "first" ] &amp;&amp; PATH="/opt/bin:$PATH"
+[ "$OPTWARE_POS" = "last"  ] &amp;&amp; PATH="$PATH:/opt/bin"
 </pre>
 
 <pre>
 # .bash_aliases.pj
 
-function ioptware { test -d /opt || sudo OPTWARE; test -f /opt/optware.env && . /opt/optware.env; }
+function ioptware { test -d /opt || sudo OPTWARE; test -f /opt/optware.env &amp;&amp; . /opt/optware.env; }
 
 if [ "$HOSTNAME_CHROOT" = "" ]; then
    # probably invoked via TERMIDE script or TERMIDE app
    ...
-   [ "$OPTWARE_POS" = "first" ] && PATH="/opt/bin:$PATH"
-   [ "$OPTWARE_POS" = "last"  ] && PATH="$PATH:/opt/bin"
+   [ "$OPTWARE_POS" = "first" ] &amp;&amp; PATH="/opt/bin:$PATH"
+   [ "$OPTWARE_POS" = "last"  ] &amp;&amp; PATH="$PATH:/opt/bin"
    ...
 fi
 </pre>
