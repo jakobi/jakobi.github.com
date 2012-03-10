@@ -2,8 +2,8 @@
 <HEAD>
 <link rel="icon"          href="/favicon.png"/>
 <link rel="shortcut icon" href="/favicon.png"/>
-<meta name="description" content="Coping with Android - Setup Alternatives (including OPTWARE, X11 Hacks): google android samsung galaxy note native unix shell environment optware nslu2 X11 angstrom cross compilation compile build">
-<meta name="keywords" content="coping android setup alternatives including optware hacks google samsung galaxy note native unix shell environment nslu2 angstrom cross compilation compile build">
+<meta name="description" content="Coping with Android - Setup Alternatives (including OPTWARE, X11 Hacks): google android samsung galaxy note native unix shell environment update frequency custom rom sustainable">
+<meta name="keywords" content="coping android setup alternatives including optware hacks google samsung galaxy note native unix shell environment update frequency custom rom sustainable">
 <meta name="author" content="Peter Jakobi">
 <TITLE>Coping with Android - Setup Alternatives (including OPTWARE, X11 Hacks)</TITLE>
 <style type="text/css"><!--
@@ -37,494 +37,12 @@ Android:
 
 <hr>
 
-<H2>Android Article 01b - Setup Alternatives</H2>
-
-<a name=toc></a>
-<ul>
-<li><a href="#opt">OPTWARE</a>
-<li><a href="#notes">(Raw) Notes (incl. Building/Crosscompilation and Distribution Overview)</a>
-<li><a href="#x">Native Linux Hacks</a>
-</ul>
-
+<H2>Android Article 05 - ClueSupport Manifesto</H2>
 
 <p>
 State described: early 2012 unless specified differently
 Last change: 20120309<br>
 License: CC-BY-SA.</p>
-
-<hr>
-<a name=opt></a>
-<H3>NLSU2 OPTWARE</H3>
-
-
-<p>OPTWARE  strives  to  provide package  management  with  dependency
-tracking  for usually headless embedded Linux devices. The best  known
-OPTWARE  targets are probably the nslu2, anything wrt54*/openwrt,  the
-Sharp  Zaurus  and  maybe nowadays the sheevaplug. On  these  devices,
-OPTWARE  tries hard to stay just within /opt and outside of the native
-setup, with the possible exception of requiring some links in /bin and
-/lib   at  least  during  bootstrapping  (which  doesn't  matter   for
-Android).</p>
-
-<p>OPTWARE  is  easily  enough to get a  moderately  sane  environment
-(embedded,  and  this  _includes_ Android) up and running,  but  don't
-expect  debian levels of up-to-dateness and completeness (though  some
-packages  do have this week's timestamp). It certainly beats  isolated
-<i>too-native</i>  Android native port attempts with their  associated
-bionic  problems. Also note that while OPTWARE offers a few feeds with
-(rare) kernel updates a full environment for specific devices, Android
-is <b>not</b> among those.</p>
-
-<ul>
-<li>Homepage: <a href="http://optware-project.org">optware-project.org</a> and the 
-    parent project <a href="http://www.nslu2-linux.org/wiki/Optware/HomePage">www.nslu2-linux.org/wiki/Optware/HomePage</a>
-<li>Feed/Repository of interest: <a href="http://ipkg.nslu2-linux.org/feeds/optware/cs08q1armel/">ipkg.nslu2-linux.org/feeds/optware/cs08q1armel/</a>
-<li>Source repository: svn co http://svn.nslu2-linux.org/svnroot/optware/trunk/
-</ul>
-
-
-<br>
-<H4>Bootstrapping OPTWARE on Android</H4>
-
-<p>Prerequisites  for  the demonstration: <b>Root Access</b></p>
-
-<p  class=anno>  (due to mount-bind and symlinks in /bin, /lib,  /etc;
-without  being  able to use root, all you can use to  improve  Android
-shell-side  is  installing  sshdroid and TERMINAL  IDE  apps;  however
-Android  2.3 is sufficiently buggy to really require rooting to  cope,
-regardless  of all the additional abilities enabled by rooting)</p>
-
-<p>(if  you still need some hints or convincing to root your  Android,
-leave  this  page and read part 1 of my <a href="01_setup.html">first
-Android  article</a> instead. When rooted, you can continue there with
-TERMINAL IDE and the suggestions of part 2. If that's insufficient, or
-you  want  to avoid my kind of outside-of-app abuse of  TERMINAL  IDE,
-either  do  continue here with OPTWARE or otherwise consider a  chroot
-setup  of  one of the distributions below. For this you can  refer  to
-parts 3 and 4 of the first article to set up a debian chroot upto full
-desktop-level remote GUI - pretty standard excluding maybe CHROOT.run;
-a  hack  you  only need to consider in case  of  transparently  mixing
-chroot-side  commands in an outside-of-chroot pipe. Not quite standard
-however  is  the  described level of LAN integration,  and  definitely
-non-standard  and unexpected-to-me were the work-arounds I was  forced
-to  develop  for  Android kernel issues encountered in  the  described
-tests everywhere from parts 2 to 4)</p>
-
-<p>Set  up  a  slightly  more comfortable  environment  by  using  the
-TERMINAL  IDE binaries and place a DNS-resolving copy of busybox first
-in  PATH (stericson; but in the end, I still suffered busybox  issues,
-so  this  caution didn't pay beyond a nicer shell prompt  and  command
-line  editing).  This  step  is mostly cosmetic, and  even  without  a
-working native wget, you can just use a browser or another host's wget
-to download the the tarball and the three initial ipkg packages.</p>
-
-<pre>
-TERMIDE
-iresolver
-</pre>
-
-<p>I  have  some spare space on the ext4 filesystem mounted on /x  (as
-described  in the chroot setup in article 1). If you have at least 100
-MB  on  /data  beyond the 10% free threshold, you can also  use  /data
-(with some Unix and GNU standards including gcc, I need about 300M for
-OPTWARE).  The cs08q1armel feed is compatible with Android (in my case
-the  Samsung  Galaxy  Note),  and  offers  two  branches:  stable  and
-unstable.</p>
-
-<pre>
-export FEED=http://ipkg.nslu2-linux.org/feeds/optware/cs08q1armel/cross/stable
-export OPTROOT=/x/optware # WHEREVER YOU WANT, BUT NOT ON FAT!
-</pre>
-
-<p>First  attempt is to roughly follow the basic instructions given at
-the  bottom of the OPTWARE homepage. But this fails, as ipkg cannot be
-loaded due to missing libraries (any embedded libc would have been OK,
-but  Google just had to go bionic). That is, if tar implements -O  ...
-(otherwise   just  use  a  few  additional  temp  files   instead   of
-piping).</p>
-
-<pre>
-mkdir $OPTROOT
-cd $OPTROOT
-
-ipk_name=`wget -qO- $FEED/Packages | awk '/^Filename: ipkg-opt/ {print $2}'`
-wget $FEED/$ipk_name
-tar -xOvzf $ipk_name ./data.tar.gz | tar -C $OPTROOT -xzvf -
-mkdir -p $OPTROOT/opt/etc/ipkg
-echo "src cross $FEED" &gt; $OPTDIR/opt/etc/ipkg/feeds.conf
-
-# optional/symlink IFF you've already a sane /etc/resolv.conf
-echo nameserver 8.8.8.8 &gt; opt/etc/resolv.conf
-
-export PATH=/opt/bin:/bin:$OPTROOT/bin:$OPTROOT/opt/bin:$PATH
-export LD_LIBRARY_PATH=/lib:/opt/lib:$OPTROOT/lib:$OPTROOT/opt/lib:$LD_LIBRARY_PATH # unnecessary?
-
-# FAIL despite LD_LIBRARY and all
-# ipkg update
-# for i in {wget,ipkg-opt,busybox-base}; do ipkg install $i; done
-</pre>
-
-<p>Searching  the net offers an optware-for-android script by pfalcon,
-pointing  to  a  tarball containing our missing  files  among  others.
-Longer  download,  but  less trouble than trying to  locate  the  ipkg
-packages   containing   our   missing  libraries,   plus   all   their
-dependencies.  So let's use that script as a rough guide.</p>
-
-<p>Note  that we need working https access for the tarball  containing
-our  libs,  which  neither  my stericson busybox nor  my  static  wget
-support  -  so this is the single step I could not do in  the  Android
-shell.</p>
-
-<pre>
-# fetch_package_index, in case we want to lookup something, probably optional
-wget -q $FEED/Packages
-mkdir opt 
-# mkdir home root home/user
-
-# my Android-side wget hates https, so I use my debian chroot's wget 
-# (step requires about 20 minutes; just download the tarball somehow - bonus
-#  points if you do it on the Android using google's browser app - and copy 
-#  it into $OPTROOT; do mind the +++ linebreak when pasting)
-CHROOT.run wget https://sourcery.mentor.com/sgpp/lite/arm/portal/package2549/public/+++
-   +++arm-none-linux-gnueabi/arm-2008q1-126-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2
-
-# extract ldd and the missing libs from the tarball
-tar jxf arm-2008q1-126-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2
-( cd arm-2008q1/arm-none-linux-gnueabi/libc/lib &amp;&amp; find | cpio -pmd $OPTROOT/lib )
-( cd arm-2008q1/arm-none-linux-gnueabi/libc/usr/bin &amp;&amp; find ldd | cpio -pmd $OPTROOT/bin )
-# rm -r arm-2008q1 arm-2008q1-126-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2
-
-# as we cannot quite rely on busybox sanity being sufficient for ipkg and
-# update-alternatives use (and certainly there's only sanity to be lost in
-# considering Google's toolbox clone of busybox), we unpack the minimal
-# working set of packages for a working ipkg package management manually: 
-# ipkg-opt, busybox-base, wget...
-#
-# note the requirement to remove any previous non-busybox /bin/sh (below) -
-# even a really sane busybox is capricious when mixing commands in pipes
-# in shell scripts run with busybox sh.
-get_package_fname () { awk "/^Filename: ${1}_/ {print \$2}" Packages; }
-for i in {wget,ipkg-opt,busybox-base}; do wget -q $FEED/$(get_package_fname $i); done
-for i in {wget,ipkg-opt,busybox-base}*ipk; do tar -zxf $i ./data.tar.gz; tar -zxf data.tar.gz; done
-rm data.tar.gz
-# rm *ipk
-( cd bin &amp;&amp; for i in sh echo rm sed mkdir head sort dirname ln mv; do ln -s /opt/bin/busybox $i; done )
-
-# Note that we still need to run the initial ipkg invocations to properly
-# initialize package management.
-</pre>
-
-<p>Everything  upto now can also be done outside the Android, with the
-tree  at $OPTROOT just being copied over afterwards (do not forget  to
-export  OPTROOT=&lt;your android dir&gt; on the Android). From now on,
-however,  we  need  to work locally on the Android  device,  first  in
-creating  the optware environment, and afterwards to run ipkg natively
-(if you don't want to do this yet, you could experiment with the -d/-o
-options and non-/ installs - not tested).</p>
-
-<p>The  original setup recipe would have been mostly sufficient for  a
-working  setup  in  case of OPTROOT=/, with  suitable  writable  ext2+
-diskspace  at /opt. As I chose a different OPTROOT to keep all OPTWARE
-files  together  (too  paranoid  this  time,  as  OPTWARE  is  <b>very
-clean</b>  to  setup,  minimizing intrusions into the  outside  system
-files), I have to still symlink or mount-bind, in addition to providing
-a sane mtab and resolv.conf (which bionic doesn't use).</p>
-
-<pre>
-# you'll see most of this again in the OPTWARE script below
-# this is one-time and will survive reboots
-mount -oremount,rw /system
-( cd /etc &amp;&amp; ln -s /proc/mounts mtab ) 
-( cd /etc &amp;&amp; touch resolv.conf )
-mount -oremount,ro /system
-
-# this must be done after each boot
-mount -oremount,rw /
-
-#### initially, we _*NEED*_ a symlink to busybox sh here
-test -x $OPTROOT/bin/sh && ( rm /bin/sh 2>/dev/null; ln -s $OPTROOT/bin/sh . )
-#### claiming bonus points for excess paranoia :)
-
-( cd /bin &amp;&amp; ln -s $OPTROOT/bin/* . )   # only ldd for now  - android: usually unused
-( cd /lib &amp;&amp; ln -s $OPTROOT/lib/* . )   # libc and the like - android: unused except /lib/modules
-mkdir /opt /home /tmp
-mount -oremount,ro /
-
-# optional mounts
-# mount -obind $OPTROOT/opt/etc/resolv.conf /etc/resolv.conf # already in /etc/resolv.conf
-# mount -obind $OPTROOT/home /home
-
-# optware mount bind (you may use a symlink instead if /opt is empty)
-mount -obind $OPTROOT/opt  /opt
-</pre>
-
-<p>The final step is initializing the ipkg package management.</p>
-
-<pre>
-ipkg update
-for i in ipkg-opt wget busybox; do ipkg install $i; done
-</pre>
-
-<p>This  completes a minimal OPTWARE setup.</p>
-
-<p>OPTWARE  offers  1300+ packages, most of which should be useful  on
-Android  (maybe  excluding  alsa/sound-related apps,  syslog  and  nfs
-packages).  The  feed includes among others a minimal client-side  X11
-setup,   servers   from   tftp  to  inetutils,   apache   and   samba,
-cups/enscript/groff/ghostscript/mpage/psutils,
-openvpn/strongswan/stunnel/vtun, bash, gcc and the kitchen sink, perl,
-php, python, ruby, and even 9base/rc.</p>
-
-<p>For  a  fairly  small  setup,  consider  installing  the  following
-packages:  <i>mc vim tmux elinks w3m less perl python bash gzip  bzip2
-unzip  p7zip  cpio  diffutils findutils grep mktemp  net-tools  netcat
-openssh  openssl  openvpn  rsync  wget lsof  ltrace  strace  e2fsprogs
-e2tools gnupg man man-pages xauth xterm autoconf gcc automake binutils
-flex  make  optware-devel</i>. Missing dependencies will  be  resolved
-automatically by ipkg (about 100 packages, 300M).</p>
-
-
-<br>
-<H4>Customizing the Environment for OPTWARE</H4>
-
-<p>To  make OPTWARE available after rebooting, you need to restore the
-above   changes   to  Android's   transient   rootfs   (symlinks,
-mountpoints, possibly also mounts).</p>
-
-<pre>
-# file /system/xbin/OPTWARE
-
-export OPTROOT=/x/optware # *** UNRELATED TO CHROOT despite PATH*** 
-
-## /system: this is one-time and will survive reboots
-#mount -oremount,rw /system
-#( cd /etc &amp;&amp; ln -s /proc/mounts mtab ) 
-#( cd /etc &amp;&amp; touch resolv.conf )
-#mount -oremount,ro /system
-
-## /: transient rootfs mod - required after each boot
-# note that we might be able to remove some of the symlinks, as we
-# now have a full OPTWARE setup (untested)
-mount -oremount,rw /
-
-# we _need_ a symlink to busybox here when bootstrapping,
-# untested if we can remove any of our links in /lib and /bin
-# afterwards (e.g. during updates of ipkg busybox), or whether 
-# we always need the stuff (either busybox or bash symlinked to sh
-# and GNU equivalents; outside of debian, dash had issues with Perl
-# somewhere, so do not use dash for the /bin/sh symlink)
-# be paranoid and guard the rm /bin/sh (in case a /bin/sh-using 
-# non-Android system has the misfortune to suffer my OPTWARE install guide)
-test -x $OPTROOT/bin/sh && ( rm /bin/sh 2>/dev/null; ln -s $OPTROOT/bin/sh . )
-( cd /bin &amp;&amp; ln -s $OPTROOT/bin/* . 2&gt;/dev/null )   # only ldd for now  - android: usually unused
-( cd /lib &amp;&amp; ln -s $OPTROOT/lib/* . 2&gt;/dev/null )   # libc and the like - android: unused except /lib/modules
-mkdir /opt /home /tmp 2&gt;/dev/null
-mount -oremount,ro /
-
-# optional mounts
-# mount -obind $OPTROOT/opt/etc/resolv.conf /etc/resolv.conf # already in /etc/resolv.conf
-# mount -obind $OPTROOT/home /home
-
-## optware mount bind (you may use a symlink instead if /opt is empty)
-mount -obind $OPTROOT/opt  /opt
-
-echo source /opt/optware.env for use of the optware environment
-</pre>
-
-
-<br>
-<p>To use OPTWARE, you need to at least add OPTWARE to the  PATH
-variable. In my case, I use these files and definitions:<p>
-
-<pre>
-# file /opt/optware.env
-
-# we may need to also consider LD_LIBRARY_PATH, MANPATH, ... ?
-
-export OPTWARE_POS="first"
-[ "$OPTWARE_POS" = "first" ] &amp;&amp; PATH="/opt/bin:$PATH"
-[ "$OPTWARE_POS" = "last"  ] &amp;&amp; PATH="$PATH:/opt/bin"
-</pre>
-
-<pre>
-# .bash_aliases.pj
-
-function ioptware { test -d /opt || sudo OPTWARE; test -f /opt/optware.env &amp;&amp; . /opt/optware.env; }
-
-if [ "$HOSTNAME_CHROOT" = "" ]; then
-   # probably invoked via TERMIDE script or TERMIDE app
-   ...
-   [ "$OPTWARE_POS" = "first" ] &amp;&amp; PATH="/opt/bin:$PATH"
-   [ "$OPTWARE_POS" = "last"  ] &amp;&amp; PATH="$PATH:/opt/bin"
-   ...
-fi
-</pre>
-
-
-<br>     <p>For     further     shell    customization,     see     <a href="01_setup.html">first   article  and  the   TERMINAL   IDE/CHROOT
-setup</a>, esp. the files .bash_aliases.pj and .bashrc.pj, as contained
-in the article's tarball.</p>
-
-
-
-<br>
-<H4>OPTWARE Issues</H4>
-
-<ul>
-<li><i>screen</i> fails to work (but as this also happens in debian chroot - kernel!? - work-around: tmux)
-<li>there is no <i>ipkg</i> man page (neither locally, in man-pages.ipk, nor online) - 
-    <i>ipkg --help</i>, <a href="http://svn.nslu2-linux.org/svnroot/optware/trunk/sources/ipkg-opt/">OPTWARE's source patches</a> 
-    and the <a href="http://buffalo.nas-central.org/wiki/Overview_of_the_ipkg_package_management_system">buffalo-nas-central help</a> 
-    are about the best resources to be found. <a href="http://handhelds.org">Handhelds.org</a> and the official sources there
-    are currently offline (Dec 1, 2011 doesn't seem to be your 
-    regular 24h day; <a href="http://www.koders.com/info.aspx?c=ProjectInfo&pid=85R6BA74HERURGXTRM7RD4H4AH">source copy at koders</a>)
-</ul>
-
-<br>
-<H4>OPTWARE Notes</h4>
-
-<ul>
-<li>OPTWARE compiling / package building <a href="http://dream.reichholf.net/wiki/Howto:IPK_Pakete_erstellen">Howto:IPK_Pakete_erstellen (German; (non)openembedded)</a>, <a href="http://www.optware-project.org/index.php?title=Add_a_Package_to_Optware">optware-project.org/index.php?title=Add_a_Package_to_Optware</a>. Note that the OPTWARE svn sources/* offers differential patches to one specific upstream source version, which is specified/fetched by make/&lt;package&gt;.mk
-<li>Installation/ipkg documentation - see handhelds.org/ipkg links above in issues
-</ul>
-
-
-<br>
-<h4>Size and Capability Comparison</h4>
-
-<p>sshdroid  is  about 2M, the files in /system/xbin 10M: Basic file and
-shell access  by adb and ssh. TERMINAL IDE  requires
-another  120M:  This  permits light shell use and light local development  in  a
-graphical  terminal  app - with some effort also  usable  from
-outside  the TERMINAL IDE application (setup as of first article, part 2). </p>
-
-<p>Adding  my  "fairly  small" OPTWARE setup takes another  300M  (108
-packages),  while improving the shell environment with proper libc and
-GNU  utilities,  gcc  and  non-SL4A  scripting  options,  some  server
-software and a very basic xterm / X11 client.</p>
-
-<p>In  constrast  the  debian  chroot  from article  1  parts  3+4  is
-installed  on  a separate ext4 partition on the external sdcard,  with
-currently about 3.5G (1200 packages) used by debian proper. It extends
-the   Note   to  a  200g  mobile  non-cloud  _full_   remote-graphical
-desktop-level    environment   including   Libre-Office,   LaTeX   and
-unrestricted  development.  For comfort, all you need is some  box  to
-invoke VNC on to connect to the Note. In a pinch, skip the comfort bit
-and just use a local vnc-viewer on the Android itself. </p>
-
-<p  class=anno>Android  2.3.6 on my Note weighs in at about 2.3GB  for
-190 system and 300 user apps, with another few hundred MB found on the
-internal  sdcard, not counting personal media files and backup  files.
-With  near-similar  size, pure Android+Market only  offer  <B>some</B>
-mobile  and graphical usability in the same form-factor and weight  of
-200g  as  above, while <b>lacking</b> both proper shell use  and  true
-desktop-level  capabilities (mobile, cloud - inclusive all  associated
-issues - or otherwise).</p>
-
-
-
-
-<hr><a href="#toc">(table of contents)</a><hr>
-<a name=notes></a>
-<h3>(Raw) Notes</h3>
-
-<h4>Building / (Cross)Compiling</h4>
-
-<p>Build environments / recipe repositories</p>
-
-<ul>
-<li>OE: <a href="http://docs.openembedded.org/usermanual/">openembedded.org</a> - cross compile build system upto rom creation (OPTWARE claims to converge against OE;
-    see the <a href="http://www.openembedded.org/index.php/LayerIndex">LayerIndex</a> for device/libc/.../... build chain combinations; OE also offers a fairly large
-    repository of (versioned) bitbake build recipes, known to build at least on some of these combinations)
-</ul>
-
-<p>Porting/building individual Android binaries, or archives of Android builds of shell basics like vim or mc</p>
-
-<ul>
-<li><a href="http://dan.drown.org/android/">Dan Brown</a>: opkg X bionic, with build instructions - including mc, vim, bash, openssh, gdb, binutils, strace, curl, socat
-<li><a href="http://blog.gonzih.org/blog/2011/09/19/install-opkg-package-manager-on-android-mc/">gonzih</a>: opkg - including mc, rsync, busybox
-<li><a href="https://github.com/anguslees/openembedded-android">github.com/anguslees/openembedded-android</a>: OE X bionic - builds various packages upto OE's gcc recipe; 
-     modified-for-Android OE build toolchain (most of the bitbake recipes look to be either unsuitable on 
-     native Android or to require some modification for use; <a href="http://lists.linuxtogo.org/pipermail/openembedded-devel/2010-April/019132.html">announcement</a>)
-<li><a href="http://whitneyindustries.dyndns.org/2011/01/10/busybox-openembedded-android.html">Mark Whitney</a>: blog entry about OE/bitbake setup for building
-    OE/bitbake setup for building busybox, with links to various other busybox build toolchains.
-<li>see also: linaro / codesourcery toolchains, XDA
-</ul>
-
-<p>Various</p>
-
-<ul>
-<li><a href="http://code.google.com/p/opkg/">code.google.com/p/opkg</a> (from openmoko, backwards-compatible with ipkg; now supported in OE)
-<li><i>note to self: add a cron email reminder for a quarterly XDA X11 / native-Linux thread hunt</i>
-</ul>
-
-
-
-<br>
-<h4>Distributions</H4>
-
-<p>Non-Android roms and graphical distributions (usually only for a small number of ARM devices, mostly excluding Android hardware)</p>
-
-<ul>
-<li><a href="http://shr-project.org">SHR</a> is OE X freesmartphone. Might be a candidate to experiment with dual-booting. 
-    Known to work as rom/GUI on some Androids such as the Nexus.
-<li><a href="http://www.angstrom-distribution.org/">&Aring;ngstr&ouml;m</a> of OpenZaurus fame, currently using OE: deb/ipkg X {,eg,uc}libc X &lt;arch|device|...&gt;.
-   For Zaurus and friends, angstrom may include a full rom from device boot to GUI (one of OPIE, GPE or X11/E17). Package feeds for a suitable architecture
-   should be usable for a chroot on Android (no mention of rom/GUI on Android seen)
-<li><a href="https://wiki.ubuntu.com/ARM/DeviceSupport">Ubuntu</a> (native X11/Unity can be used on a small list of ARM devices, no mention of Android tablets seen)
-<li>see also: <a href="http://www.linuxtogo.org/projects">LinuxToGo project list</a> and <a href="http://www.linuxtogo.org/gowiki/LinuxDevices">device list</a>
-</ul>
-
-<p>Other ARM distributions (most likely requiring a chroot-setup; lxc isn't supported by my current kernel on the Note)</p>
-
-<ul>
-<li>OPTWARE (no chroot required, as decribed above)
-<li>chroots of ARM builds of standard distributions like debian (see first article), 
-    ubuntu, fedora (at least version 8)
-<li>see also the nslu2/OPTWARE list for available distributions for (mostly) headless embedded ARM devices
-</ul>
-
-<p>Android framework "forks"</p>
-<ul>
-<li><a href="http://code.google.com/p/0xdroid/">0xdroid and 0xlab</a>: u-boot/linaro/bionic-based - AOSP android framework rom building for beagleboard&amp;friends
-<li>see also non-stock-derived Android custom roms like <a href="http://cyanogenmod.com">cyanogenmod</a>
-</ul>
-
-<p>Various</p>
-<ul>
-<li>Geisterfahrers - as usual, some people do have to hack both on the wrong lane and against the traffic direction
-<ul>
-<li><a href="http://androidzaurus.seesaa.net/article/74237419.html">Android on Sharp Zaurus</a> :)
-</ul>
-</ul>
-
-
-
-<hr><a href="#toc">(table of contents)</a><hr>
-<a name=x></a>
-<h3>Native Linux Hacks</h3>
-
-<p><i>You've still a chance to define how you want Linux proper to use
-and  map  multi-touch  / pointer device clicks to X11 on  your  device
-:)</i></p>
-
-<ul>
-<li><a href="http://forum.xda-developers.com/showthread.php?t=933667">Ubuntu / Galaxy Tab</a> (see also <a href="http://wiki.meego.com/ARM/Hummingbird#Ubuntu">Meego/Ubuntu</a>; mtev or evdev; lacks e.g. graphic accel, camera, phone; bt: no hid, audio out is possible; devices include a Galaxy Tab)
-<li><a href="https://wiki.kubuntu.org/ARM/Archos101it">Kubuntu / Archos 10.1</a> X11, usb, audio, WLAN (QEMU bootstrap example: <a href="https://wiki.kubuntu.org/ARM/n900">n900 page</a>)
-<li><a href="http://forum.xda-developers.com/showthread.php?t=1045910">HTC Desire</a>
-<li>nook
-<li><a href="http://forum.xda-developers.com/showthread.php?t=1158260">Iconia A500</a> (ubuntu, for nvidia stuff see also: <a href="https://launchpad.net/~ac100">ac100 ppa</a>)
-</ul>
-
-<p>Various</p>
-
-<ul>
-<li>ubuntu rootstock: <a href="https://wiki.ubuntu.com/ARM/RootfsFromScratch">Arm rootfs creation</a>
-<li>debian: debootstrap
-<li>X11 touchpad driver options: multitouch, tslib, metv, evdev 
-</ul>
-
-
 
 <hr><a href="#toc">(table of contents)</a><hr>
 <a name=milestones></a>
@@ -551,11 +69,21 @@ repeatedly replaces devices at the vendor's whim.</p>
 all,  so the buy-replacement-device-interval of their dreams might  as
 well be called a <b>monetary ZERO-DAY exploit</b>.</p>
 
-<p>OPTWARE,  or better yet, a debian chroot (as installed on my  Note)
-guarantees  a vendor-independent level of real longterm support  until
-either  the device develops actual hardware issues or the user changes
-his device use patterns sufficiently to consider a new device (say, to
-read A4 documents full-screen without zooming).</p>
+<p><a href="">OPTWARE</a>, or better yet, <a href="">a debian  chroot
+(as installed on my Note)</a> guarantees a vendor-independent level of
+real longterm support until either the device develops actual hardware
+issues  or  the user changes his device use patterns  sufficiently  to
+consider  a new device (say, to read A4 documents full-screen  without
+zooming).</p>
+
+<p  class=anno>Side  benefits of a debian chroot on a  modern  Android
+like   the  Samsung  Galaxy  Note:  a  <b>portable  complete  uptodate
+local/non-cloud  desktop</b>,  independent of the exotic rare  Android
+OTA rom update, which is already out-of-date before being transmitted.
+If  you  want  a graphical presentation rather than my  debian  chroot
+do-it-yourself   HOWTO  sketch  for  rooted  Androids,  check  out  <a href="http://www.ubuntu.com/devices/android">Canonical  and Ubuntu for
+Android</a>  or  have  a  physical look at  Canonical's  take  on  the
+Motorola Atrix.</p>
 
 <p align=center><i>This puts the GNU back into - hmmm - gnu(chroot)/Linux</i></p>
 
@@ -591,6 +119,12 @@ preclude building or using some programs.</p>
 <p>Note  that  custom  rom  availability  further  depends  on  vendor
 behaviour and device popularity.</p>
 
+<p  class=anno>(this  corresponds  to  the current setup  of  my  Note
+(debian  chroot  +  custom rom), which - according to Samsung  -  will
+probably  last  until early 2013)
+
+
+
 <h4>... Long-Term Supported Native Linux (possibly also Dual-Booting)</h4>
 
 <p>At  this  point in time, we can either happily accept any bugs  and
@@ -602,8 +136,12 @@ possible.  Like  inside a locked bank tresor with the battery removed.</p>
 for  uncommon and crippled hardware components (most likely candidates
 are  sensors,  maybe camera, and 3d acceleration, possibly  also  some
 wifi/gsm  functionality) and consider switching (or dual-booting) to a
-native   graphical   interface  and/or  a  native  kernel   (AOSP   or
-official).</p>
+native  graphical interface and/or a native kernel (AOSP or official).
+Functionality  loss  should  be  less problematic  on  tablets,  given
+typical  usage. As for Call/phone/rild/gsm issues, they should  become
+less  problematic  in the future, as providers ought to move  to  VOIP
+proper,  as their transmission standards and protocols already do year
+by year.</p>
 
 <p>By this we also extend proper package management to the equivalents
 of  the  rom / system apps and turn the chroot setup into  the  actual
@@ -648,46 +186,11 @@ rebuilding  installs  with manual flashing to long compiles with  some
 patching  to  porting/rebasing  old changes against current  Xorg  and
 kernel sources.</p>
 
-<p>Currently all native efforts I've found - listed below - still seem
-stuck  at  the  incomplete  restricted   functionality   one-shot
-demonstration  level.</p>
+<p>Currently   all   native  efforts  I've  found  -  listed   in   <a href="01b_setup_alternatives.html">Setup Alternatives</a> - still seem
+stuck    at   the   incomplete   restricted   functionality   one-shot
+demonstration level.</p>
 
 
-
-<p  class=anno>Note that killing the all-in-one-update idea as well as
-dropping  the articial Market restrictions against Market-Links of rom
-component  apk  packages would go pretty far in reducing  the  current
-tardiness.  Add  inter-app  dependency  tracking  (use  case:  dolphin
-browser  and  plugins,  and many more) and you nearly have  a  package
-management.  When we are at it, we could also drop other needless  and
-artificial  market restrictions like the Android Market 403 error.  Or
-the  paid-app-is-not-compatible  error  strangely  occuring  only  for
-security-related apps with identical free test versions. </p>
-
-<p  class=anno>Of  course,  the  proper answer would  be  to  separate
-Android  2.3 abysmal crashy core security-cum-packaging-component into
-multiple  separate  tasks:  One  task  for  a  lightweight  persistant
-database  setups  instead  of  reparsing/rebuilding  packages.xml  and
-forgetting  assigned  application IDs (uiderrors/force-close) on  each
-boot.  One  task  for permission and security enforcement -  the  only
-required core component at run time. One task for package installation
-and  extracting  permissions, features et al. One additional task  for
-inter-package   dependencies.  And  all  of  these   tasks   excluding
-enforcement  have  been  handled solidly for  decades  by  established
-traditional   package   management  setups  like   dpkg/aptitude   and
-predecessors.  No more need to run Market Fixer / FIXPERM on each boot
-to  clean up Google's Market mess.</p>
-
-<p  class=anno> There's not even a need for making big changes to  the
-Market  - package translation or slightly modifying a package  manager
-for a differing package format isn't that difficult at all. Retain the
-html  pages  of the Market for interactive searching, move apps  to  a
-repository,  with  free app requirements maybe just  already  resolved
-inside  the  package management on the client, while more  interesting
-restrictions  like paid app access or export restrictions still can be
-dealt  with  by  using public key ideas and dynamic server  side  file
-serving.  Not  exactly Rocket Science. Rather Stone-Age ideas  on  the
-Web.</p>
 
 <!-- ------------------------------------------------------------ -->
 <hr><a href="#toc">(table of contents)</a><hr>
