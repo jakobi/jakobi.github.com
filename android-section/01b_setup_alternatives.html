@@ -182,10 +182,10 @@ wget -q $FEED/Packages
 mkdir opt 
 # mkdir home root home/user
 
-# my Android-side wget hates https (step requires about 20 minutes;
-# just download the tarball somehow - bonus points if you do it
-# on the Android using google's browser app - and copy it into $OPTROOT;
-# mind the +++ linebreak in pasting)
+# my Android-side wget hates https, so I use my debian chroot's wget 
+# (step requires about 20 minutes; just download the tarball somehow - bonus
+#  points if you do it on the Android using google's browser app - and copy 
+#  it into $OPTROOT; do mind the +++ linebreak when pasting)
 CHROOT.run wget https://sourcery.mentor.com/sgpp/lite/arm/portal/package2549/public/+++
    +++arm-none-linux-gnueabi/arm-2008q1-126-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2
 
@@ -217,18 +217,19 @@ rm data.tar.gz
 
 <p>Everything  upto now can also be done outside the Android, with the
 tree  at $OPTROOT just being copied over afterwards (do not forget  to
-export OPTROOT=&lt;your android dir&gt;). From now on, we need to work
-locally  on  the  Android  device,  first  in  creating  the   optware
-environment, and afterwards to run ipkg natively (if you don't want to
-do  this  yet, you could experiment with the -d/-o options  and  non-/
-installs - untested).</p>
+export  OPTROOT=&lt;your android dir&gt; on the Android). From now on,
+however,  we  need  to work locally on the Android  device,  first  in
+creating  the optware environment, and afterwards to run ipkg natively
+(if you don't want to do this yet, you could experiment with the -d/-o
+options and non-/ installs - not tested).</p>
 
 <p>The  original setup recipe would have been mostly sufficient for  a
-working  setup  in  case  of OPTROOT=/,  with  suitable  writable  ext
-diskspace  on  /opt. As I chose a different OPTROOT to  keep  all
-OPTWARE  files  together,  I have to  still symlink  or  mount-bind,  in
-addition  to  providing  a  sane mtab and  resolv.conf (which  bionic
-doesn't use).</p>
+working  setup  in  case of OPTROOT=/, with  suitable  writable  ext2+
+diskspace  at /opt. As I chose a different OPTROOT to keep all OPTWARE
+files  together  (too  paranoid  this  time,  as  OPTWARE  is  <b>very
+clean</b>  to  setup,  minimizing intrusions into the  outside  system
+files), I have to still symlink or mount-bind, in addition to providing
+a sane mtab and resolv.conf (which bionic doesn't use).</p>
 
 <pre>
 # you'll see most of this again in the OPTWARE script below
@@ -242,8 +243,8 @@ mount -oremount,ro /system
 mount -oremount,rw /
 
 #### initially, we _*NEED*_ a symlink to busybox sh here
-rm /bin/sh
-####
+test -x $OPTROOT/bin/sh && ( rm /bin/sh 2>/dev/null; ln -s $OPTROOT/bin/sh . )
+#### claiming bonus points for excess paranoia :)
 
 ( cd /bin &amp;&amp; ln -s $OPTROOT/bin/* . )   # only ldd for now  - android: usually unused
 ( cd /lib &amp;&amp; ln -s $OPTROOT/lib/* . )   # libc and the like - android: unused except /lib/modules
@@ -272,8 +273,8 @@ Android  (maybe  excluding  alsa/sound-related apps,  syslog  and  nfs
 packages).  The  feed includes among others a minimal client-side  X11
 setup,   servers   from   tftp  to  inetutils,   apache   and   samba,
 cups/enscript/groff/ghostscript/mpage/psutils,
-openvpn/strongswan/stunnel/vtun,  bash,  perl, php, python, ruby,  and
-even 9base/rc.</p>
+openvpn/strongswan/stunnel/vtun, bash, gcc and the kitchen sink, perl,
+php, python, ruby, and even 9base/rc.</p>
 
 <p>For  a  fairly  small  setup,  consider  installing  the  following
 packages:  <i>mc vim tmux elinks w3m less perl python bash gzip  bzip2
@@ -288,8 +289,8 @@ automatically by ipkg (about 100 packages, 300M).</p>
 <H4>Customizing the Environment for OPTWARE</H4>
 
 <p>To  make OPTWARE available after rebooting, you need to restore the
-above changes to the transient rootfs (symlinks, mountpoints, possibly
-also mounts).</p>
+above   changes   to  Android's   transient   rootfs   (symlinks,
+mountpoints, possibly also mounts).</p>
 
 <pre>
 # file /system/xbin/OPTWARE
@@ -332,14 +333,14 @@ echo source /opt/optware.env for use of the optware environment
 </pre>
 
 
-
-<p>To use OPTWARE, you need to at least add OPTWARE to the PATH. In my
-case, I use these files:<p>
+<br>
+<p>To use OPTWARE, you need to at least add OPTWARE to the  PATH
+variable. In my case, I use these files and definitions:<p>
 
 <pre>
 # file /opt/optware.env
 
-# we may need to also consider LD_LIBRARY_PATH ?
+# we may need to also consider LD_LIBRARY_PATH, MANPATH, ... ?
 
 export OPTWARE_POS="first"
 [ "$OPTWARE_POS" = "first" ] &amp;&amp; PATH="/opt/bin:$PATH"
@@ -360,9 +361,10 @@ if [ "$HOSTNAME_CHROOT" = "" ]; then
 fi
 </pre>
 
-<p>For  further shell customization, see <a href="01_setup.html">first
-article  and  the  TERMINAL IDE/CHROOT setup</a>,  esp.  the  examples
-.bash_aliases.pj and .bashrc.pj</p>
+
+<br>     <p>For     further     shell    customization,     see     <a href="01_setup.html">first   article  and  the   TERMINAL   IDE/CHROOT
+setup</a>, esp. the files .bash_aliases.pj and .bashrc.pj, as contained
+in the article's tarball.</p>
 
 
 
@@ -370,12 +372,13 @@ article  and  the  TERMINAL IDE/CHROOT setup</a>,  esp.  the  examples
 <H4>OPTWARE Issues</H4>
 
 <ul>
-<li><i>screen</i> fails to work (but as this also happens in debian chroot - kernel!?)
+<li><i>screen</i> fails to work (but as this also happens in debian chroot - kernel!? - work-around: tmux)
 <li>there is no <i>ipkg</i> man page (neither locally, in man-pages.ipk, nor online) - 
-    <i>ipkg --help</i>, the <a href="http://svn.nslu2-linux.org/svnroot/optware/trunk/sources/ipkg-opt/">sources</a> 
-    and the <a href="http://buffalo.nas-central.org/wiki/Overview_of_the_ipkg_package_management_system">buffalo-nas-central page</a> 
-    are about the best resources to be found. Handhelds.org and the official sources there
-    are currently offline (<a href="http://www.koders.com/info.aspx?c=ProjectInfo&pid=85R6BA74HERURGXTRM7RD4H4AH">copy at koders</a>).
+    <i>ipkg --help</i>, <a href="http://svn.nslu2-linux.org/svnroot/optware/trunk/sources/ipkg-opt/">OPTWARE's source patches</a> 
+    and the <a href="http://buffalo.nas-central.org/wiki/Overview_of_the_ipkg_package_management_system">buffalo-nas-central help</a> 
+    are about the best resources to be found. <a href="http://handhelds.org">Handhelds.org</a> and the official sources there
+    are currently offline (Dec 1, 2011 doesn't seem to be your 
+    regular 24h day; <a href="http://www.koders.com/info.aspx?c=ProjectInfo&pid=85R6BA74HERURGXTRM7RD4H4AH">source copy at koders</a>)
 </ul>
 
 <br>
@@ -390,29 +393,34 @@ article  and  the  TERMINAL IDE/CHROOT setup</a>,  esp.  the  examples
 <br>
 <h4>Size and Capability Comparison</h4>
 
-<p>sshdroid  is  about 2M, the files in /system/xbin 10M: Basic  shell
-access  by adb and ssh, file and logcat access. TERMINAL IDE  requires
-ca.  120M:  This  permits light shell use and light development  in  a
-graphical  terminal  app. With some effort, this is also  usable  from
-outside  the application. Adding my "fairly small" OPTWARE setup takes
-another  300M  (108 packages), adding some improvements (especially  a
-better  shell environment with proper libc and GNU utilities, gcc  and
-non-SL4A  scripting  options), some server software and a  very  basic
-xterm / X11 client.</p>
+<p>sshdroid  is  about 2M, the files in /system/xbin 10M: Basic file and
+shell access  by adb and ssh. TERMINAL IDE  requires
+another  120M:  This  permits light shell use and light local development  in  a
+graphical  terminal  app - with some effort also  usable  from
+outside  the TERMINAL IDE application (setup as of first article, part 2). </p>
 
-<p>In  constrast  the debian chroot from article 1 is installed  on  a
-separate  ext4 partition on the external sdcard, with currently  about
-3.5G  (1200  packages) used by debian proper. However it  additionally
-permits  use  as  a  mobile (remote)  _full_  graphical  desktop-level
-environment    including   Libre-Office,   LaTeX   and    unrestricted
-development.</p>
+<p>Adding  my  "fairly  small" OPTWARE setup takes another  300M  (108
+packages),  while improving the shell environment with proper libc and
+GNU  utilities,  gcc  and  non-SL4A  scripting  options,  some  server
+software and a very basic xterm / X11 client.</p>
+
+<p>In  constrast  the  debian  chroot  from article  1  parts  3+4  is
+installed  on  a separate ext4 partition on the external sdcard,  with
+currently about 3.5G (1200 packages) used by debian proper. It extends
+the   Note   to  a  200g  mobile  non-cloud  _full_   remote-graphical
+desktop-level    environment   including   Libre-Office,   LaTeX   and
+unrestricted  development.  For comfort, all you need is some  box  to
+invoke VNC on to connect to the Note. In a pinch, skip the comfort bit
+and just use a local vnc-viewer on the Android itself. </p>
 
 <p  class=anno>Android  2.3.6 on my Note weighs in at about 2.3GB  for
 190 system and 300 user apps, with another few hundred MB found on the
 internal  sdcard, not counting personal media files and backup  files.
-While offering some mobile and graphical usability, it does <b>not</b>
-offer  proper  shell  use nor desktop-level  capabilities  (mobile  or
-otherwise).</p>
+With  near-similar  size, pure Android+Market only  offer  <B>some</B>
+mobile  and graphical usability in the same form-factor and weight  of
+200g  as  above, while <b>lacking</b> both proper shell use  and  true
+desktop-level  capabilities (mobile, cloud - inclusive all  associated
+issues - or otherwise).</p>
 
 
 
@@ -448,6 +456,7 @@ otherwise).</p>
 
 <ul>
 <li><a href="http://code.google.com/p/opkg/">code.google.com/p/opkg</a> (from openmoko, backwards-compatible with ipkg; now supported in OE)
+<li><i>note to self: add a cron email reminder for a quarterly XDA X11 / native-Linux thread hunt</i>
 </ul>
 
 
@@ -484,27 +493,38 @@ otherwise).</p>
 
 <p>Various</p>
 <ul>
-<li>Geisterfahrer - as usual, some people do need to drive on the wrong line against the traffic: 
-   <a href="http://androidzaurus.seesaa.net/article/74237419.html">blog entry about setting up Android on Sharp Zaurus</a> :)
+<li>Geisterfahrers - as usual, some people do have to hack both on the wrong lane and against the traffic direction
+<ul>
+<li><a href="http://androidzaurus.seesaa.net/article/74237419.html">Android on Sharp Zaurus</a> :)
 </ul>
+</ul>
+
 
 
 <hr><a href="#toc">(table of contents)</a><hr>
 <a name=milestones></a>
 <h3>Milestones in Increasing and Extending Update Availability Despite Vendor Whims</h3>
 
-<h4>Unix Shell and Remote GUI Updates and</H4>
+<p  class=anno>(doubles nicely as the list of milestones for improving
+the speed of security fixes and updates)</a>
+
+<p  align=center><i>Google and many embedded vendors are in the animal
+trade  and  sold the GNU of the traditional GNU/Linux environment  for
+space for a mere naked kernel Linux.</i></p>
+
+<h4>Unix Shell and Remote GUI Updates and ...</H4>
 
 <p>In the long run, to be used with new software, security patches and
-bug fixes, any device needs to permit at minimum a chroot with package
-management  and hopefully vnc. At the latest, this must be  available,
-when  the  vendor has obsoleted the device. Otherwise, the user  is  a
-remote-controlled usee and repeatedly replaces devices at the vendor's
-whim.</p>
+bug  fixes,  any device needs to permit at minimum a chroot with  real
+package  management  (which Market is <b>NOT BY FAR</b>, not even  for
+non-system  components)  and hopefully vnc. At the latest,  chroot  or
+similar  must be available, when the vendor has obsoleted the  device.
+Otherwise,  the user degenerates to a mere remote-controlled usee  and
+repeatedly replaces devices at the vendor's whim.</p>
 
 <p  class=anno>Some Android vendors don't offer any support/updates at
 all,  so the buy-replacement-device-interval of their dreams might  as
-well be called a monetary ZERO-DAY exploit.</p>
+well be called a <b>monetary ZERO-DAY exploit</b>.</p>
 
 <p>OPTWARE,  or better yet, a debian chroot (as installed on my  Note)
 guarantees  a vendor-independent level of real longterm support  until
@@ -512,54 +532,87 @@ either  the device develops actual hardware issues or the user changes
 his device use patterns sufficiently to consider a new device (say, to
 read A4 documents full-screen without zooming).</p>
 
-<h4>Newer Android Framework Updates by Custom-Rom to</h4>
+<p align=center><i>This puts the GNU back into - hmmm - gnu(chroot)/Linux</i></p>
 
-<p>To  permit  secure use outside the home (and within -&gt; defense in depth!), a  device  also
-needs  uptodate  methods  to access the new applications, that  is  an
-uptodate  GUI  with  at least uptodate versions of VNC-Viewer  (for
-access  to  current apps in the chroot), browser and ssh.</p>
+<h4>... Newer Android Framework Updates by Custom-Rom to ...</h4>
 
-<p>As  Android Market doesn't permit marketplace links/updating for
-rom apps (about 200 alone on a modern Android 2.3.6 device), this is a
-problem-in-wait  that can only be delayed by moving to custom roms, at the latest when the
-device  ages  out  of  vendor  support.</p>
+<p>To permit secure use outside the home (and within: defense in depth
+is  certainly  better  than  the  classic  one-packetfilter  fits  all
+hard-shell-soft-core  LAN  idea),  a device also  needs  uptodate  and
+secure methods to access the new applications, that is an uptodate GUI
+with  at  least current versions of VNC-Viewer (for access to  current
+apps in the chroot), browser and ssh.</p>
 
-<p>However, custom  roms still suffer  the
-compatibility  limits  of  vendor-provided blobs  (or  possibly  stock
-kernels, cf. Motorola Milestone). Add Android fragmentation and custom
-rom support will wane later on, as will marketplace app availability.
-Even  the chroot environment will suffer some of that bitrot, as newer
-and  missing  kernel features will preclude building or using  some
-programs.</p>
+<p>As Android Market doesn't permit marketplace links/updating for rom
+apps   (180+   on   a  modern  Android  2.3.6  device),  this   is   a
+problem-in-wait  that can only be delayed by moving to custom roms, at
+the  latest when the device ages out of vendor support. Still the same
+broken  Android  idea  of  big all-in-one-updates,  but  at  least  an
+available,  less tardy, less broken and more secure  (Android-creators
+of    the   2012-safari-cross-domain-ads-crack-fame,   providers    of
+carrier-IQ  fame,  device makers of Sony-Rootkit-fame)  option  rather
+being  forced to wait for the official channel OTA update, which  many
+Android devices never had and never will see.</p>
+
+<p>However,  custom  roms  still suffer both  from  the  compatibility
+limits  of  vendor-provided  blobs  (or possibly  stock  kernels,  cf.
+Motorola  Milestone)  as  well as the all-in-one update  problem.  Add
+Android  fragmentation  and custom rom support will wane later on,  as
+will  marketplace  app availability. Even the chroot environment  will
+suffer  some of that bitrot, as newer and missing kernel features will
+preclude building or using some programs.</p>
 
 <p>Note  that  custom  rom  availability  further  depends  on  vendor
 behaviour and device popularity.</p>
 
-<h4>Longterm Native Linux (possibly also Dual-Booting)</h4>
+<h4>... Long-Term Supported Native Linux (possibly also Dual-Booting)</h4>
 
 <p>At  this  point in time, we can either happily accept any bugs  and
 security  flaws.  Alternately  we can vow to only use  the  device  in
 totally  secure  protected  environments  in as  secure  a  manner  as
-possible.  Like  inside a bank tresor with the battery removed. Or  we
-can  accept  some  loss  of funtionality due  to  firmware  blobs  for
-uncommon  and crippled hardware components (most likely candidates are
-sensors,  maybe  camera,  and  3d  acceleration,  possibly  also  some
+possible.  Like  inside a bank tresor with the battery removed.</p>
+
+<p>Or  we  can accept some loss of funtionality due to firmware  blobs
+for  uncommon and crippled hardware components (most likely candidates
+are  sensors,  maybe camera, and 3d acceleration, possibly  also  some
 wifi/gsm  functionality) and consider switching (or dual-booting) to a
 native   graphical   interface  and/or  a  native  kernel   (AOSP   or
 official).</p>
 
-<p>Now  our own official end of support only happens for either  dying
-hardware/flash memory, change of user requirements, or device hardware
-being  actively  dropped  from Xorg (/wayland(?))  and  kernel  source
-code.</p>
+<p>By this we also extend proper package management to the equivalents
+of  the  rom / system apps and turn the chroot setup into  the  actual
+device setup: all programs - maybe excluding kernel, X11 server itself
+and  a  small  number  of  libraries  -  can  now  be  updated  mostly
+independent  of  each  other  - no unnecessary  delays  introduced  by
+needing  to  create / test / forge channel-wide legal arragements  for
+<i>the</i>  one  and only single one-big-update-blob to bind them  all
+(freezing features and bugs for at least a year until the next monster
+update;  custom-roms  at  least  drop lawyers  and  channel  agreement
+constraints,  but installing them is still a messy manual intervention
+with  extra  backup/restore steps, when compared to the use of a  real
+package management).</p>
+
+<p>By  now  our  own official end of support only happens  for  either
+dying  hardware/flash  memory, change of user requirements, or  device
+hardware  being  actively dropped from Xorg (/wayland(?))  and  kernel
+source code.</p>
+
+<p align=center><i>Now we have fixed the case and obtained proper GNU/Linux.</i></p>
+
+<p>However: <b>there is one more step left for real bliss</b></p>
+
+<p>Kernel  and  X server installation are probably still  outside  the
+package  management  or  at least pinned to specific  or  custom-built
+versions.</p>
 
 <p>For  proper long term support, the results of working X11 /  kernel
 modifications  for  a device also need to be pushed upstream into  the
-official   sources,   and  ideally  also  be  packaged   by   embedded
+official  sources,  and  ideally also be packaged  by  embedded  Linux
 distributions   (which  lag  in  tracking  upstream),  better  yet  by
-mainstream  distributions  like  debian:  a  native  setup  of  debian
-unstable  installable with only a little manual intervention is the final
-perfect long-term device support scenario.</p>
+non-embedded  classic  GNU-Linux distributions like debian:  a  native
+setup  of  debian  unstable  installable with  only  a  little  manual
+intervention   is   the  final  perfect   long-term   device   support
+scenario.</p>
 
 <p  class=anno>Otherwise, we're stuck at a series of  badly-repeatable
 one shot demonstrations, that require some to huge effort ranging from
