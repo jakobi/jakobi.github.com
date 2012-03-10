@@ -237,7 +237,7 @@ unzip  p7zip  cpio  diffutils findutils grep mktemp  net-tools  netcat
 openssh  openssl  openvpn  rsync  wget lsof  ltrace  strace  e2fsprogs
 e2tools gnupg man man-pages xauth xterm autoconf gcc automake binutils
 flex  make  optware-devel</i>. Missing dependencies will  be  resolved
-automatically by ipkg.</p>
+automatically by ipkg (about 100 packages, 300M).</p>
 
 
 <br>
@@ -368,13 +368,15 @@ otherwise).</p>
 
 <h4>Building / (Cross)Compiling</h4>
 
+<p>Build environments / recipe repositories</p>
+
 <ul>
 <li>OE: <a href="http://docs.openembedded.org/usermanual/">openembedded.org</a> - cross compile build system upto rom creation (OPENWRT claims to converge against OE;
     see the <a href="http://www.openembedded.org/index.php/LayerIndex">LayerIndex</a> for device/libc/.../... build chain combinations; OE also offers a fairly large
     repository of (versioned) bitbake build recipes, known to build at least on some of these combinations)
 </ul>
 
-<p>Porting/building individual Android binaries, or archives of Android builds of shell basics like vim/mc</p>
+<p>Porting/building individual Android binaries, or archives of Android builds of shell basics like vim or mc</p>
 
 <ul>
 <li><a href="http://dan.drown.org/android/">Dan Brown</a>: opkg X bionic, with build instructions - including mc, vim, bash, openssh, gdb, binutils, strace, curl, socat
@@ -398,7 +400,7 @@ otherwise).</p>
 <hr>
 <h4>Distributions</H4>
 
-<p>Rom/graphical distributions (usually only for a small number of ARM devices, mostly excluding Android hardware)</p>
+<p>Non-Android roms and graphical distributions (usually only for a small number of ARM devices, mostly excluding Android hardware)</p>
 
 <ul>
 <li><a href="http:shr-project.org">SHR</a> is OE X freesmartphone. Might be a candidate to experiment with dual-booting. 
@@ -421,7 +423,8 @@ otherwise).</p>
 
 <p>Android framework forks</p>
 <ul>
-<li><a href="http://code.google.com/p/0xdroid/">0xdroid and 0xlab</a>: u-boot/linaro/bionic-based - AOSP android framework rom buildign for beagleboard&friends
+<li><a href="http://code.google.com/p/0xdroid/">0xdroid and 0xlab</a>: u-boot/linaro/bionic-based - AOSP android framework rom building for beagleboard&friends
+<li>see also Android full custom roms like <a href="http://cyanogenmod.com">cyanogenmod</a>
 </ul>
 
 <p>Various</p>
