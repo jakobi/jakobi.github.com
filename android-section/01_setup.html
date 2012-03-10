@@ -61,24 +61,23 @@ script-archive (parts of my bash/ksh setup or generic Unix stuff).</p>
 <h2>01 - Setting  up  the Samsung Galaxy Note as a Unix  Box</H2>
 
 <p  class=anno><i>(or  at  least as much as we can get away  with,  given
-Google's  Linux kernel  patches and dumbed-down kernel configuration)</i></p>
+Google's  Linux kernel  patches and dumbed-down kernel configurations)</i></p>
 
 <H3>Table of contents</H3>
 <a name=toc></a>
 <ul>
 <li><a href="#firstlook">A first look at the Note / Web-Resources / Rooting</a>
 <li><a href="#shell">Adding Unix Standards to the Android Shell</a>
+<li><a href="#chroot">CHROOT and Turning the Android into a First Class LAN Citizen</a>
+<li><a href="#vnc">Desktop and X11</a>
 </ul>
 
 <p     class=anno>For    alternative    native    setups    like    <a href="http://www.nslu2-linux.org/wiki/Optware/HomePage">OPTWARE</a> of
 NSLU2 fame, see article 1b <a href="01b_setup_alternatives.html">Setup
 Alternatives</a>.  OPTWARE is a good companion / alternative to  using
-TERMINAL  IDE  for saner native shell environment.</p>
-
-<ul>
-<li><a href="#chroot">CHROOT and Turning the Android into a First Class LAN Citizen</a>
-<li><a href="#vnc">Desktop and X11</a>
-</ul>
+TERMINAL  IDE for saner native shell environment. The page also  lists
+alternate  package  feeds,  candidates for chroot,  and  finally  some
+(incomplete) hacks to dualboot or run X11 natively.</p>
 
 
 <p>
@@ -1014,14 +1013,14 @@ example  consisting of a remote triggered backup, and we implemented a
 real inbound firewall (<i>system/xbin/FW</i>).</p>
 
 
-<br><h4>Addendum</h4>
+<br><h4>ADDENDUM 2012-03</h4>
 
 <p>I        recently        had       a       look        at        <a href="http://www.nslu2-linux.org/wiki/Optware/HomePage">OPTWARE</a>,
-which  offers about 1300+ packages, with busybox and real GNU binaries
-and a real libc. It is not sufficient to provide a mobile desktop, but
-it certainly goes way beyond TERMINAL IDE to provide missing binaries.
-See article 01b  <a href="01b_setup_alternatives.html">Setup
-Alternatives</a> for more information.</p>
+which  offers  about  1300+ packages, with both busybox and  real  GNU
+binaries  and  a real libc. It is not sufficient to provide  a  mobile
+desktop,  but  it  certainly goes way beyond TERMINAL IDE  in providing
+missing        binaries.        See       article        01b        <a href="01b_setup_alternatives.html">Setup  Alternatives</a>  for   more
+information.</p>
 
 
 <!-- ------------------------------------------------------------------------------------- -->

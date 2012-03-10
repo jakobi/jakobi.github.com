@@ -64,7 +64,8 @@ kernel  updates  for  specific devices, Android  is  <b>not</b>  among
 those.</p>
 
 <ul>
-<li>Homepage: <a href="http://www.nslu2-linux.org/wiki/Optware/HomePage">www.nslu2-linux.org/wiki/Optware/HomePage</a>
+<li>Homepage: <a href="http://optware-project.org">optware-project.org</a> and the 
+    parent project <a href="http://www.nslu2-linux.org/wiki/Optware/HomePage">www.nslu2-linux.org/wiki/Optware/HomePage</a>
 <li>Feed/Repository of interest: <a href="http://ipkg.nslu2-linux.org/feeds/optware/cs08q1armel/">ipkg.nslu2-linux.org/feeds/optware/cs08q1armel/</a>
 <li>Source repository: svn co http://svn.nslu2-linux.org/svnroot/optware/trunk/
 </ul>
@@ -73,11 +74,23 @@ those.</p>
 <br>
 <H4>Bootstrapping OPTWARE</H4>
 
+<p>Prerequisites  for  the demonstration: <b>Root Access</b></p>
+
+<p  class=anno>  (due to mount-bind and symlinks in /bin, /lib,  /etc;
+without  being  able to use root, all you can use to  improve  Android
+shell-side  is  installing  sshdroid and TERMINAL  IDE  apps;  however
+Android  2.3 is sufficiently buggy to really require rooting to  cope,
+regardless of all the additional abilities enabled by rooting)</p>
+
 <p>Set  up  a  slightly  more comfortable  environment  by  using  the
-TERMINAL  IDE  binaries  (but  in the end, I  still  suffered  busybox
-issues, so this is still insufficient).</p>
+TERMINAL  IDE binaries and placing DNS-resolving copy of busybox first
+in  PATH (stericson; but in the end, I still suffered busybox  issues,
+so this is still insufficient). This step is mostly cosmetic, and even
+without  a  working  native wget, you can just use a  web  browser  or
+another host instead for the wget invocations.</p>
 
 <pre>
+# optional...
 TERMIDE
 iresolver
 </pre>
@@ -125,7 +138,10 @@ export LD_LIBRARY_PATH=/lib:/opt/lib:$OPTROOT/lib:$OPTROOT/opt/lib:$LD_LIBRARY_P
 <p>Searching  the net offers an optware-for-android script by pfalcon,
 pointing  to  a  tarball containing our missing  files  among  others.
 Longer  download,  but  less  trouble  in  hunting  down  the  missing
-libraries. So let's follow that one.</p>
+libraries.  So let's follow that one. Note that we need working  https
+access  (only)  for  the tarball containing our  libs,  which  neither
+stericson  busybox nor my static wget support - so this is the  single
+step not possible to do locally.</p>
 
 <pre>
 # fetch_package_index, in case we want to lookup something, probably optional
@@ -133,12 +149,14 @@ wget -q $FEED/Packages
 mkdir opt 
 # mkdir home root home/user
 
-# my Android-side wget seems to hate https, so use the chroot one instead :)
+# my Android-side wget hates https (step requires about 20 minutes!)
 CHROOT.run wget https://sourcery.mentor.com/sgpp/lite/arm/portal/package2549/public/+++
    +++arm-none-linux-gnueabi/arm-2008q1-126-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2
 # extract ldd and the missing libs
+tar jxf arm-2008q1-126-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2
 ( cd arm-2008q1/arm-none-linux-gnueabi/libc/lib &amp;&amp; find | cpio -pmd $OPTROOT/lib )
 ( cd arm-2008q1/arm-none-linux-gnueabi/libc/usr/bin &amp;&amp; find ldd | cpio -pmd $OPTROOT/bin )
+# rm -r arm-2008q1 arm-2008q1-126-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2
 
 # as we cannot quite rely on busybox sanity (and certainly not on Google's toolbox)
 # we unpack the ipkg as above, plus busybox and wget
@@ -146,8 +164,7 @@ get_package_fname () { awk "/^Filename: ${1}_/ {print \$2}" Packages; }
 for i in {wget,ipkg-opt,busybox-base}; do wget -q $FEED/$(get_package_fname $i); done
 for i in {wget,ipkg-opt,busybox-base}*ipk; do tar -zxf $i ./data.tar.gz; tar -zxf data.tar.gz; done
 rm data.tar.gz
-
-# rm -r arm-2008q1 arm-2008q1-126-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2 *ipk
+# rm *ipk
 
 # esp. update-alternatives doesn't like dealing with a bad busybox setup. And it
 # needs sh (or /bin/sh) to be compatible to rm (/bin/rm ...) it uses. IFF it honors
@@ -157,6 +174,14 @@ rm data.tar.gz
 # Note that we still need to run the initial ipkg invocations to properly
 # initialize package management.
 </pre>
+
+<p>Everything  upto now can also be done outside the Android, with the
+tree  at $OPTROOT just being copied over afterwards (do not forget  to
+export OPTROOT=&lt;your android dir&gt;). From now on, we need to work
+locally  on  the  Android  device,  first  in  creating  the   optware
+environment, and afterwards to run ipkg natively (if you don't want to
+do  this  yet, you could experiment with the -d/-o options  and  non-/
+installs - untested).</p>
 
 <p>The  original setup recipe would have been mostly sufficient for  a
 working  setup  in  case  of OPTROOT=/,  with  suitable  writable  ext
@@ -289,10 +314,22 @@ article  and  the  TERMINAL IDE/CHROOT setup</a>,  esp.  the  examples
 
 
 <br>
-<H4>Issues</H4>
+<H4>Issues and Notes</H4>
 
 <ul>
 <li><i>screen</i> fails to work (but as this also happens in debian chroot - kernel!?)
+<li>there is no <i>ipkg</i> man page (neither locally, in man-pages.ipk, nor online) - 
+    <i>ipkg --help</i>, the <a href="http://svn.nslu2-linux.org/svnroot/optware/trunk/sources/ipkg-opt/">sources</a> 
+    and the <a href="http://buffalo.nas-central.org/wiki/Overview_of_the_ipkg_package_management_system">buffalo-nas-central page</a> 
+    are about the best resources to be found. Handhelds.org and the official sources there
+    are currently offline (<a href="http://www.koders.com/info.aspx?c=ProjectInfo&pid=85R6BA74HERURGXTRM7RD4H4AH">copy at koders</a>).
+</ul>
+
+<p>(Raw) Notes</p>
+
+<ul>
+<li>OPTWARE compiling / package building <a href="http://dream.reichholf.net/wiki/Howto:IPK_Pakete_erstellen">Howto:IPK_Pakete_erstellen (German; (non)openembedded)</a>, <a href="http://www.optware-project.org/index.php?title=Add_a_Package_to_Optware">optware-project.org/index.php?title=Add_a_Package_to_Optware</a>. Note that the OPTWARE svn sources/* offers differential patches to one specific upstream source version, which is specified/fetched by make/&lt;package&gt;.mk
+<li>Installation/ipkg documentation - see handhelds.org/ipkg links above in issues
 </ul>
 
 
@@ -322,6 +359,175 @@ internal  sdcard, not counting personal media files and backup  files.
 While offering some mobile and graphical usability, it does <b>not</b>
 offer  proper  shell  use nor desktop-level  capabilities  (mobile  or
 otherwise).</p>
+
+
+
+<br>
+<hr>
+<h3>(Raw) Notes</h3>
+
+<h4>Building / (Cross)Compiling</h4>
+
+<ul>
+<li>OE: <a href="http://docs.openembedded.org/usermanual/">openembedded.org</a> - cross compile build system upto rom creation (OPENWRT claims to converge against OE;
+    see the <a href="http://www.openembedded.org/index.php/LayerIndex">LayerIndex</a> for device/libc/.../... build chain combinations; OE also offers a fairly large
+    repository of (versioned) bitbake build recipes, known to build at least on some of these combinations)
+</ul>
+
+<p>Porting/building individual Android binaries, or archives of Android builds of shell basics like vim/mc</p>
+
+<ul>
+<li><a href="http://dan.drown.org/android/">Dan Brown</a>: opkg X bionic, with build instructions - including mc, vim, bash, openssh, gdb, binutils, strace, curl, socat
+<li><a href="http://blog.gonzih.org/blog/2011/09/19/install-opkg-package-manager-on-android-mc/">gonzih</a>: opkg - including mc, rsync, busybox
+<li><a href="https" :github.comangusleesopenembedded-android">github.com/anguslees/openembedded-android</a>: OE X bionic - builds various packages upto OE's gcc recipe; 
+     modified-for-Android OE build toolchain (most of the bitbake recipes look to be either unsuitable on 
+     native Android or to require some modification for use; <a href="http:lists.linuxtogo.orgpipermailopenembedded-devel2010-April019132.html">announcement</a>)
+<li><a href="http:whitneyindustries.dyndns.org20110110busybox-openembedded-android.html">Mark Whitney</a>: blog entry about OE/bitbake setup for building
+    OE/bitbake setup for building busybox, with links to various other busybox build toolchains.
+<li>see also: linaro / codesourcery toolchains, XDA
+</ul>
+
+<p>Various</p>
+
+<ul>
+<li><a href="http:code.google.compopkg">code.google.com/p/opkg</a> (from openmoko, backwards-compatible with ipkg; now supported in OE)
+</ul>
+
+
+
+<hr>
+<h4>Distributions</H4>
+
+<p>Rom/graphical distributions (usually only for a small number of ARM devices, mostly excluding Android hardware)</p>
+
+<ul>
+<li><a href="http:shr-project.org">SHR</a> is OE X freesmartphone. Might be a candidate to experiment with dual-booting. 
+    Known to work as rom/GUI on some Androids such as the Nexus.
+<li><a href=http://www.angstrom-distribution.org/">Ångström</a> of OpenZaurus fame, currently using OE: deb/ipkg X {,eg,uc}libc X &lt;arch|device|...&gt;.
+   For Zaurus and friends, this may include a full rom from device boot to GUI (one of OPIE, GPE or X11/E17). Package feeds for a suitable architecture
+   should be usable for a chroot on Android (no mention of rom/GUI on Android seen)
+<li><a href="https://wiki.ubuntu.com/ARM/DeviceSupport">ubuntu</a> (native X11/Unity can be used on a small list of ARM devices, no mention of Android tablets seen)
+<li>see also: <a href="http://www.linuxtogo.org/projects">LinuxToGo project list</a> and <a href="http://www.linuxtogo.org/gowiki/LinuxDevices">device list</a>
+</ul>
+
+<p>Other ARM distributions (most likely requiring a chroot-setup; lxc isn't supported by my current kernel on the Note)</p>
+
+<ul>
+<li>OPTWARE (no chroot required, as decribed above)
+<li>chroots of ARM builds of standard distributions like debian (see first article), 
+    ubuntu, fedora (at least version 8)
+<li>see also the nslu2/OPTWARE list for available distributions for (mostly) headless embedded ARM devices
+</ul>
+
+<p>Android framework forks</p>
+<ul>
+<li><a href="http://code.google.com/p/0xdroid/">0xdroid and 0xlab</a>: u-boot/linaro/bionic-based - AOSP android framework rom buildign for beagleboard&friends
+</ul>
+
+<p>Various</p>
+<ul>
+<li>Geisterfahrer - as usual, some people do need to drive on the wrong line against the traffic: 
+   <a href="http://androidzaurus.seesaa.net/article/74237419.html">blog entry about setting up Android on Sharp Zaurus</a> :)
+</ul>
+
+
+<hr>
+<h3>Milestones in Increasing and Extending Update Availability Despite Vendor Whims</h3>
+
+<h4>Unix Shell and Remote GUI Updates and</H4>
+
+<p>In the long run, to be used with new software, security patches and
+bug fixes, any device needs to permit at minimum a chroot with package
+management  and hopefully vnc. At the latest, this must be  available,
+when  the  vendor has obsoleted the device. Otherwise, the user  is  a
+remote-controlled usee and repeatedly replaces devices on the vendor's
+whim.</p>
+
+<p  class=anno>Some Android vendors don't offer any support/updates at
+all,  so the buy-replacement-device-interval of their dreams might  as
+well be called a monetary ZERO-DAY exploit.</p>
+
+<p>OPTWARE,  or better yet, a debian chroot (as installed on my  Note)
+guarantees  a vendor-independent level of real longterm support  until
+either  the device develops actual hardware issues or the user changes
+his device use patterns sufficiently to consider a new device (say, to
+read A4 documents full-screen without zooming).</p>
+
+<h4>Newer Android Framework Updates by Custom-Rom to</h4>
+
+<p>To  permit  safe use outside the home (and within), a  device  also
+needs  uptodate  methods  to access the new applications, that  is  an
+uptodate  GUI  with  at least current easily  usable  VNC-Viewer  (for
+access  to  current apps in the chroot), browser and ssh.</p>
+
+<p>As  Android Market doesn't permit marketplace links or updating for
+rom apps (about 200 alone on a modern Android 2.3.6 device), this is a
+problem,  that can only be delayed by moving to custom roms, when  the
+device  ages  out  of  vendor  support.  As  custom  roms  suffer  the
+compatibility  limits  of  vendor-provided blobs  (or  possibly  stock
+kernels, cf. Motorola Milestone). Add Android fragmentation and custom
+rom support as well as marketplace app availability will wane as well.
+Even  the chroot environment will suffer some of that bitrot, as newer
+and  missing  kernel features will preclude building or using of  some
+programs.</p>
+
+<p>Note  that custom rom availability depends on vendor behaviour  and
+popularity.</p>
+
+<h4>Longterm Native Linux (possibly also Dual-Booting)</h4>
+
+<p>At  this  point in time, we can either happily accept any bugs  and
+security  flaws.  Alternately  we can vow to only use  the  device  in
+totally  secure  protected  environments  in as  secure  a  manner  as
+possible.  Like  inside a bank tresor with the battery removed. Or  we
+can  accept  some  loss  of funtionality due  to  firmware  blobs  for
+uncommon  and crippled hardware components (most likely candidates are
+sensors,  maybe  camera,  and  3d  acceleration,  possibly  also  some
+wifi/gsm  functionality) and consider switching (or dual-booting) to a
+native   graphical   interface  and/or  a  native  kernel   (AOSP   or
+official).</p>
+
+<p>Now the official end of support only happens for either dying flash
+memory, change of user requirements, or device hardware being actively
+dropped from Xorg (/wayland(?)) and kernel source code.</p>
+
+<p>For  proper  long term support, the result of working X11 /  kernel
+modifications  needs  to be pushed upstream into the official  kernel,
+and  ideally also by packaged by embedded distributions (which lag  in
+tracking  upstream),  better  yet  by  mainstream  distributions  like
+debian:  a  native  setup  of debian unstable with  only  some  manual
+intervention   would   be   perfect.</p>
+
+<p  class=anno>Otherwise, we're stuck at a series of  badly-repeatable
+one shot demonstrations, that require some to huge effort ranging from
+rebuilding  to  long compiles to porting/rebasing old changes  against
+current Xorg and kernel sources.</p>
+
+<p>Currently all native efforts I've found - listed below - still seem
+to   stuck  at  the  incomplete  restricted   functionality   one-shot
+demonstration  level.</p>
+
+
+<hr>
+<h3>Native Linux Hacks</h3>
+
+<p>You've  still  a  chance  to  consider how  you  want  to  use and map 
+multi-touch / pointer device clicks to X11 on your device :)</p>
+
+<li>
+<li><a href="http://forum.xda-developers.com/showthread.php?t=933667">Ubuntu / Galaxy Tab</a> (see also <a href="http://wiki.meego.com/ARM/Hummingbird#Ubuntu">Meego/Ubuntu</a>; mtev or evdev; lacks e.g. graphic accel, camera, phone; bt: no hid, audio out is possible; devices include a Galaxy Tab)
+<li><a href="https://wiki.kubuntu.org/ARM/Archos101it">Kubuntu / Archos 10.1</a> X11, usb, audio, WLAN (QEMU bootstrap example: <a href="https://wiki.kubuntu.org/ARM/n900">n900 page</a>)
+<li><a href="http://forum.xda-developers.com/showthread.php?t=1045910">HTC Desire</a>
+<li>nook
+<li><a href="http://forum.xda-developers.com/showthread.php?t=1158260">Iconia A500</a> (ubuntu, for nvidia stuff see also: <a href="https://launchpad.net/~ac100">ac100 ppa</a>)
+/ul
+
+
+<ul>
+<li>ubuntu rootstock: <a href="https://wiki.ubuntu.com/ARM/RootfsFromScratch">Arm rootfs creation</a>
+<li>debian: debootstrap
+<li>X11 touchpad driver options: multitouch, tslib, metv, evdev 
+</ul>
 
 
 
