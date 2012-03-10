@@ -47,23 +47,25 @@ Android:
 <H3>NLSU2 OPTWARE</H3>
 
 
-<p>Optware  strives  to  provide package  management  with  dependency
-tracking  for  embedded Linux devices. The best known optware  targets
+<p>OPTWARE  strives  to  provide package  management  with  dependency
+tracking  for  embedded Linux devices. The best known OPTWARE  targets
 are  probably the nslu2, openwrt, the Sharp Zaurus and maybe  nowadays
-the  sheevaplug.  On these devices, optware tries hard to stay out  of
+the  sheevaplug.  On these devices, OPTWARE tries hard to stay out  of
 the  native setup, with the possibly exception of requiring some links
 in  /bin  and  /lib  during bootstrapping  (which  doesn't  matter  on
 Android).</p>
 
 <p>OPTWARE's  easily  enough  to  get a  moderately  sane  environment
 (embedded, and this included Android) up and running, but don't expect
-debian  levels of up-to-dateness and completeness. It certainly  beats
-Android   native  ports  with  their  always  occuring   bionic-or-not
-problems.</p>.
+debian levels of up-to-dateness and completeness (though some packages
+have  this week's timestamp). It certainly beats Android native  ports
+with  their  always  occuring bionic-or-not problems. Also  note  that
+while  OPTWARE  offers a few feeds with (rare) kernel updates for specific devices,  Android
+is <b>not</b> among those.</p>
 
 <ul>
 <li>Homepage: <a href="http://www.nslu2-linux.org/wiki/Optware/HomePage">www.nslu2-linux.org/wiki/Optware/HomePage</a>
-<li>Feed/Repository of interest: <a href="ipkg.nslu2-linux.org/feeds/optware/cs08q1armel/">ipkg.nslu2-linux.org/feeds/optware/cs08q1armel/</a>
+<li>Feed/Repository of interest: <a href="http://ipkg.nslu2-linux.org/feeds/optware/cs08q1armel/">ipkg.nslu2-linux.org/feeds/optware/cs08q1armel/</a>
 <li>Source repository: svn co http://svn.nslu2-linux.org/svnroot/optware/trunk/
 </ul>
 
@@ -80,20 +82,20 @@ iresolver
 </pre>
 
 <p>I  have  some spare space on the ext4 filesystem mounted on /x  (as
-described in the chroot setup section in article 1). If you've 100+ MB
-on  /data beyond the 10% Android threshold, you can use /data instead.
-The  cs08q1armel  feed  is compatible with the Note and  Android,  and
-offers two branches: stable and unstable.</p>
+described  in  the  chroot setup in article 1). If you've 100+  MB  on
+/data  beyond  the 10% free threshold, you can use /data instead.  The
+cs08q1armel  feed  is compatible with Android (in my case the  Samsung
+Galaxy Note), and offers two branches: stable and unstable.</p>
 
 <pre>
 export FEED=http://ipkg.nslu2-linux.org/feeds/optware/cs08q1armel/cross/stable
-export OPTROOT=/x/optware # WHEREEVER YOU WANT, BUT NOT ON FAT!
+export OPTROOT=/x/optware # WHEREVER YOU WANT, BUT NOT ON FAT!
 </pre>
 
-<p>First  attempt  is  to follow the basic instructions given  at  the
-bottom  of  the  OPTWARE homepage. But this fails, as ipkg  cannot  be
+<p>First  attempt is to roughly follow the basic instructions given at
+the  bottom of the OPTWARE homepage. But this fails, as ipkg cannot be
 loaded  due  to missing libraries (any embedded libc would  have  been
-probably OK, but not Google's bionic). That is, if the tar implements
+probably  OK, but not Google's bionic). That is, if the tar implements
 the -O option...</p>
 
 <pre>
@@ -106,12 +108,11 @@ tar -xOvzf $ipk_name ./data.tar.gz | tar -C $OPTROOT -xzvf -
 mkdir -p $OPTROOT/opt/etc/ipkg
 echo "src cross $FEED" &gt; $OPTDIR/opt/etc/ipkg/feeds.conf
 
-# optional or symlink instead if you've already a sane resolv.conf
+# optional/symlink IFF you've already a sane /etc/resolv.conf
 echo nameserver 8.8.8.8 &gt; opt/etc/resolv.conf
 
 export PATH=/opt/bin:/bin:$OPTROOT/bin:$OPTROOT/opt/bin:$PATH
-# probably unnecessary
-export LD_LIBRARY_PATH=/lib:/opt/lib:$OPTROOT/lib:$OPTROOT/opt/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/lib:/opt/lib:$OPTROOT/lib:$OPTROOT/opt/lib:$LD_LIBRARY_PATH # unnecessary?
 
 # FAIL despite LD_LIBRARY and all
 # ipkg update
@@ -119,7 +120,7 @@ export LD_LIBRARY_PATH=/lib:/opt/lib:$OPTROOT/lib:$OPTROOT/opt/lib:$LD_LIBRARY_P
 </pre>
 
 <p>Google   shows  an  old  optware-for-android  script  by   pfalcon,
-including  an  2008  tarball that already includes the  missing  libs.
+pointing to  a tarball containing our missing files among others.
 Longer  download,  but  less  trouble  in  hunting  down  the  missing
 libraries. So let's follow that one.</p>
 
@@ -163,8 +164,6 @@ doesn't use.</p>
 
 <pre>
 # you'll see most of this again in the OPTWARE script below
-# root fs mod
-
 # this is one-time and will survive reboots
 mount -oremount,rw /system
 ( cd /etc && ln -s /proc/mounts mtab ) 
@@ -187,16 +186,16 @@ mount -oremount,ro /
 mount -obind $OPTROOT/opt  /opt
 </pre>
 
-<p>Now initialize ipkg.</p>
+<p>Now initialize package management.</p>
 
 <pre>
 ipkg update
 for i in ipkg-opt wget busybox; do ipkg install $i; done
 </pre>
 
-<p>This  complete  the  minimal OPTWARE setup.  OPTWARE  offers  1300+
+<p>This  completes a minimal OPTWARE setup.  OPTWARE  offers  1300+
 packages,  most of which should be useful on Android (maybe  excluding
-alsa/sound-related apps, syslog and nfs packages). This includes among
+alsa/sound-related apps, syslog and nfs packages). The feed includes among
 others  a  minimal  client-side  X11  setup,  servers  from  tftp   to
 inetutils,               apache               and               samba,
 cups/enscript/groff/ghostscript/mpage/psutils,
@@ -213,7 +212,7 @@ dependencies will be resolved automatically by ipkg.</p>
 
 
 <br>
-<H4>Bootstrapping OPTWARE</H4>
+<H4>Customizing the Environment for OPTWARE</H4>
 
 <p>To  make OPTWARE available after rebooting, you need to restore the
 above  changes to the transient rootfs as well as mounts (if you  have
@@ -279,15 +278,17 @@ if [ "$HOSTNAME_CHROOT" = "" ]; then
 fi
 </pre>
 
-
+<p>For  further shell customization, see <a href="01_setup.html">first
+article  and  the  TERMINAL IDE/CHROOT setup</a>,  esp.  the  examples
+.bash_aliases.pj and .bashrc.pj</p>
 
 
 
 <br>
-<H4>Bugs</H4>
+<H4>Bugs Found</H4>
 
 <ul>
-<li>screen fails to work (but as this also happens in debian chroot!?)
+<li>screen fails to work (but as this also happens in debian chroot - kernel!?)
 </ul>
 
 <!-- ------------------------------------------------------------ -->
