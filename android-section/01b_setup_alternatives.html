@@ -59,21 +59,22 @@ License: CC-BY-SA.</p>
 
 
 <p>OPTWARE  strives  to  provide package  management  with  dependency
-tracking  for  embedded Linux devices. The best known OPTWARE  targets
-are  probably the nslu2, anything wrt54*/openwrt, the Sharp Zaurus and
-maybe nowadays the sheevaplug. On these devices, OPTWARE tries hard to
-stay  just  within  /opt  and outside of the native  setup,  with  the
-possible  exception of requiring some links in /bin and /lib at  least
-during bootstrapping (which doesn't matter for Android).</p>
+tracking  for usually headless embedded Linux devices. The best  known
+OPTWARE  targets are probably the nslu2, anything wrt54*/openwrt,  the
+Sharp  Zaurus  and  maybe nowadays the sheevaplug. On  these  devices,
+OPTWARE  tries hard to stay just within /opt and outside of the native
+setup, with the possible exception of requiring some links in /bin and
+/lib   at  least  during  bootstrapping  (which  doesn't  matter   for
+Android).</p>
 
-<p>OPTWARE's  easily  enough  to  get a  moderately  sane  environment
+<p>OPTWARE  is  easily  enough to get a  moderately  sane  environment
 (embedded,  and  this  _includes_ Android) up and running,  but  don't
 expect  debian levels of up-to-dateness and completeness (though  some
-packages  have  this  week's timestamp). It certainly  beats  isolated
-Android  native  port  attempts  with their  always  occurring  bionic
-problems.  Also note that while OPTWARE offers a few feeds with (rare)
-kernel  updates  for  specific devices, Android  is  <b>not</b>  among
-those.</p>
+packages  do have this week's timestamp). It certainly beats  isolated
+<i>too-native</i>  Android native port attempts with their  associated
+bionic  problems. Also note that while OPTWARE offers a few feeds with
+(rare) kernel updates a full environment for specific devices, Android
+is <b>not</b> among those.</p>
 
 <ul>
 <li>Homepage: <a href="http://optware-project.org">optware-project.org</a> and the 
@@ -84,7 +85,7 @@ those.</p>
 
 
 <br>
-<H4>Bootstrapping OPTWARE</H4>
+<H4>Bootstrapping OPTWARE on Android</H4>
 
 <p>Prerequisites  for  the demonstration: <b>Root Access</b></p>
 
@@ -92,17 +93,33 @@ those.</p>
 without  being  able to use root, all you can use to  improve  Android
 shell-side  is  installing  sshdroid and TERMINAL  IDE  apps;  however
 Android  2.3 is sufficiently buggy to really require rooting to  cope,
-regardless of all the additional abilities enabled by rooting)</p>
+regardless  of all the additional abilities enabled by rooting)</p>
+
+<p>(if  you still need some hints or convincing to root your  Android,
+leave  this  page and read part 1 of my <a href="01_setup.html">first
+Android  article</a> instead. When rooted, you can continue there with
+TERMINAL IDE and the suggestions of part 2. If that's insufficient, or
+you  want  to avoid my kind of outside-of-app abuse of  TERMINAL  IDE,
+either  do  continue here with OPTWARE or otherwise consider a  chroot
+setup  of  one of the distributions below. For this you can  refer  to
+parts 3 and 4 of the first article to set up a debian chroot upto full
+desktop-level remote GUI - pretty standard excluding maybe CHROOT.run;
+a  hack  you  only need to consider in case  of  transparently  mixing
+chroot-side  commands in an outside-of-chroot pipe. Not quite standard
+however  is  the  described level of LAN integration,  and  definitely
+non-standard  and unexpected-to-me were the work-arounds I was  forced
+to  develop  for  Android kernel issues encountered in  the  described
+tests everywhere from parts 2 to 4)</p>
 
 <p>Set  up  a  slightly  more comfortable  environment  by  using  the
-TERMINAL  IDE binaries and placing DNS-resolving copy of busybox first
+TERMINAL  IDE binaries and place a DNS-resolving copy of busybox first
 in  PATH (stericson; but in the end, I still suffered busybox  issues,
-so this is still insufficient). This step is mostly cosmetic, and even
-without  a  working  native wget, you can just use a  web  browser  or
-another host instead for the wget invocations.</p>
+so  this  caution didn't pay beyond a nicer shell prompt  and  command
+line  editing).  This  step  is mostly cosmetic, and  even  without  a
+working native wget, you can just use a browser or another host's wget
+to download the the tarball and the three initial ipkg packages.</p>
 
 <pre>
-# optional...
 TERMIDE
 iresolver
 </pre>
@@ -110,9 +127,9 @@ iresolver
 <p>I  have  some spare space on the ext4 filesystem mounted on /x  (as
 described  in the chroot setup in article 1). If you have at least 100
 MB  on  /data  beyond the 10% free threshold, you can also  use  /data
-(with  some  Unix  and GNU standards including gcc, I am  using  about
-300M). The cs08q1armel feed is compatible with Android (in my case the
-Samsung   Galaxy   Note),   and  offers  two  branches:   stable   and
+(with some Unix and GNU standards including gcc, I need about 300M for
+OPTWARE).  The cs08q1armel feed is compatible with Android (in my case
+the  Samsung  Galaxy  Note),  and  offers  two  branches:  stable  and
 unstable.</p>
 
 <pre>
@@ -122,9 +139,10 @@ export OPTROOT=/x/optware # WHEREVER YOU WANT, BUT NOT ON FAT!
 
 <p>First  attempt is to roughly follow the basic instructions given at
 the  bottom of the OPTWARE homepage. But this fails, as ipkg cannot be
-loaded  due  to missing libraries (any embedded libc would  have  been
-probably  OK, but not Google's bionic). That is, if the available  tar
-implements -O ...</p>
+loaded due to missing libraries (any embedded libc would have been OK,
+but  Google just had to go bionic). That is, if tar implements -O  ...
+(otherwise   just  use  a  few  additional  temp  files   instead   of
+piping).</p>
 
 <pre>
 mkdir $OPTROOT
@@ -149,11 +167,14 @@ export LD_LIBRARY_PATH=/lib:/opt/lib:$OPTROOT/lib:$OPTROOT/opt/lib:$LD_LIBRARY_P
 
 <p>Searching  the net offers an optware-for-android script by pfalcon,
 pointing  to  a  tarball containing our missing  files  among  others.
-Longer  download,  but  less  trouble  in  hunting  down  the  missing
-libraries.  So let's follow that one. Note that we need working  https
-access  (only)  for  the tarball containing our  libs,  which  neither
-stericson  busybox nor my static wget support - so this is the  single
-step not possible to do locally.</p>
+Longer  download,  but  less trouble than trying to  locate  the  ipkg
+packages   containing   our   missing  libraries,   plus   all   their
+dependencies.  So let's use that script as a rough guide.</p>
+
+<p>Note  that we need working https access for the tarball  containing
+our  libs,  which  neither  my stericson busybox nor  my  static  wget
+support  -  so this is the single step I could not do in  the  Android
+shell.</p>
 
 <pre>
 # fetch_package_index, in case we want to lookup something, probably optional
@@ -161,26 +182,33 @@ wget -q $FEED/Packages
 mkdir opt 
 # mkdir home root home/user
 
-# my Android-side wget hates https (step requires about 20 minutes!)
+# my Android-side wget hates https (step requires about 20 minutes;
+# just download the tarball somehow - bonus points if you do it
+# on the Android using google's browser app - and copy it into $OPTROOT;
+# mind the +++ linebreak in pasting)
 CHROOT.run wget https://sourcery.mentor.com/sgpp/lite/arm/portal/package2549/public/+++
    +++arm-none-linux-gnueabi/arm-2008q1-126-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2
-# extract ldd and the missing libs
+
+# extract ldd and the missing libs from the tarball
 tar jxf arm-2008q1-126-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2
 ( cd arm-2008q1/arm-none-linux-gnueabi/libc/lib &amp;&amp; find | cpio -pmd $OPTROOT/lib )
 ( cd arm-2008q1/arm-none-linux-gnueabi/libc/usr/bin &amp;&amp; find ldd | cpio -pmd $OPTROOT/bin )
 # rm -r arm-2008q1 arm-2008q1-126-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2
 
-# as we cannot quite rely on busybox sanity (and certainly not on Google's toolbox)
-# we unpack the ipkg as above, plus busybox and wget
+# as we cannot quite rely on busybox sanity being sufficient for ipkg and
+# update-alternatives use (and certainly there's only sanity to be lost in
+# considering Google's toolbox clone of busybox), we unpack the minimal
+# working set of packages for a working ipkg package management manually: 
+# ipkg-opt, busybox-base, wget...
+#
+# note the requirement to remove any previous non-busybox /bin/sh (below) -
+# even a really sane busybox is capricious when mixing commands in pipes
+# in shell scripts run with busybox sh.
 get_package_fname () { awk "/^Filename: ${1}_/ {print \$2}" Packages; }
 for i in {wget,ipkg-opt,busybox-base}; do wget -q $FEED/$(get_package_fname $i); done
 for i in {wget,ipkg-opt,busybox-base}*ipk; do tar -zxf $i ./data.tar.gz; tar -zxf data.tar.gz; done
 rm data.tar.gz
 # rm *ipk
-
-# esp. update-alternatives doesn't like dealing with a bad busybox setup. And it
-# needs sh (or /bin/sh) to be compatible to rm (/bin/rm ...) it uses. IFF it honors
-# PATH, placing /system/xbin first in PATH and removing /bin/sh _might_ suffice.
 ( cd bin &amp;&amp; for i in sh echo rm sed mkdir head sort dirname ln mv; do ln -s /opt/bin/busybox $i; done )
 
 # Note that we still need to run the initial ipkg invocations to properly
@@ -212,7 +240,11 @@ mount -oremount,ro /system
 
 # this must be done after each boot
 mount -oremount,rw /
-rm /bin/sh                              # we _need_ a symlink to busybox here
+
+#### initially, we _*NEED*_ a symlink to busybox sh here
+rm /bin/sh
+####
+
 ( cd /bin &amp;&amp; ln -s $OPTROOT/bin/* . )   # only ldd for now  - android: usually unused
 ( cd /lib &amp;&amp; ln -s $OPTROOT/lib/* . )   # libc and the like - android: unused except /lib/modules
 mkdir /opt /home /tmp
@@ -270,11 +302,20 @@ export OPTROOT=/x/optware # *** UNRELATED TO CHROOT despite PATH***
 #( cd /etc &amp;&amp; touch resolv.conf )
 #mount -oremount,ro /system
 
-# /: transient rootfs mod - required after each boot
+## /: transient rootfs mod - required after each boot
 # note that we might be able to remove some of the symlinks, as we
 # now have a full OPTWARE setup (untested)
 mount -oremount,rw /
-rm /bin/sh                              # we _need_ a symlink to busybox here
+
+# we _need_ a symlink to busybox here when bootstrapping,
+# untested if we can remove any of our links in /lib and /bin
+# afterwards (e.g. during updates of ipkg busybox), or whether 
+# we always need the stuff (either busybox or bash symlinked to sh
+# and GNU equivalents; outside of debian, dash had issues with Perl
+# somewhere, so do not use dash for the /bin/sh symlink)
+# be paranoid and guard the rm /bin/sh (in case a /bin/sh-using 
+# non-Android system has the misfortune to suffer my OPTWARE install guide)
+test -x $OPTROOT/bin/sh && ( rm /bin/sh 2>/dev/null; ln -s $OPTROOT/bin/sh . )
 ( cd /bin &amp;&amp; ln -s $OPTROOT/bin/* . 2&gt;/dev/null )   # only ldd for now  - android: usually unused
 ( cd /lib &amp;&amp; ln -s $OPTROOT/lib/* . 2&gt;/dev/null )   # libc and the like - android: unused except /lib/modules
 mkdir /opt /home /tmp 2&gt;/dev/null
@@ -284,7 +325,7 @@ mount -oremount,ro /
 # mount -obind $OPTROOT/opt/etc/resolv.conf /etc/resolv.conf # already in /etc/resolv.conf
 # mount -obind $OPTROOT/home /home
 
-# optware mount bind (you may use a symlink instead if /opt is empty)
+## optware mount bind (you may use a symlink instead if /opt is empty)
 mount -obind $OPTROOT/opt  /opt
 
 echo source /opt/optware.env for use of the optware environment
