@@ -841,11 +841,11 @@ Here are the scripts used for this example:</p>
 # su is required for chroot to work 
 # (possibly due to SL4A id (e.g. app_247) being undefined inside the chroot?)
 use Android;
-my  $droid   = Android->new();
-$droid->makeToast('Hello, Perl!');
-system("su -c '/system/xbin/CHROOT.run perl /x/tmp/test2.pl' > /x/tmp/test2.out 2>&1");
-my $rc=$?>>8;
-$droid->makeToast("returns $rc");
+my  $droid   = Android-&gt;new();
+$droid-&gt;makeToast('Hello, Perl!');
+system("su -c '/system/xbin/CHROOT.run perl /x/tmp/test2.pl' &gt; /x/tmp/test2.out 2&gt;&amp;1");
+my $rc=$?&gt;&gt;8;
+$droid-&gt;makeToast("returns $rc");
 </pre>
 <br>
 <pre>
@@ -853,8 +853,8 @@ $droid->makeToast("returns $rc");
 
 BEGIN{push @INC, "/mnt/sdcard/com.googlecode.perlforandroid/extras/perl/site_perl"};
 use Android;
-my  $droid   = Android->new();
-$droid->makeToast('Hello from the Chroot, Perl!');
+my  $droid   = Android-&gt;new();
+$droid-&gt;makeToast('Hello from the Chroot, Perl!');
 </pre>
 
 <p              class=anno>Further             reading:             <a href="http://code.google.com/p/android-scripting/">SL4A</a>   and   <a href="http://code.google.com/p/android-scripting/wiki/RemoteControl">remote
