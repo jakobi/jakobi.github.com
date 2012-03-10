@@ -2,10 +2,10 @@
 <HEAD>
 <link rel="icon"          href="/favicon.png"/>
 <link rel="shortcut icon" href="/favicon.png"/>
-<meta name="description" content="Coping with Android - Setup Alternatives (including OPTWARE): google android samsung galaxy note native unix shell environment optware nslu2">
-<meta name="keywords" content="coping android setup alternatives including optware google samsung galaxy note native unix shell environment nslu2">
+<meta name="description" content="Coping with Android - Setup Alternatives (including OPTWARE, X11 Hacks): google android samsung galaxy note native unix shell environment optware nslu2 X11 angstrom cross compilation compile build">
+<meta name="keywords" content="coping android setup alternatives including optware hacks google samsung galaxy note native unix shell environment nslu2 angstrom cross compilation compile build">
 <meta name="author" content="Peter Jakobi">
-<TITLE>Coping with Android - Setup Alternatives (including OPTWARE)</TITLE>
+<TITLE>Coping with Android - Setup Alternatives (including OPTWARE, X11 Hacks)</TITLE>
 <style type="text/css"><!--
    .anno { font-size:.8em }
    pre { background-color:#eeeeee }
@@ -33,16 +33,28 @@ Android:
 ...
 </p>
 
-<H1>Coping with Android - Setup Alternatives (including OPTWARE)</H1>
+<H1>Coping with Android - Setup Alternatives (including OPTWARE, X11 Hacks)</H1>
 
 <hr>
 
 <H2>Android Article 01b - Setup Alternatives</H2>
 
-<p>Last change: 20120309</p>
-<p>License: CC-BY-SA.</p>
+<a name=toc></a>
+<ul>
+<li><a href="#opt">OPTWARE</a>
+<li><a href="#notes">Notes (incl. Building/Crosscompilation and Distribution Overview)</a>
+<li><a href="#milestones">Milestones in Increasing and Extending Update Availability Despite Vendor Whims</a>
+<li><a href="#x">Native Linux Hacks</a>
+</ul>
+
+
+<p>
+State described: early 2012 unless specified differently
+Last change: 20120309<br>
+License: CC-BY-SA.</p>
 
 <hr>
+<a name=opt></a>
 <H3>NLSU2 OPTWARE</H3>
 
 
@@ -314,7 +326,7 @@ article  and  the  TERMINAL IDE/CHROOT setup</a>,  esp.  the  examples
 
 
 <br>
-<H4>Issues and Notes</H4>
+<H4>OPTWARE Issues</H4>
 
 <ul>
 <li><i>screen</i> fails to work (but as this also happens in debian chroot - kernel!?)
@@ -325,7 +337,8 @@ article  and  the  TERMINAL IDE/CHROOT setup</a>,  esp.  the  examples
     are currently offline (<a href="http://www.koders.com/info.aspx?c=ProjectInfo&pid=85R6BA74HERURGXTRM7RD4H4AH">copy at koders</a>).
 </ul>
 
-<p>(Raw) Notes</p>
+<br>
+<H4>OPTWARE Notes</h4>
 
 <ul>
 <li>OPTWARE compiling / package building <a href="http://dream.reichholf.net/wiki/Howto:IPK_Pakete_erstellen">Howto:IPK_Pakete_erstellen (German; (non)openembedded)</a>, <a href="http://www.optware-project.org/index.php?title=Add_a_Package_to_Optware">optware-project.org/index.php?title=Add_a_Package_to_Optware</a>. Note that the OPTWARE svn sources/* offers differential patches to one specific upstream source version, which is specified/fetched by make/&lt;package&gt;.mk
@@ -362,8 +375,9 @@ otherwise).</p>
 
 
 
-<br>
-<hr>
+
+<hr><a href="#toc">(table of contents)</a><hr>
+<a name=notes></a>
 <h3>(Raw) Notes</h3>
 
 <h4>Building / (Cross)Compiling</h4>
@@ -434,7 +448,8 @@ otherwise).</p>
 </ul>
 
 
-<hr>
+<hr><a href="#toc">(table of contents)</a><hr>
+<a name=milestones></a>
 <h3>Milestones in Increasing and Extending Update Availability Despite Vendor Whims</h3>
 
 <h4>Unix Shell and Remote GUI Updates and</H4>
@@ -511,7 +526,8 @@ to   stuck  at  the  incomplete  restricted   functionality   one-shot
 demonstration  level.</p>
 
 
-<hr>
+<hr><a href="#toc">(table of contents)</a><hr>
+<a name=x></a>
 <h3>Native Linux Hacks</h3>
 
 <p>You've  still  a  chance  to  consider how  you  want  to  use and map 
@@ -536,8 +552,7 @@ multi-touch / pointer device clicks to X11 on your device :)</p>
 
 
 <!-- ------------------------------------------------------------ -->
-  
-<hr>
+<hr><a href="#toc">(table of contents)</a><hr>
 <p>Back to the <a href="index.html">Android Section Overview</a>.</p>
 
 <hr>
