@@ -45,7 +45,7 @@ Android:
 
 <p>with the actual name of the title of this article being<p>
 
-<h2>Substituting User Plans For Obsolescence For Vendor Planned Obsoloscence</h2>
+<h2>Substituting User Plans For Obsolescence For Vendor Planned Obsolescence</h2>
 
 <p>For  chrooting  and HOWTO sketches, see the other articles  in  the
 series, for more on naming concepts, consult Lewis Caroll.</p>
@@ -92,7 +92,7 @@ zooming).</p>
 <p  class=anno>Side  benefits of a debian chroot on a  modern  Android
 like   the  Samsung  Galaxy  Note:  a  <b>portable  complete  uptodate
 local/non-cloud  desktop</b>,  independent of the exotic rare  Android
-OTA  rom  update (which happens to be already out-of-date long  before
+OTA  rom  update (which is bound to be already out-of-date long  before
 being  transmitted  - if ever).</p>
 
 <p  class=anno>If you want a graphical presentation rather than my own
@@ -104,40 +104,43 @@ Canonical's offer.</p>
 
 <p align=center><i>Chrooting puts most of the GNU back into - hmmm - gnoot/Linux</i></p>
 
+
+
 <h4>... Newer Android Framework Updates by Custom-Rom to ...</h4>
 
 <p>To permit secure use outside the home (and within: defense in depth
 is    certainly    better   than   the   classic   LAN   concept    of
 one-packetfilter-fits-all  hard-shell-soft-core), a device also  needs
-uptodate and secure methods to access the new applications, that is an
-uptodate  graphical  user interface with at least current versions  of
-VNC-Viewer  (for  access to current apps in the chroot),  browser  and
-ssh.</p>
+uptodate and secure methods to access the new applications; that is an
+uptodate graphical user interface comprising at the very least current
+versions  of  VNC-Viewer (for access to current apps in  the  chroot),
+browser and ssh.</p>
 
 <p>As Android Market doesn't permit marketplace links/updating for rom
 apps   (180+   on   a  modern  Android  2.3.6  device),  this   is   a
 problem-in-waiting  that can only be delayed by moving to custom roms,
-at  the  latest  when the device ages out of vendor support.  This  is
-still  the same broken Android idea of big all-in-one-updates, but  at
-least  it offers an available, less tardy, less broken and more secure
-alternative            (Android-creators            of             the
-2012-safari-cross-domain-ads-crack-fame,      device     makers     of
-Sony-rootkit-fame   or   Motorola-device-signing-fame,  providers   of
-carrier-IQ  fame)  to forced passive waiting for either  exploits  and
-other  malware  or for the official channel OTA update  with  embedded
-bloatware;  and  an  OTA update is a rare sight many  Android  devices
-never have encountered and never will see.</p>
+at the latest when the device ages out of vendor support. A custom rom
+is   still   the   same  old,  same  broken  Android   idea   of   big
+all-in-one-updates,  but at least it offers an available, less  tardy,
+less  broken  and  more  secure alternative  (Android-creator  of  the
+2012-safari-cross-domain-ad-network-crack-fame,   device   makers   of
+Sony-rootkit-fame  or Motorola-device-signed-locking-fame, as well  as
+providers  of  carrier-IQ fame) to forced passive waiting  for  either
+exploits  and  other malware, or for the official channel  OTA  update
+with  embedded  bloatware;  and  an OTA update is a  rare  sight  many
+Android devices never have encountered and never will see.</p>
 
 
 <p>However,  custom  roms  still suffer both  from  the  compatibility
 limits  of  vendor-provided  blobs  (or possibly  stock  kernels,  cf.
-Motorola  Milestone)  as  well as the all-in-one update  problem.  Add
-Android  fragmentation and custom rom support will still wane  (albeit
-later),   as  will  marketplace  app  availability.  Even  the  chroot
-environment  will  suffer  some of that bitrot, as newer  and  missing
-kernel features will preclude building or using some programs.</p>
+Motorola Milestone) as well as the already mentioned all-in-one update
+problem.  Add Android fragmentation and custom rom support will  still
+wane  (albeit  later), as will marketplace app availability. Even  the
+chroot  environment  will  suffer some of that bitrot,  as  newer  and
+missing   kernel  features  will  preclude  building  or  using   some
+programs.</p>
 
-<p>Note  that  custom  rom  availability  further  depends  on  vendor
+<p class=anno>Note  that  custom  rom  availability  further  depends  on  vendor
 behaviour and device popularity (cf. Motorola).</p>
 
 <p  class=anno>(this  corresponds  to  the current setup  of  my  Note
@@ -149,51 +152,51 @@ probably  last  until early 2013)
 <h4>... Long-Term Supported Native Linux (possibly also Dual-Booting)</h4>
 
 <p>Without  rom updates - official channel or otherwise, we can either
-gladly embrace any bugs and security flaws. Alternately we can vow to
+gladly embrace any bugs and security flaws. Alternatively we can vow to
 only  use  the device in totally secure protected environments  in  as
 secure a manner as possible. Like inside a locked massive bank safe, with the device
 power supply and battery being removed.</p>
 
 <p>Or  we  can accept some loss of funtionality due to firmware  blobs
-for  uncommon and crippled hardware components (most likely candidates
-are  sensors,  maybe camera, and 3d acceleration, possibly  also  some
+for  uncommon/crippled hardware components (most likely candidates are
+sensors,  maybe  camera,  and  3d  acceleration,  possibly  also  some
 wifi/gsm  functionality) and consider switching (or dual-booting) to a
-native  graphical interface and/or a native kernel (Xorg; AOSP or official kernel).
-Functionality  loss  should  be  less problematic  on  tablets,  given
-typical  usage. As for Call/phone/rild/gsm issues, they should  become
-less  problematic  in the future, as providers ought to increasingly move  to  VOIP
-proper,  as their transmission standards and protocols already do year
-by year.</p>
+native  graphical  interface  and/or a native kernel  (Xorg;  AOSP  or
+official  kernel).  Functionality loss should be less  problematic  on
+tablets,  given  typical usage. As for phone/rild issues, they  should
+become  less  problematic  in  the  future,  as  providers  ought   to
+increasingly  move to VOIP proper, as their transmission standards and
+protocols already do year by year.</p>
 
 <p>By  moving to native X11, we also extend proper package  management
 to  the equivalents of the rom / system apps and turn the chroot setup
 inside-out  into  the  actual  device  setup:  all  programs  -  maybe
 excluding  kernel, X11 server itself and a small number of libraries -
-can now be updated (mostly) independent of each other - no unnecessary
-delays  introduced  by needing to create / test /  forge  channel-wide
-legal    arragements    for   <i>the   one</i>   and    only    single
-one-big-update-blob  to bind them all (freezing features and bugs  for
-at  least  a year until the next monster update; custom-roms at  least
-trade  lawyers  and  channel  agreement  constraints  for update frequency and less delay,  but
-installing  them  is  still  a messy manual  intervention  with  extra
-backup/restore  steps,  when  compared to the use of  a  real  package
-management).</p>
+can  now  be  updated  (mostly) independent of  each  other:  no  more
+unnecessary  delays  introduced  by needing to create / test  /  forge
+channel-wide   legal  arragements  for  <i>the  one  and  only  single
+one-big-update-blob  to bind them all</i> (freezing features and  bugs
+for  at one year or more until the next monster update; custom-roms at
+least  trade  lawyers  and channel agreement  constraints  for  update
+frequency  and  short  delays, but installing them is  still  a  messy
+manual  intervention with extra backup/restore steps, when compared to
+the workings of a real package management).</p>
 
 <p  class=anno>By now our own official end of support only happens for
 either  dying  hardware/flash memory, change of user requirements,  or
-device  hardware  being actively dropped from Xorg  (/wayland(?))  and
-kernel  source code and noone forking/maintaining the old source  code
-branch.</p>
+device  hardware  being actively dropped from Xorg and  kernel  source
+code.  Which only hurts in case no-one chooses to fork or maintain  the
+old source code branch for another few years.</p>
 
 <p align=center><i>Now we have solved the case, fixed the spelling and
 restored the proper environmentally sound and sustainable relationship
 of    the   descendants   of   archaeopteryx   and   artiodactyls   to
 GNU/Linux.</i></p>
 
-<p>However: <b>there is one more step left to attain bliss</b></p>
+<p>However: <b>there is one more step left to attain bliss</b>.</p>
 
-<p>Kernel  and  X server installation are probably still  outside  the
-package  management  or  at least pinned to specific  or  custom-built
+<p>Kernel  and  X  server installation are likely outside  of  package
+management   or   at   least  pinned  to  specific   or   custom-built
 versions.</p>
 
 <p>For  proper long term support, the results of working X11 /  kernel
@@ -205,8 +208,8 @@ official  sources,  and  ideally also be packaged  by</p>
 /ul
 
 <p>A  native  setup of debian unstable installable with only a  little
-manual  intervention  is  the final perfect long-term  device  support
-scenario.</p>
+manual  intervention  is  the final <b>perfect long-term  device  support
+scenario</b>.</p>
 
 <p  class=anno>Otherwise, we're stuck at a series of  badly-repeatable
 one shot demonstrations, that require some to huge effort ranging from
@@ -214,9 +217,11 @@ rebuilding  installs  with manual flashing to long compiles with  some
 patching  to  porting/rebasing  old changes against current  Xorg  and
 kernel sources.</p>
 
-<p>Current  <b>state  of the art</b>: all native efforts I have found  -
-listed in <a href="01b_setup_alternatives.html">Setup Alternatives</a>
-- still seem stuck at the incomplete restricted functionality one-shot
+<hr>
+
+<p>Current  <b>state  of the art</b> for Android devices:  all  native
+efforts      I      have      found      -      listed      in      <a href="01b_setup_alternatives.html">Setup Alternatives</a> - still seem
+stuck    at   the   incomplete   restricted   functionality   one-shot
 demonstration level.</p>
 
 
